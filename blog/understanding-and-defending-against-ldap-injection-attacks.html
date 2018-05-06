@@ -1,0 +1,232 @@
+<p>
+  Injection attacks are one of the most common sources of security holes because it’s so easy for an unsuspecting developer to leave the door open for them. But it’s also usually very easy to prevent them through some pretty simple means.
+</p>
+
+<p>
+  An injection attack happens when an application uses externally-obtained data in the course of its processing, but without making sure that data is acceptable and safe. It’s especially predominant in cases where an application plugs user input into some kind of a query or command that it sends to some kind of data repository, and doesn’t protect against the possibility that unexpected or malicious user input could cause the application to issue a different request than the one it expected. You’re probably most likely to hear about injection attacks when dealing with SQL (the structured query language, commonly used to interact with relational databases), but it can also affect interaction with other data repositories, like NoSQL databases and even LDAP directory servers.
+</p>
+
+<p>
+  LDAP directory servers actually have an inherent advantage over many other types of data stores when it comes to injection attacks because LDAP isn’t a text-based protocol and because LDAP APIs typically don’t make it possible to accidentally turn one type of operation into a different kind of operation. SQL injections are particularly dangerous because it’s possible for an SQL statement intended to just read some data from the database to be inadvertently converted into one that destroys, corrupts, or otherwise wreaks havoc on the data. This can’t happen in an LDAP injection, but there are still some very real threats that you need to protect against.
+</p>
+
+<h1>LDAP Filter Injections</h1>
+<p>
+  By far, the most common type of LDAP injection attack is a filter injection. This can happen whenever you construct an LDAP search filter from its string representation and include user-provided data in the process.
+</p>
+
+<p>
+  For example, consider an application that offers an input field that makes it possible to look up a user by their username or their email address. Such an application might have the following code:
+</p>
+
+<pre>String filter = "(|(uid=" + userInput + ")(mail=" + userInput + "))";</pre>
+
+<p>
+  If the user input is “<tt>jdoe</tt>”, then this will end up creating the filter “<tt>(|(uid=jdoe)(mail=jdoe))</tt>”. That seems safe enough, right? But instead, let’s consider what would happen if the user were to enter an asterisk instead of jdoe. That would cause the resulting filter to be “<tt>(|(uid=*)(mail=*))</tt>”, and that would match any entry within the scope of the search that has either at least one of the uid and mail attributes. And what if the user were to enter “<tt>jdoe)(objectClass=*</tt>”? In that case, the code would create a filter of “<tt>(|(uid=jdoe)(objectClass=*)(mail=jdoe)(objectClass=*))</tt>”, and that filter would match any entry within the scope of the search, including those that don’t have either the uid attribute or the mail attribute.
+</p>
+
+<h2>The Risks of Filter Injection Attacks</h2>
+<p>
+  As illustrated above, one of the key risks of a filter injection attack is that it could cause the application to expose more entries, or different kinds of entries, than the application intended to make available. But there are other dangers as well.
+</p>
+
+<h3>Leaking Sensitive Attribute Values</h3>
+<p>
+  One risk that people don’t often think about is the possibility of using a filter injection attack to leak the values of attributes that contain sensitive information. For example, let’s say that we know that the directory server stores a user’s social security number in the ssn attribute in the user’s entry, and that we want to find out what the social security number is for user jdoe. Let’s also assume that there aren’t any users in the directory that have a uid or mail value of noMatches. If the application constructs a search filter using the code listed above, then we might try entering the following into the input field:
+</p>
+
+<pre>noMatches)(&(uid=jdoe)(ssn=1*)</pre>
+
+<p>
+  This would result in the application generating the following filter:
+</p>
+
+<pre>(|(uid=noMatches)(&(uid=jdoe)(ssn=1*))(mail=noMatches)(&(uid=jdoe)(ssn=1*)))</pre>
+
+<p>
+  This filter would match the entry for user jdoe only if that entry has an ssn value whose first digit is one. If that filter doesn’t match, then we could replace the one with a two, then a three, and so on until we get a match, and then we know what the first digit of the social security number is. Then we can use the same technique to find the second digit, then the third, etc., until we know all nine digits.
+</p>
+
+<h3>Denial of Service Attacks</h3>
+<p>
+  Filter injection attacks also open the door for very simple and very effective denial of service (DoS) attacks, whether against the application that interacts with the directory server, or against the directory server itself. An injection attack could turn what is expected to be a very efficient filter into one that is very time-consuming to process and takes up a lot of server resources. If you’re able to get enough of those going at the same time, it may eat up all of the available processing cycles in either the application or the directory server so that other requests can’t get through.
+</p>
+
+<p>
+  Further, if the application is designed to hold all of the entries returned from a search in memory at the same time, a search that returns a lot more entries than expected could cause the application to consume all available memory on the system, which could potentially make the application crash or spend all of its time in garbage collection, or could make the system start paging memory out to disk.
+</p>
+
+<h3>Invoking Operations Against Unintended Entries</h3>
+<p>
+  We’ve already established that a filter injection attack has the potential to cause a search to match entries that the application didn’t expect to match. If the application makes those entries available to the end user in some way, then the application could be tricked into leaking information to the end user. But what if the application doesn’t simply make those entries available to the end user, but instead does something else with them? What if the application applies some update to each entry that matches the search filter? If you can trick the application into searching for the wrong entries, then that could lead to the application updating the wrong entries, which could cause data loss or corruption.
+</p>
+
+<h2>Defending Against Filter Injection Attacks</h2>
+<p>
+  There are several ways that you can protect your LDAP-enabled application against filter injection attacks. Some of them are probably very easy to implement. Others may take additional effort. And you might want to implement more than one of these safeguards to take a kind of “belt and suspenders” approach.
+</p>
+
+<h3>Don’t Construct Filters by Concatenating Strings</h3>
+<p>
+  You should never, <i>never</i>, <b><i>never</i></b>, <u><b><i>never</i></b></u> construct an LDAP search filter by concatenating strings, especially when that string contains any user input. Instead, you should leverage the features that your LDAP library offers to create filters programmatically.
+</p>
+
+<p>
+  For example, if you’re using the UnboundID LDAP SDK for Java, rather than:
+</p>
+
+<pre>String filter = "(|(uid=" + userInput + ")(mail=" + userInput + "))";</pre>
+
+<p>
+You should instead use:
+</p>
+
+<pre>Filter filter = Filter.createORFilter(
+     Filter.createEqualityFilter("uid", userInput),
+     Filter.createEqualityFilter("mail", userInput));</pre>
+
+<p>
+  Much like using an SQL prepared statement, constructing an LDAP filter programmatically ensures that it isn’t possible for crafty input to result in a different kind of filter than the one that was intended.
+</p>
+
+<p>
+  If you’re using an LDAP library that doesn’t provide a way to programmatically generate search filters, then you should strongly consider selecting a new library to use for LDAP communication. If that’s not feasible, and you have to create filters from their string representations, then you absolutely must sanitize any user input included in the generated filter.
+</p>
+
+<h3>Sanitize User Input Included in Search Filters</h3>
+<p>
+  There are two basic ways to sanitize user input.
+</p>
+
+<p>
+  The first is to reject any input that doesn’t appear to be valid. For example, if you have an input field in which you expect the user to provide a username or an email address, then you might only want to allow the input to contain letters, digits, periods, dashes, underscores, plus signs, and the at sign.
+</p>
+
+<p>
+  And if it’s a client-server application, then you should make sure to do the validation in server-side code rather than (or perhaps in addition to) client-side code. For example, if you have a web application, and it uses JavaScript to ensure that the input only contains valid characters, then an attacker might be able to get around that by disabling JavaScript support in their browser, or by not using a browser at all but some other kind of HTTP client that allows them to send exactly the request they want to send. If you have server-side validation, the attacker won’t be able to get around that with any amount of fancy client-side trickery. You can still use client-side validation if you want, since that can make for a better experience for legitimate end users, but just make sure to do the same validation in the server for actual security.
+</p>
+
+<p>
+  The second way to sanitize user input is by escaping any special characters that it may contain. <a href="https://docs.ldap.com/specs/rfc4514.txt" target="_blank">RFC 4514</a> states that the following escaping must be applied to the assertion value in the string representation of an LDAP search filter:
+</p>
+
+<ul>
+  <li>The null character (U+0000) must be escaped as <tt>\00</tt>.</li>
+  <li>The left parenthesis must be escaped as <tt>\28</tt>.</li>
+  <li>The right parenthesis must be escaped as <tt>\29</tt>.</li>
+  <li>The asterisk must be escaped as <tt>\2a</tt>.</li>
+  <li>The backslash must be escaped as <tt>\5c</tt>.</li>
+</ul>
+
+<p>
+  You can escape any other character by placing a backslash in front of the hexadecimal representation for each byte in the UTF-8 encoding for that character, but the above characters are the ones that absolutely have to be escaped.
+</p>
+
+<p>
+  The LDAP library you’re using may provide a mechanism to do this for you (for example, if you’re using the UnboundID LDAP SDK for Java, then you can use one of the the <tt>Filter.encodeValue(String)</tt> or <tt>Filter.encodeValue(byte[]) methods)</tt>, but if it has that, then it’s probably got methods to help you programmatically construct the filter, and using that approach is definitely better than trying to perform your own escaping.
+</p>
+
+<h3>Use an AND Filter To Impose Restrictions on Matching Entries</h3>
+<p>
+  To prevent a search from matching entries of a different type than you expect, you can wrap the filter inside of an AND that will only match the desired type of entry. For example, if you know that you only want to search for user entries, and you know that all user entries have the person object class, then rather than using a filter like:
+</p>
+
+<pre>(|(uid={input})(mail={input}))</pre>
+
+<p>
+  You could instead use a filter like:
+</p>
+
+<pre>(&(objectClass=person)(|(uid={input})(mail={input})))</pre>
+
+<p>
+  This will ensure that only user entries will be returned. If you have more specific criteria, then you can include that in the filter as well. Just note that this type of protection on its own isn’t enough to prevent all kinds of injection attacks, since it doesn’t protect against wildcards or new components injected inside the OR. So you’ll still need to make use of one of the other types of protection listed above.
+</p>
+
+<h3>Restrict the Search Request in Other Ways</h3>
+<p>
+  The search filter is just one of the elements inside an LDAP search request. There are other elements that you may be able to adjust to reduce the effect of processing a search that isn’t exactly what you expected. Some of those are:
+</p>
+
+<ul>
+  <li>Set the base DN and scope to be as specific as possible to the type of search that you’re performing. For example, if you know that you’re searching for a user, and you know that all users are in a particular branch in the directory (for example, beneath “ou=People,dc=example,dc=com”), then base your search at that branch rather than at the root of the tree, so that the search won’t match any entries outside of that branch.</li>
+  <li>Use the size limit to prevent the server from returning more entries than expected. If you’re searching for a single user entry, then use a size limit of one, and the server will return an error result if it finds more than one matching entry.</li>
+  <li>Use the time limit to prevent the server from spending too much time processing the search. If you expect your search to be efficient, then setting the time limit to a second or two should be more than enough time to allow the server to process it under normal circumstances, but small enough to ensure that an unexpectedly inefficient search gets cut off before too long.</li>
+</ul>
+
+<h3>Leverage the Server’s Access Control Mechanism</h3>
+<p>
+  Another great type of protection against attacks of all kinds is to ensure that requests are issued under an account that only has permission to do what it’s supposed to do. For example, if you only want the application to be able to search for entries by targeting the uid and mail attributes, then only give the application’s account permission to issues searches targeting those attributes. Similarly, give the application read access only to the attributes that it legitimately needs to get back in search result entries, and give it write access only to the attributes that it legitimately needs to be able to update.
+</p>
+
+<p>
+  If an application needs to process operations on behalf of another user, then you may want to use the proxied authorization request control (described in <a href="https://docs.ldap.com/specs/rfc4370.txt" target="_blank">RFC 4370</a>) to ensure that those operations are processed in accordance with that user’s access control rights.
+</p>
+
+<h1>LDAP DN Injections</h1>
+<p>
+  Although filter injection attacks are by far the most prevalent, it is conceivably possible for an LDAP injection attack to target entry DNs. In particular, if an application constructs an LDAP DN from user input, then it may be possible for a malicious user to provide unexpected input that could end up targeting a different entry than was expected.
+</p>
+
+<p>
+  For example, let’s say that an application has the following code:
+</p>
+
+<pre>String userDN = "uid=" + userInput + ",ou=People,dc=example,dc=com";</pre>
+
+<p>
+  If the user enters “jdoe”, then this would construct the following DN:
+</p>
+
+<pre>uid=jdoe,ou=People,dc=example,dc=com</pre>
+
+<p>
+  But if the user enters “jdoe,ou=Secret Users”, then this would construct a DN that is one level below what the application intended:
+</p>
+
+<pre>uid=jdoe,ou=Secret Users,ou=People,dc=example,dc=com</pre>
+
+<p>
+  While theoretically possible, DN injections aren’t all that common or practical. There are two key reasons for this.
+</p>
+
+<p>
+  First, it’s rare for applications to construct DNs based on user input. Or, at least, it’s rare for well-designed applications to construct DNs based on user input. It’s a very bad thing for an application to assume that DNs have a particular structure or pattern, because not all of them do. And even if DNs have a known format when the application is being developed, it’s entirely possible that the format could change later (for example, to eliminate all personally-identifiable information from DNs), and the application would be broken. It’s far better for an application to search for an entry and learn its DN that way than to try to construct it.
+</p>
+
+<p>
+  Second, the only kind of injection that you can realistically achieve when constructing a DN is to target an entry deeper in the tree than you had initially expected. You can’t use an injection attack to target any arbitrary entry in the DIT. Fortunately, LDAP DNs don’t have any equivalent to the “..” in a filesystem path that allows you traverse up to its parent.
+</p>
+
+<p>
+  Nevertheless, if you do encounter a scenario in which you need to construct a DN from user input (for example, if you’re adding a new entry), then you should see if the LDAP library you’re using provides a way to safely construct the DN for you. For example, if you’re using the UnboundID LDAP SDK for Java, instead of using the code:
+</p>
+
+<pre>String userDN = "uid=" + userInput + ",ou=People,dc=example,dc=com";</pre>
+
+<p>
+  You should use:
+</p>
+
+<pre>DN userDN = new DN(new RDN("uid", userInput), new RDN("ou", "People"),
+     new RDN("dc", "example"), new RDN("dc", "com"));</pre>
+
+<p>
+  This will ensure that all appropriate escaping is done, and will thwart any injection attempt.
+</p>
+
+<p>
+  If your LDAP library doesn’t have any kind of method like the above for constructing DNs safely, then you should either get a new LDAP library that does provide this support, or you should perform the escaping yourself. The rules for escaping special characters in DNs are a little different from the rules for escaping special characters in a search filter. All the necessary details for constructing the string representation of a DN is provided in RFC 4514, but the basics are:
+</p>
+
+<ul>
+  <li>You should escape the double quote character as <tt>\"</tt> or <tt>\22</tt>.</li>
+  <li>You should escape the plus sign character as <tt>\+</tt> or <tt>\2b</tt>.</li>
+  <li>You should escape the comma character as <tt>\,</tt> or <tt>\2c</tt>.</li>
+  <li>You should escape the semicolon character as <tt>\;</tt> or <tt>\3b</tt>.</li>
+  <li>You should escape the less-than character as either <tt>\&lt;</tt> or <tt>\3c</tt>.</li>
+  <li>You should escape the greater-than character as either <tt>\&gt;</tt> or <tt>\3e</tt>.</li>
+  <li>You should escape the backslash character as either <tt>\\</tt> or <tt>\5c</tt>.</li>
+  <li>If a value has any leading or trailing spaces, then you should escape those spaces by prefixing them with a backslash or as <tt>\20</tt>. Spaces in the middle of a value don’t need to be escaped.</li>
+  <li>If the value starts with an octothorpe character (#), then you should escape it as either <tt>\#</tt> or <tt>\23</tt>. You only need to escape the octothorpe character at the beginning of a value, and not in the middle or at the end of the value.</li>
+</ul>

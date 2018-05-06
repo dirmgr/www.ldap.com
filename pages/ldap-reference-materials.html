@@ -1,0 +1,35 @@
+<p>
+  If you want to really understand how LDAP works, and especially if you want to implement your own LDAP server or client API, then the following information may be very helpful:
+</p>
+
+<h1><a href="https://ldap.com/ldap-specifications/">LDAP Specifications</a></h1>
+
+<p>
+  Official standards documents for all things LDAP (or related to LDAP in some way).
+</p>
+
+<p>
+  <a href="https://ldap.com/ldap-related-rfcs/">RFCs</a> are official, ratified specifications (or at least they were at one time; some older specifications, like those pertaining to LDAPv2, have now been declared “historic” and are no longer meant to be used).
+</p>
+
+<p>
+  <a href="https://ldap.com/ldap-related-internet-drafts/">Internet Drafts</a> are proposed specifications that have either not yet completed the full process to become RFCs. Some of them may still be on the way to becoming RFCs, while others may have stagnated without completing the process. But even in the latter case, some servers may have some degree of support for them.
+</p>
+
+<h1><a href="https://ldap.com/ldap-result-code-reference/">LDAP Result Code Reference</a></h1>
+
+<p>
+  The final message returned by a server in response to a client request includes a result code that indicates whether the operation completed successfully. For operations that failed, the result code may provide some information about the nature of the problem. The result code reference provides a pretty comprehensive list of result codes used in LDAP and the circumstances in which they may be used.
+</p>
+
+<h1><a href="https://ldap.com/ldapv3-wire-protocol-reference/">LDAPv3 Wire Protocol Reference</a></h1>
+
+<p>
+  LDAP is a binary protocol with messages encoded in the ASN.1 Basic Encoding Rules. This is more compact and more efficient than text-based protocols like HTTP, but it’s also more complicated to understand. This guide attempts to demystify that encoding and explain what actually gets transferred between clients and servers.
+</p>
+
+<h1><a href="https://ldap.com/ldap-oid-reference-guide/">LDAP OID Reference Guide</a></h1>
+
+<p>
+  Object identifiers (OIDs) are used throughout LDAP, including things like schema elements, controls, and extended operations. This guide provides a number of numeric OIDs and describes their use in LDAP.
+</p>
