@@ -1,0 +1,333 @@
+<p>
+  Whenever an LDAP directory server completes processing for an operation, it sends a response message back to the client with information about that operation. This response can help the client understand whether the operation succeeded or failed, but it may also provide additional information with more specific details about the nature of that success or failure. That response message includes a numeric result code, which is a basic indication of whether the operation succeeded, and to help categorize the reason for the failure.
+</p>
+
+<p>
+  Although each result code has a name in addition to its numeric value, it’s not always clear when a given result code might be used and what the potential causes might be. This reference tries to address that. It presents information collected from a number of different specifications, especially <a href="https://docs.ldap.com/specs/rfc4511.txt" target="_blank">RFC 4511</a> (the core LDAPv3 protocol reference) and <a href="https://docs.ldap.com/specs/draft-just-ldapv3-rescodes-02.txt" target="_blank">draft-just-ldapv3-rescodes</a> (an IETF draft that served as an earlier version of a result code reference), along with information gleaned from years of experience working with LDAP.
+</p>
+
+<ul>
+  <li><a href="https://ldap.com/ldap-result-code-reference-response-elements">The Elements of an LDAP Operation Response Message</a></li>
+  <li><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes">Core LDAPv3 Result Codes</a></li>
+  <li><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes">Other Server-Side Result Codes</a></li>
+  <li><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes">Client-Side Result Codes</a></li>
+</ul>
+
+<h3>Table of LDAP Result Codes</h3>
+<p>
+  The links above provide information about LDAP responses and result codes organized into logical sections. But if you’re looking for a specific result code, the following table can take you directly to the discussion of that code.
+</p>
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <tbody>
+    <tr>
+    <th align="left">Result Code Name</th>
+    <th align="center">Numeric Value</th>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a></tt></td>
+      <td align="center">0</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-operationsError">operationsError</a></tt></td>
+      <td align="center">1</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-protocolError">protocolError</a></tt></td>
+      <td align="center">2</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-timeLimitExceeded">timeLimitExceeded</a></tt></td>
+      <td align="center">3</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-sizeLimitExceeded">sizeLimitExceeded</a></tt></td>
+      <td align="center">4</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-compareFalse">compareFalse</a></tt></td>
+      <td align="center">5</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-compareTrue">compareTrue</a></tt></td>
+      <td align="center">6</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-authMethodNotSupported">authMethodNotSupported</a></tt></td>
+      <td align="center">7</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-strongerAuthRequired">strongerAuthRequired</a></tt></td>
+      <td align="center">8</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-referral">referral</a></tt></td>
+      <td align="center">10</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-adminLimitExceeded">adminLimitExceeded</a></tt></td>
+      <td align="center">11</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-unavailableCriticalExtension">unavailableCriticalExtension</a></tt></td>
+      <td align="center">12</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-confidentialityRequired">confidentialityRequired</a></tt></td>
+      <td align="center">13</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-saslBindInProgress">saslBindInProgress</a></tt></td>
+      <td align="center">14</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchAttribute">noSuchAttribute</a></tt></td>
+      <td align="center">16</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-undefinedAttributeType">undefinedAttributeType</a></tt></td>
+      <td align="center">17</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-inappropriateMatching">inappropriateMatching</a></tt></td>
+      <td align="center">18</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-constraintViolation">constraintViolation</a></tt></td>
+      <td align="center">19</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-attributeOrValueExists">attributeOrValueExists</a></tt></td>
+      <td align="center">20</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidAttributeSyntax">invalidAttributeSyntax</a></tt></td>
+      <td align="center">21</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a></tt></td>
+      <td align="center">32</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-aliasProblem">aliasProblem</a></tt></td>
+      <td align="center">33</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a></tt></td>
+      <td align="center">34</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-isLeaf">isLeaf</a></tt></td>
+      <td align="center">35</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-aliasDereferencingProblem">aliasDereferencingProblem</a></tt></td>
+      <td align="center">36</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-inappropriateAuthentication">inappropriateAuthentication</a></tt></td>
+      <td align="center">48</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidCredentials">invalidCredentials</a></tt></td>
+      <td align="center">49</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a></tt></td>
+      <td align="center">50</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-busy">busy</a></tt></td>
+      <td align="center">51</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-unavailable">unavailable</a></tt></td>
+      <td align="center">52</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-unwillingToPerform">unwillingToPerform</a></tt></td>
+      <td align="center">53</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-loopDetect">loopDetect</a></tt></td>
+      <td align="center">54</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-sortControlMissing">sortControlMissing</a></tt></td>
+      <td align="center">60</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-offsetRangeError">offsetRangeError</a></tt></td>
+      <td align="center">61</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-namingViolation">namingViolation</a></tt></td>
+      <td align="center">64</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassViolation">objectClassViolation</a></tt></td>
+      <td align="center">65</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-notAllowedOnNonLeaf">notAllowedOnNonLeaf</a></tt></td>
+      <td align="center">66</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-notAllowedOnRDN">notAllowedOnRDN</a></tt></td>
+      <td align="center">67</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-entryAlreadyExists">entryAlreadyExists</a></tt></td>
+      <td align="center">68</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassModsProhibited">objectClassModsProhibited</a></tt></td>
+      <td align="center">69</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-resultsTooLarge">resultsTooLarge</a></tt></td>
+      <td align="center">70</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-affectsMultipleDSAs">affectsMultipleDSAs</a></tt></td>
+      <td align="center">71</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-virtualListViewError">virtualListViewError</a></tt> or <tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-controlError">controlError</a></tt></td>
+      <td align="center">76</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-other">other</a></tt></td>
+      <td align="center">80</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-serverDown">serverDown</a></tt></td>
+      <td align="center">81</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-localError">localError</a></tt></td>
+      <td align="center">82</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-encodingError">encodingError</a></tt></td>
+      <td align="center">83</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-decodingError">decodingError</a></tt></td>
+      <td align="center">84</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-timeout">timeout</a></tt></td>
+      <td align="center">85</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-authUnknown">authUnknown</a></tt></td>
+      <td align="center">86</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-filterError">filterError</a></tt></td>
+      <td align="center">87</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-userCanceled">userCanceled</a></tt></td>
+      <td align="center">88</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-paramError">paramError</a></tt></td>
+      <td align="center">89</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-noMemory">noMemory</a></tt></td>
+      <td align="center">90</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-connectError">connectError</a></tt></td>
+      <td align="center">91</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-notSupported">notSupported</a></tt></td>
+      <td align="center">92</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-controlNotFound">controlNotFound</a></tt></td>
+      <td align="center">93</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-noResultsReturned">noResultsReturned</a></tt></td>
+      <td align="center">94</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-moreResultsToReturn">moreResultsToReturn</a></tt></td>
+      <td align="center">95</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-clientLoop">clientLoop</a></tt></td>
+      <td align="center">96</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-referralLimitExceeded">referralLimitExceeded</a></tt></td>
+      <td align="center">97</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-invalidResponse">invalidResponse</a></tt></td>
+      <td align="center">100</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-ambiguousResponse">ambiguousResponse</a></tt></td>
+      <td align="center">101</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-tlsNotSupported">tlsNotSupported</a></tt></td>
+      <td align="center">112</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-intermediateResponse">intermediateResponse</a></tt></td>
+      <td align="center">113</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-client-side-result-codes#rc-unknownType">unknownType</a></tt></td>
+      <td align="center">114</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-canceled">canceled</a></tt></td>
+      <td align="center">118</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-noSuchOperation">noSuchOperation</a></tt></td>
+      <td align="center">119</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-tooLate">tooLate</a></tt></td>
+      <td align="center">120</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-cannotCancel">cannotCancel</a></tt></td>
+      <td align="center">121</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-assertionFailed">assertionFailed</a></tt></td>
+      <td align="center">122</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-authorizationDenied">authorizationDenied</a></tt></td>
+      <td align="center">123</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-e-syncRefreshRequired">e-syncRefreshRequired</a></tt></td>
+      <td align="center">4096</td>
+    </tr>
+    <tr>
+      <td align="left"><tt><a href="https://ldap.com/ldap-result-code-reference-other-server-side-result-codes#rc-noOperation">noOperation</a></tt></td>
+      <td align="center">16654</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="0">
+  <tbody>
+    <tr>
+      <td align="left"></td>
+      <td align="right">Next: <a href="https://ldap.com/ldap-result-code-reference-response-elements/">The Elements of an LDAP Operation Response Message</a></td>
+    </tr>
+  </tbody>
+</table>
