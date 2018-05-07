@@ -1,0 +1,55 @@
+<p>
+  There are several types of data stores out there. Why should you choose an LDAP directory server over an RDBMS, NoSQL database, or some other alternative?
+</p>
+
+<h1>LDAP Is an Open Standard Protocol</h1>
+
+<p>
+  If you choose a NoSQL database, you’re basically locking yourself into that one type of database because each one has its own protocol. If you change the server, you have to change all the clients at the same time. You could write your own API compatibility layer that sits between applications and the database, but you’re still on the hook for finding a database that supports all the same functionality.
+</p>
+
+<p>
+  If you go with an RDBMS, then you’ll find that SQL is much more standardized, and you may be lucky enough to just install a new database driver. But that still means updating all of your clients to ensure that they can talk to the new database, and you’ll find that most relational databases have their own unique interpretation of what SQL really means.
+</p>
+
+<p>
+  On the other hand, LDAP is a well-defined protocol. <a href="https://docs.ldap.com/specs/rfc4511.txt">RFC 4511</a> explicitly specifies how clients should encode requests and how servers should encode responses. There are a wide variety of directory servers and client APIs available, so choosing one doesn’t mean that you’re stuck with it forever.
+</p>
+
+<p>
+  It is true that not all LDAP servers provide the same set of features. Different servers may support different sets of controls, extended operations, and SASL mechanisms, but in those cases, the server’s root DSE should advertise what it does support, and clients can look at that to decide what kind of requests to send.
+</p>
+
+<p>
+  Further, there are some things that LDAP specifications don’t cover, like how to interact with the server configuration. But most applications don’t need to interact with the server configuration, except maybe when setting them up (for example, to ensure that an appropriate set of indexes are defined), and a properly designed application should provide some mechanism for performing manual setup.
+</p>
+
+<h1>LDAP Is Mature but Evolving</h1>
+
+<p>
+  LDAP has been around for a while. The most recent version of the specification, LDAPv3, was officially released in December of 1997. Previous versions of LDAP were around for a few years before that. And LDAP is itself a lightweight version of X.500, which was developed for the telecommunications industry in the late 1980s. It’s quite literally a carrier-grade protocol and service.
+</p>
+
+<p>
+  However, that’s not to say that it’s stagnant. There have been revisions and clarifications of the protocol since then, and there is still active standards work. In addition, because LDAP is a critical component of most large enterprises and Internet-scale companies, there’s a lot of competition between vendors that keeps driving performance, scalability, and innovation forward. If you looked at LDAP a long time ago but haven’t checked it out recently, your impression of it may be very out of date.
+</p>
+
+<h1>LDAP Is Lightweight</h1>
+
+<p>
+  That’s what the “L” in LDAP stands for. It’s technically a lightweight version of X.500, but it’s also very lightweight in comparison to most other “modern” protocols. LDAP messages are encoded with ASN.1 BER, which is a compact binary format that is very efficient to encode and decode. It’s much more streamlined than something like JSON or XML over HTTP.
+</p>
+
+<p>
+  LDAP also uses persistent connections for communicating with a directory server. Whereas many modern HTTP-based protocols use relatively short-lived connections, LDAP connections can live for hours or days or even longer. This can make a big difference when it comes to performance and scalability because establishing a new connection is significantly more expensive than using one that’s already available, especially when using secure connections that require negotiating or resuming a TLS session. And because the server can associate state information with the connection, it’s not necessary for the client to include identifying information with each request, which makes them even smaller and more efficient.
+</p>
+
+<h1>LDAP Is Secure</h1>
+
+<p>
+  LDAP directory servers are often used as an authentication repository, and are often used to store sensitive information like passwords and other account details. As such, security is an important aspect of most directory servers. This includes a great deal of password policy functionality, like strong encoding mechanisms and constraints that can prevent users from selecting weak passwords, but it also includes support for a variety of authentication types through SASL (the simple authentication and security layer), including the possibility of two-factor options through mechanisms like one-time passwords.
+</p>
+
+<p>
+  On top of that, directory servers typically provide support for fine-grained access controls that restrict which entries, attributes, and values any individual user can access, and in what ways. Further, whereas a lot of SQL-based and NoSQL-based applications tend to use a single account for all interaction with the data store, LDAP applications typically perform operations as the end user, which better ensures that their activities are properly restricted, and also provides a better audit trail.
+</p>

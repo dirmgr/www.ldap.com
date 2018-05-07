@@ -1,0 +1,319 @@
+<p>
+  <b>Abandon Operation</b>: An abandon operation may be used to request that the directory server stop processing on an operation that was previously requested the same connection.
+</p>
+
+<p>
+  <b>Abstract Object Class</b>: An abstract object class is an object class which may define required and/or optional attributes for entries which contain that class, but that can only be used if it is subclassed by a structural or auxiliary object class.
+</p>
+
+<p>
+  <b>Access Control</b>: Access control is a means of restricting access to data contained the directory. Access restrictions may be based on authentication/authorization identity, authentication method, client address, connection security, request details, or any number other factors. Access control is not standardized, so different servers may have different capabilities and different ways to define access control rules.
+</p>
+
+<p>
+  <b>Add Operation</b>: An add operation may be used to create a new entry in a directory server.
+</p>
+
+<p>
+  <b>Alias</b>: An alias is a special type of entry that refers to another entry in the DIT.
+</p>
+
+<p>
+  <b>Attribute</b>: An attribute is an element of data in an entry that associates an attribute description with a set of values.
+</p>
+
+<p>
+  <b>Attribute Description</b>: An attribute description is the name used to reference a particular attribute instance in an entry. An attribute description combines an attribute type name or OID with zero or more attribute options.
+</p>
+
+<p>
+  <b>Attribute Option</b>: An attribute option is a piece of information in an attribute description that may provide clarifying information about the values for that attribute. Attribute options are commonly used to indicate things like the language of the associated values or to specify a particular encoding.
+</p>
+
+<p>
+  <b>Attribute Syntax</b>: An attribute syntax specifies the type of information (e.g., integer, Boolean, timestamp, DN, etc.) that may be stored in attributes with that syntax.
+</p>
+
+<p>
+  <b>Attribute Type</b>: An attribute type is a schema element that defines a number of properties for use in interacting with an attribute. Some of the information encapsulated in an attribute type definition include the OID and names that may be used to reference attributes of that type, the attribute syntax and matching rules, whether attributes of that type are single-valued or multivalued, and whether attributes that type are user or operational attributes.
+</p>
+
+<p>
+  <b>Auxiliary Object Class</b>: An auxiliary object class is an object class that may be used to indicate that an entry has a particular quality or characteristic. Each entry may have zero or more auxiliary object classes.
+</p>
+
+<p>
+  <b>Bind Operation</b>: A bind operation may be used to authenticate a client as a particular user as a means of verifying credentials, and to specify the authorization identity for subsequent operations performed on that connection.
+</p>
+
+<p>
+  <b>Changelog</b>: A changelog is a special subtree that may be automatically populated with information about changes to data within the server for purposes like auditing changes or synchronizing with data contained in other repositories.
+</p>
+
+<p>
+  <b>Compare Operation</b>: A compare operation may be used to determine whether a specified entry has a given attribute value.
+</p>
+
+<p>
+  <b>Connection</b>: A connection is a communication session with a directory server. It is a TCP connection that may or may not have a security layer on top of it, and may or may not have state information associated with it, including an authentication/authorization identity.
+</p>
+
+<p>
+  <b>Connection Pool</b>: A connection pool is a set of connections pre-established for repeated use in an application. A connection pool may be used to improve application performance and reduce load on the server, as it is much more efficient to reuse an existing connection than to establish a new connection before processing a request. A connection pool may also be used as a means of controlling the load that an application may place on a server, by limiting the number of connections that the application may use to communicate with the server.
+</p>
+
+<p>
+  <b>Control</b>: A control is a set of information that may be included in any LDAP request or response in order to provide more information about the way that request or response should be interpreted or processed. Each control has an OID, a criticality, and an optional value.
+</p>
+
+<p>
+  <b>Delete Operation</b>: A delete operation may be used to remove an entry from a directory server.
+</p>
+
+<p>
+  <b>Dereferencing</b>: Dereferencing is the process of following an alias in order to retrieve the entry to which the alias refers.
+</p>
+
+<p>
+  <b>Diagnostic Message</b>: A diagnostic message is an optional element of an LDAP result that provides additional information about the processing for the associated operation. In a failed operation, it may provide a useful message that explains why the operation failed. In a successful operation, it may provide additional information about the processing that was performed.
+</p>
+
+<p>
+  <b>Directory Information Tree</b>: A directory information tree (DIT) is the hierarchy of entries contained in a directory server.
+</p>
+
+<p>
+  <b>Directory Server Agent</b>: A directory server agent (DSA), also called a directory system agent, is an application or set of applications that expose directory data to clients using a protocol like LDAP. A directory server agent is more commonly referred to as a directory server instance, or just as a directory server.
+</p>
+
+<p>
+  <b>Distinguished Name</b>: A distinguished name (DN) is a name that uniquely identifies an entry and its position in the DIT. It is comprised of a series of zero or more relative distinguished names (RDNs) separated by commas.
+</p>
+
+<p>
+  <b>DIT</b>: See <b>Directory Information Tree</b>.
+</p>
+
+<p>
+  <b>DIT Content Rule</b>: A DIT content rule is a schema element that provides the ability to define additional restrictions and allowances for the contents of an entry based on that entry’s structural object class. It may be used to indicate which auxiliary object classes are allowed for entries of that type, may specify additional required and/or optional attributes for the entry beyond those specified in the entry’s object classes, and also specify attributes that are prohibited to be included in entries of that type.
+</p>
+
+<p>
+  <b>DIT Structure Rule</b>: A DIT structure rule is a schema element that provides the ability to restrict the types of entries that may exist immediately subordinate to entries of a given type, based on the structural object classes for those entries.
+</p>
+
+<p>
+  <b>DN</b>: See <b>Distinguished Name</b>.
+</p>
+
+<p>
+  <b>DSA</b>: See Directory Server Agent.
+</p>
+
+<p>
+  <b>Entry</b>: An entry is a record containing information about an object or entity in the DIT. An entry is comprised of a distinguished name, a collection of object classes, and a collection of attributes.
+</p>
+
+<p>
+  <b>Equality Matching Rule</b>: An equality matching rule provides a set of logic for determining whether two values are logically equivalent in accordance with some set of constraints (e.g., whether differences in capitalization should be considered significant).
+</p>
+
+<p>
+  <b>Extended Operation</b>: An extended operation allows an LDAP client to perform some kind of processing that is not directly supported by any of the more specific operation types.
+</p>
+
+<p>
+  <b>Filter</b>: A filter is an element that may be used to encapsulate a set of criteria for matching purposes. Search operations use filters as part of the criteria for identifying matching entries, and filters are used in other areas of the protocol, including LDAP URLs and the LDAP assertion control.
+</p>
+
+<p>
+  <b>Intermediate Response</b>: An intermediate response message is a response message that allows arbitrary data to be returned for an operation before the final result message. Intermediate responses should only be returned for operations in which the client may expect them, like when triggered by an extended operation or a request control known to cause the server to return these messages.
+</p>
+
+<p>
+  <b>LDAP</b>: See <b>Lightweight Directory Access Protocol</b>.
+</p>
+
+<p>
+  <b>LDAP Data Interchange Format</b>: The LDAP data interchange format (LDIF) is a standard way of representing LDAP entries and change records in text format. LDIF may be used for purposes like backup and restore, representing entries retrieved from a server, and representing changes to apply to a server.
+</p>
+
+<p>
+  <b>LDAP Message</b>: An LDAP message is the encoded representation of an LDAP request or response. An LDAP message includes a message ID, a protocol operation, and an optional set of controls.
+</p>
+
+<p>
+  <b>LDAP URL</b>: An LDAP URL is a type of URI that can be used to represent information about a directory server, an entry in the DIT, or a set of criteria for identifying entries.
+</p>
+
+<p>
+  <b>LDIF</b>: See <b>LDAP Data Interchange Format</b>.
+</p>
+
+<p>
+  <b>Lightweight Directory Access Protocol</b>: The lightweight directory access protocol (LDAP) is an open standard protocol that is commonly used to communicate with directory servers. It is a lightweight version of X.500, which is also known as the Directory Access Protocol.
+</p>
+
+<p>
+  <b>Matched DN</b>: A matched DN is an optional element of an LDAP result that may be included in results for requests that target a nonexistent entry. In such cases, the matched DN may specify a portion of that DN which does reference an entry that exists in the server.
+</p>
+
+<p>
+  <b>Matching Rule</b>: A matching rule is a set of logic for performing matching operations against two values. Matching operations include determining whether two values are logically equal (equality matching), determining whether a value matches a given substring assertion (substring matching), and determining the relative order of two values in a sorted list (ordering matching).
+</p>
+
+<p>
+  <b>Matching Rule Use</b>: A matching rule use is a schema element that may be used to restrict the set of attributes types with which a particular matching rule may be used.
+</p>
+
+<p>
+  <b>Message ID</b>: A message ID is an integer value that may be used to correlate LDAP response messages with their corresponding request. Every LDAP request message includes a message ID, and all LDAP response messages for that request will include the same message ID.
+</p>
+
+<p>
+  <b>Modification</b>: A modification represents a change to an attribute within an entry. The elements of a modification include a modification type, an attribute description, and an optional set of values.
+</p>
+
+<p>
+  <b>Modification Type</b>: A modification type represents the type of change that should be applied to an attribute in an entry. Defined modification types include: add (add a new attribute to an entry, or add one or more new values to an existing attribute), delete (remove some or all of the values for an attribute from an entry), replace (replace the existing set of values for an attribute in an entry), and increment (atomically increase or decrease the integer value of an attribute by a specified amount).
+</p>
+
+<p>
+  <b>Modify DN Operation</b>: A modify DN operation may be used to alter the distinguished name of an entry in the directory server. It may be used to change the RDN for that DN and/or to move the entry (and any of its subordinate entries) to a new location in the DIT.
+</p>
+
+<p>
+  <p>Modify Operation</b>: A modify operation encapsulates a set of modifications that should be applied to an entry in order to alter the contents of one or more attributes within that entry.
+</p>
+
+<p>
+  <b>Name Form</b>: A name form is a schema element that may be used to restrict the attributes that may be included in the RDN of an entry based on the structural object class of that entry.
+</p>
+
+<p>
+  <b>Naming Context</b>: A naming context (sometimes referred to as a suffix) specifies the DN that may exist at the top of a tree in the DIT, and therefore does not have a parent entry. A naming context may be comprised of one or more RDN components.
+</p>
+
+<p>
+  <b>Null DN</b>: The null DN is a distinguished name that is comprised of zero RDN components. The string representation of the null DN is an empty string. The entry with the null DN is called the root DSE.
+</p>
+
+<p>
+  <b>Object Class</b>: An object class is a schema element that may be used to define a set of required and optional attributes for entries that contain the object class. Additional information in an object class definition includes the OID and zero or more names that may refer to the object class, a reference to a superior object class from which the subordinate class inherits additional information, and the kind of class (structural, auxiliary, or abstract) that the object class represents.
+</p>
+
+<p>
+  <b>Object Identifier</b>: An object identifier (also called an OID) is a string that uniquely identifies an element in the LDAP protocol. Uses for OIDs within LDAP include identifying schema elements, request and response controls, and extended requests and responses. An OID is comprised of numbers separated by periods.
+</p>
+
+<p>
+  <b>OID</b>: See <b>Object Identifier</b>.
+</p>
+
+<p>
+  <b>Operational Attribute</b>: An operational attribute is an attribute associated with an entry that is not intended to store data for the entry, but rather to hold configuration or state information pertaining to that entry. Operational attributes are not included in search result entries by default unless they are explicitly requested by the client.
+</p>
+
+<p>
+  <b>Ordering Matching Rule</b>: An ordering matching rule provides a set of logic that may be used to determine the relative order of two values in a sorted list, in accordance with some set of constraints (e.g., whether differences in capitalization should be considered significant).
+</p>
+
+<p>
+  <b>Protocol Operation</b>: A protocol operation is an element of an LDAP message that encapsulates the actual request or response data contained in the message. The protocol operation types defined in LDAP include: abandon request, add request, add response, bind request, bind response, compare request, compare response, delete request, delete response, extended request, extended response, intermediate response, modify request, modify response, modify DN request, modify DN response, search request, search result done, search result entry, search result reference, and unbind request.
+</p>
+
+<p>
+  <b>RDN</b>: See <b>Relative Distinguished Name</b>.
+</p>
+
+<p>
+  <b>Referral</b>: A referral is a reference to data in another directory server or another location of the DIT and indicates that the operation should be retried or continued in that location. Referrals are typically specified using LDAP URLs.
+</p>
+
+<p>
+  <b>Relative Distinguished Name</b>: A relative distinguished name (RDN) is comprised of one or more attribute name-value pairs. Distinguished names are comprised of zero or more RDNs, but it is common to use the term RDN to refer to the leftmost component of a DN because the attribute values included in the leftmost RDN component for a DN must also be present in the entry referenced by that DN.
+</p>
+
+<p>
+  <b>Replication</b>: Replication is a process by which changes made in one directory server instance are automatically applied in other instances in the environment to keep their contents synchronized. Most directory servers support some kind of replication, whether single-master (in which only one server is writable and all other servers are read-only copies) or multimaster (in which multiple or all servers are writable). In addition, different directory servers may support different consistency models, from fully-synchronous (in which all the servers are always guaranteed to have identical copies of the data) to loosely-consistent (in which changes will eventually be replicated, but it may take time for a change applied in one instance to be visible in all other instances).
+</p>
+
+<p>
+  <b>Result Code</b>: A result code is a numeric value that indicates whether an operation was successful, and, if not, may provide a broad indication as to the reason for the failure.
+</p>
+
+<p>
+  <b>Root DSE</b>: The root DSE is a special entry generated by a directory server instance that provides information about the capabilities of that server and characteristics of the data contained in it. Information contained in the root DSE entry includes the naming contexts for data in the server, information about the controls, extended operations, SASL mechanisms, and LDAP protocol versions that the server supports, and vendor information for that server instance.
+</p>
+
+<p>
+  <b>SASL</b>: See <b>Simple Authentication and Security Layer</b>.
+</p>
+
+<p>
+  <b>Schema</b>: The schema contains a set of definitions that specify the kinds of information that a directory server can contain. The elements that comprise an LDAP schema include attribute syntaxes, matching rules, attribute types, object classes, name forms, DIT content rules, DIT structure rules, and matching rule uses.
+</p>
+
+<p>
+  <b>Scope</b>: The scope of a search operation is used to identify the portion of the subtree (as specified by the base DN for the search request) that will be allowed to contain matching entries. Search scope values include baseObject (only consider the entry specified by the base DN), singleLevel (only consider entries immediately below the entry specified by the base DN), wholeSubtree (consider the entry specified by the base DN and all of its subordinates, to any depth), and subordinateSubtree (consider all subordinates of the entry specified by the base DN, to any depth, but not the base entry itself).
+</p>
+
+<p>
+  <b>Search Operation</b>: A search operation may be used to identify and retrieve entries in the DIT that match a set of criteria identified by a base DN, scope, and filter. Other elements of a search request may be used to limit the amount of processing the server should perform, and to indicate what the server should include when returning matching entries to the client.
+</p>
+
+<p>
+  <b>Simple Authentication and Security Layer</b>: The simple authentication and security layer (SASL) is an extensible framework that may be used to support a number of different types of authentication that are not directly built into the LDAP protocol, and may optionally allow for the negotiation of a security layer that protects subsequent communication between the client and the server.
+</p>
+
+<p>
+  <b>Structural Object Class</b>: A structural object class is an object class that defines the basic type of object that an entry represents. Every entry should have exactly one structural object class.
+</p>
+
+<p>
+  <b>Secure Sockets Layer</b>: The secure sockets layer (SSL) is standard for secure communication that was initially developed by Netscape Communications and combines the convenience of public key cryptography with the performance benefits of symmetric key encryption. SSL has largely been replaced by TLS but may still be used by some older clients and servers. However, it is not uncommon to use the term SSL in reference to connections that may be actually secured with TLS, particularly in cases where there might be confusion with StartTLS.
+</p>
+
+<p>
+  <b>SSL</b>: See <b>Secure Sockets Layer</b>.
+</p>
+
+<p>
+  <b>StartTLS</b>: The StartTLS extended operation may be used to negotiate a security layer (using SSL or TLS protection) on top of an existing insecure connection.
+</p>
+
+<p>
+  <b>Subentry</b>: An LDAP subentry is a special type of entry that is not intended to contain data that normal clients will interact with, but instead encapsulate some kind of configuration or state information for use within the server or by administrators. Subentries are typically excluded from search results unless the request explicitly indicates that they should be returned.
+</p>
+
+<p>
+  <b>Substring Matching Rule</b>: A substring matching rule provides a set of logic that may be used to determine whether a value matches a given substring assertion. A substring assertion is comprised of at most one subInitial (“starts with”) component, zero or more subAny (“contains”) components, and at most one subFinal (“ends with”) component.
+</p>
+
+<p>
+  <b>Subtree</b>: A subtree (sometimes referred to as a branch) represents a portion of the DIT, and includes an entry and all of its subordinate entries to any depth.
+</p>
+
+<p>
+  <b>Suffix</b>: See <b>Naming Context</b>.
+</p>
+
+<p>
+  <b>TLS</b>: See <b>Transport Layer Security</b>.
+</p>
+
+<p>
+  <b>Transport Layer Security</b>: Transport layer security (TLS) defines a means of securing communication through a combination of public key and symmetric key cryptography. It is the successor to SSL and should generally be used instead of SSL for better security.
+</p>
+
+<p>
+  <b>Unbind Operation</b>: An unbind operation is used to indicate that the client is about to disconnect from the server. Although its name implies that it might revert the effect of a bind operation (and therefore convert a connection to an unauthenticated state), that is not the case. If the client sends an unbind request but does not close the connection, the server will close it so that it may no longer be used.
+</p>
+
+<p>
+  <b>Unsolicited Notification</b>: An unsolicited notification is a type of extended result that the server may send to the client without a corresponding request from the client. Unsolicited notifications allow the server to inform the client of significant events that may impact the state of that connection (e.g., a notice of disconnection unsolicited notification may be used to indicate that the server is about to close the connection to the client).
+</p>
+
+<p>
+  <b>User Attribute</b>: A user attribute is a type of attribute contained in an entry that is intended to hold data for that entry. A user attribute is a “normal” attribute, as opposed to an operational attribute, which is intended for use by the server to hold configuration or state information for that entry.
+</p>
