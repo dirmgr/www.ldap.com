@@ -1,0 +1,154 @@
+<p>
+  Since LDAP is an open standard protocol, all of the information needed to create an LDAPv3-compliant server is freely available (see the LDAP Reference Materials for links to the relevant documents). As such, there are several available types of directory servers. Some of the most notable implementations are listed below:
+</p>
+
+<blockquote>
+  <i>
+    Editor’s note: I am one of the creators of the Ping Identity Directory Server (formerly UnboundID Directory Server) and have been its lead developer since its creation. Since I would obviously be biased, and since I want this site to be as neutral as possible to promote the use of LDAP in general, I will avoid any attempt at ranking or assessing the quality of any of these implementations. Instead, they will be listed in alphabetical order.
+
+    If you have any suggestions for other directory servers to include on this page, please email them to <a href="mailto:feedback@ldap.com">feedback@ldap.com</a>.
+  </i>
+</blockquote>
+
+<ul>
+  <li>
+    <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> (formerly Fedora Directory Server)
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://directory.apache.org/apacheds/" target="_blank">ApacheDS</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.ca.com/us/products/ca-directory.html" target="_blank">CA Directory</a> (formerly CA eTrust Directory)
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.forgerock.com/platform/directory-services" target="_blank">ForgeRock Directory Services</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.ibm.com/support/knowledgecenter/en/SSVJJU/welcome.html" target="_blank">IBM Security Directory Server</a> (formerly IBM Tivoli Directory Server and IBM SecureWay  Directory)
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://msdn.microsoft.com/en-us/library/ee663270(v=vs.85).aspx" target="_blank">Microsoft Active Directory</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.netiq.com/products/edirectory/" target="_blank">NetIQ eDirectory</a> (formerly Novell eDirectory)
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://github.com/OpenIdentityPlatform/OpenDJ/" target="_blank">OpenDJ</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="http://www.oracle.com/technetwork/middleware/id-mgmt/overview/index-082035.html" target="_blank">Oracle Internet Directory</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="http://www.oracle.com/technetwork/middleware/id-mgmt/overview/oud-433568.html" target="_blank">Oracle Unified Directory</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.redhat.com/en/technologies/cloud-computing/directory-server" target="_blank">Red Hat Directory Server</a>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <a href="https://www.pingidentity.com/en/platform/directory/directory-overview.html" target="_blank">Ping Identity Directory Server</a> (formerly UnboundID Directory Server)
+  </li>
+</ul>
+
+<p>
+  Alternately, if you’re developing an LDAP-enabled application and wish to have access to a directory server for use in your testing framework, it may be helpful to use a library designed for this purpose. Some of these options include:
+</p>
+
+<ul>
+  <li>
+    Go
+  </li>
+  <ul>
+    <li>
+      <a href="https://github.com/glauth/glauth" target="_blank">glauth</a> can be used as a simple LDAP server for testing purposes.
+    </li>
+  </ul>
+</ul>
+
+<ul>
+  <li>
+    Java and Other JVM-Based Languages
+  </li>
+  <ul>
+    <li>
+      <a href="https://directory.apache.org/apacheds/" target="_blank">ApacheDS can be run in embedded mode
+    </li>
+    <li>
+      <a href="https://github.com/zapodot/embedded-ldap-junit" target="_blank">embedded-ldap-junit</a> — A library that can simplify LDAP-related testing in JUnit (uses the UnboundID LDAP SDK for Java behind the scenes)
+    </li>
+    <li>
+      <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> provides an in-memory directory server and an LDAP listener framework. It also provides an LDAPTestUtils class to help facilitate unit testing
+    </li>
+  </ul>
+</ul>
+
+<ul>
+  <li>
+    JavaScript
+  </li>
+  <ul>
+    <li>
+      <a href="http://ldapjs.org/" target="_blank">ldapjs</a> provides a framework for acting as an LDAP server
+    </li>
+  </ul>
+</ul>
+
+<ul>
+  <li>
+    Python
+  </li>
+  <ul>
+    <li>
+      <a href="https://github.com/zoldar/python-ldap-test/" target="_blank">python-ldap-test</a> provides a Python framework for programatically creating an in-memory LDAP server (uses the UnboundID LDAP SDK for Java behind the scenes)
+    </li>
+  </ul>
+</ul>
+
+<ul>
+  <li>
+    Ruby
+  </li>
+  <ul>
+    <li>
+      <a href="https://github.com/inscitiv/ruby-ldapserver" target="_blank">ruby-ldapserver</a> provides a Ruby framework for acting as an LDAP server
+    </li>
+  </ul>
+</ul>

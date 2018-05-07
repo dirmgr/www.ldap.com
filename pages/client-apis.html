@@ -1,0 +1,188 @@
+<p>
+  For LDAP servers to be of any use, there must be clients to interact with them. There is already a wide range of open source and proprietary LDAP-enabled software, but organizations using an LDAP server to store data often want to write their own applications tailored specifically to their use of that data. Fortunately, there are LDAP client libraries for just about all of the most popular programming languages out there. And even if there isn’t any LDAP API for the language that you want to use, there’s a good change that the language provides some mechanism for calling out to a library written in another language.
+</p>
+
+<p>
+  This page provides a list of some of the LDAP libraries that are available for the most popular programming languages. It is not necessarily comprehensive, and it’s likely the case that not all of the libraries have the same level of quality, so you should probably do your own research before starting on a new LDAP-enabled application.
+</p>
+
+<blockquote>
+  <i>
+    Editor’s note: I am the creator of the UnboundID LDAP SDK for Java and have been its lead developer since its creation. Since I would obviously be biased, and since I want this site to be as neutral as possible to promote the use of LDAP in general, I will avoid any attempt at ranking or assessing the quality of any of these implementations. Instead, they will be listed in alphabetical order.
+
+    If you have any suggestions for other client APIs to include on this page, please email them to <a href="mailto:feedback@ldap.com">feedback@ldap.com</a>.
+  </i>
+</blockquote>
+
+<ul>
+  <li>Ada</li>
+  <ul>
+    <li><a href="https://docs.adacore.com/aws-docs/aws/ldap.html" target="_blank">AWS/LDAP</a> (wraps the OpenLDAP C API)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>C</li>
+  <ul>
+    <li><a href="https://wiki.mozilla.org/LDAP_C_SDK" target="_blank">Mozilla LDAP C SDK</a></li>
+    <li><a href="https://www.novell.com/developer/ndk/ldap_libraries_for_c.html" target="_blank">Novell LDAP Libraries for C</a></li>
+    <li><a href="https://www.openldap.org/software/man.cgi?query=ldap&sektion=3&apropos=0&manpath=OpenLDAP+2.1-Release" target="_blank">OpenLDAP C API</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>C#</li>
+  <ul>
+    <li><a href="https://msdn.microsoft.com/en-us/library/System.DirectoryServices.Protocols(v=vs.110).aspx" target="_blank">System.DirectoryServices.Protocols</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>C++</li>
+  <ul>
+    <li><a href="https://code.google.com/archive/p/ldap-cpp/wikis/PageName.wiki" target="_blank">ldap-cpp</a> (wraps the OpenLDAP C API)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Clojure</li>
+  <ul>
+    <li><a href="https://github.com/pauldorman/clj-ldap" target="_blank">clj-ldap</a> (wraps the UnboundID LDAP SDK for Java)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Dart</li>
+  <ul>
+    <li><a href="https://github.com/wstrange/dartdap" target="_blank">dartdap</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Erlang</li>
+  <ul>
+    <li><a href="http://erlang.org/doc/man/eldap.html" target="_blank">eldap</a></li>
+    <li><a href="https://github.com/jmerriweather/exldap" target="_blank">exldap</a> (Elixir wrapper around eldap)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Go</li>
+  <ul>
+    <li><a href="https://github.com/go-ldap/ldap" target="_blank">go-ldap/ldap</a></li>
+    <li><a href="https://github.com/jtblin/go-ldap-client" target="_blank">go-ldap-client</a> (uses the above "ldap" library)</li>
+    <li><a href="https://github.com/mmitton/ldap" target="_blank">mmitton/ldap</a></li>
+    <li><a href="https://github.com/vjeantet/ldapserver" target="_blank">vjeantet/ldapserver</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Groovy</li>
+  <ul>
+    <li><a href="https://github.com/xbib/groovy-ldap" target="_blank">groovy-ldap</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Haskell</li>
+  <ul>
+    <li><a href="https://hackage.haskell.org/package/LDAP" target="_blank">LDAP</a> (Haskell binding for C LDAP API)</li>
+    <li><a href="https://hackage.haskell.org/package/ldap-client" target="_blank">ldap-client</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Java and Other JVM-Based Languages</li>
+  <ul>
+    <li><a href="https://directory.apache.org/api/" target="_blank">Apache Directory LDAP API</a></li>
+    <li><a href="https://docs.oracle.com/javase/tutorial/jndi/index.html" target="_blank">Java Naming and Directory Interface (JNDI)</a></li>
+    <li><a href="https://www.ldaptive.org/" target="_blank">ldaptive</a> (a wrapper around several other LDAP APIs)</li>
+    <li><a href="https://backstage.forgerock.com/docs/opendj/2.6/dev-guide/" target="_blank">OpenDJ LDAP SDK</a></li>
+    <li><a href="https://www.openldap.org/jldap/" target="_blank">OpenLDAP JLDAP</a></li>
+    <li><a href="https://projects.spring.io/spring-ldap/" target="_blank">Spring LDAP</a></li>
+    <li><a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>JavaScript</li>
+  <ul>
+    <li><a href="http://ldapjs.org/" target="_blank">ldapjs</a></li>
+    <li><a href="https://github.com/jeremycx/node-LDAP" target="_blank">node-LDAP</a> (OpenLDAP client bindings for Node.js)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Lisp</li>
+  <ul>
+    <li><a href="https://github.com/rwiker/trivial-ldap" target="_blank">trivial-ldap</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Lua</li>
+  <ul>
+    <li><a href="https://github.com/lualdap/lualdap" target="_blank">LuaLDAP</a> (a Lua binding to the OpenLDAP API</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Perl</li>
+  <ul>
+    <li><a href="https://ldap.perl.org/" target="_blank">Net::LDAP</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>PHP</li>
+  <ul>
+    <li><a href="https://github.com/Adldap2/Adldap2" target="_blank">Adldap2</a></li>
+    <li><a href="https://secure.php.net/manual/en/book.ldap.php" target="_blank">LDAP</a></li>
+    <li><a href="https://github.com/FreeDSx/LDAP" target="_blank">FreeDSx</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Prolog</li>
+  <ul>
+    <li><a href="http://www.swi-prolog.org/pack/list?p=ldap4pl" target="_blank">ldap4pl</a> (Prolog binding to the OpenLDAP API)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Python</li>
+  <ul>
+    <li><a href="https://ldap3.readthedocs.io/" target="_blank">ldap3</a></li>
+    <li><a href="https://www.python-ldap.org/en/latest/" target="_blank">python-ldap</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Ruby</li>
+  <ul>
+    <li><a href="https://github.com/ruby-ldap/ruby-net-ldap" target="_blank">Net::LDAP for Ruby</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Rust</li>
+  <ul>
+    <li><a href="https://github.com/inejge/ldap3" target="_blank">ldap3</a></li>
+    <li><a href="https://github.com/dequbed/rust-ldap" target="_blank">rust-ldap</a></li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Scala</li>
+  <ul>
+    <li><a href="https://github.com/ist-dsi/ldap" target="_blank">ist-dsi/ldap</a> (wraps ldaptive and the UnboundID LDAP SDK for Java)</li>
+    <li><a href="https://github.com/Normation/scala-ldap" target="_blank">Scala-LDAP</a> (wraps the UnboundID LDAP SDK for Java)</li>
+  </ul>
+</ul>
+
+<ul>
+  <li>Swift</li>
+  <ul>
+    <li><a href="https://github.com/PerfectlySoft/Perfect-LDAP" target="_blank">Perfect-LDAP</a></li>
+  </ul>
+</ul>
