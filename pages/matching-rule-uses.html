@@ -1,0 +1,69 @@
+<p>
+  As previously described, matching rules are used to perform the processing for certain matching operations, like determining whether two values are equivalent to each other, determining whether one value matches a given substring assertion, or determining the relative order of two values in a sorted list. Normally, when performing matching for an attribute value, the directory server will select the appropriate matching rule from the corresponding attribute type definition (e.g., for equality matching, the server will use the attribute type’s equality matching rule). However, this matching rule selection can be overridden by performing a search with an extensible match filter.
+</p>
+
+<p>
+  Among other things, an extensible match filter makes it possible to explicitly specify the matching rule that should be used for a particular matching operation. This can be very useful if you want to perform a different kind of matching than would otherwise be used for the associated attribute type. For example, if an attribute type normally uses case-insensitive matching, you could use an extensible match filter to override that in order to perform case-exact matching. Or if you know that a value is in a particular language, you could use a matching rule that has special knowledge of that language (e.g., the order of letters in that language’s alphabet, which characters are uppercase and lowercase versions of the same letter, etc.).
+</p>
+
+<p>
+  If you wish to enforce restrictions on the set of attribute types with which a particular matching rule can be used, you can accomplish that with a matching rule use. Matching rule use definitions are listed in the matchingRuleUse attribute of the subschema subentry and have the following format (as per <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.4):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    The numeric OID of the matching rule with which the matching rule use is associated.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the matching rule use. Each of these names must be unique across the set of all matching rule uses, although it is legal for a matching rule use to have the same name as a different type of schema element. Matching rule use names must start with an ASCII alphabetic letter (uppercase or lowercase) and may consist only of ASCII letters, numeric digits, and hyphens. If present, the set of matching rule use names should consist of one or more spaces, the string “NAME”, one or more additional spaces, and the matching rule use names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the matching rule use name, and a single quote. This format can only be used for matching rule uses that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first matching rule use name, and a single quote. If there are additional names, each much be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for matching rule uses that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the matching rule use should not be considered available for use in the server.
+
+  </li>
+  <li>
+    The set of attribute type names or OIDs with which the associated matching rule may be used. This required element must be specified using one or more spaces, the string “APPLIES”, one or more spaces, and the attribute type names or OIDs in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the attribute type with which the associated matching rule may be used. This format can only be used for matching rule uses that apply only to a single attribute type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first attribute type with which the associated matching rule may be used. If there are more applicable attribute types, then each name or OID should be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for matching rule uses that have one or more applicable attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+  </li>
+</ol>
+
+<p>
+  None of the major LDAP specifications include any matching rule use definitions. However, the following is an example of a matching rule use definition that indicates that the uuidMatch equality matching rule can only be used in conjunction with the entryUUID attribute type:
+</p>
+
+<pre>( 1.3.6.1.1.16.2 APPLIES entryUUID )</pre>

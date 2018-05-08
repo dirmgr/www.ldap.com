@@ -1,0 +1,42 @@
+<p>
+  LDAPv3 servers provide access to the schema so that clients can make use of this information for purposes like performing client-side matching against data retrieved from the server, or to determine what attributes are required for/allowed with an entry with a given set of object classes.
+</p>
+
+<p>
+  The schema information is exposed in a special entry called a subschema subentry. This entry should include some or all of the following attributes, with values in the formats described in the sections for the corresponding schema elements:
+</p>
+
+<ul>
+  <li>
+    ldapSyntaxes
+  </li>
+  <li>
+    matchingRules
+  </li>
+  <li>
+    attributeTypes
+  </li>
+  <li>
+    objectClasses
+  </li>
+  <li>
+    dITContentRules
+  </li>
+  <li>
+    nameForms
+  </li>
+  <li>
+    dITStructureRules
+  </li>
+  <li>
+    matchingRuleUse
+  </li>
+</ul>
+
+<p>
+  The typical way to determine the location of this subschema subentry is to retrieve the value of the subschemaSubentry attribute from the server’s root DSE. In many servers, the schema is available via an entry named something like “cn=schema” or “cn=subschema”. As per <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.4, the subschema subentry should be retrieved with a search operation with a baseObject scope and a filter of “(objectClass=subschema)”.
+</p>
+
+<p>
+  Note, however, that the LDAP specification allows for the possibility that a server could have multiple schemas, with different schemas governing different portions of the DIT. Although this is not widely supported among LDAP servers, this capability could be useful in hosted or multitenant directory environments in which different branches have very different requirements and constraints for the data they contain. To address this, the LDAP specification requires the subschemaSubentry operational attribute to appear in every entry, and its value within a given entry specifies the location of the LDAP-accessible schema that governs that entry. If you are writing an LDAP-enabled application that accesses server schema information, and that application may need to be used in conjunction with servers that support multiple schemas, then the safest way to operate is to always use the subschemaSubentry attribute in each entry in order to determine which schema governs that entry.
+</p>

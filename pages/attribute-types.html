@@ -1,0 +1,194 @@
+<p>
+  Attributes are named pieces of information about a person, organization, group, or other kind of object. Each attribute is associated with an attribute type that provides a number of properties about how clients and the directory server should interact with that attribute.
+</p>
+
+<p>
+  Unlike syntaxes and matching rules, attribute type definitions do not rely on any special logic and therefore they are easy to create. In fact, while the official LDAP specifications define a number of attribute types for various purposes, you will likely find that you will want to define your own attribute types to handle whatever custom information you may want to store in the directory server.
+</p>
+
+<p>
+  The set of attribute types that a directory server supports will be listed in the attributeTypes attribute of the subschema subentry. Attribute type definitions must use the following syntax (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.2):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    The numeric OID that uniquely identifies the attribute type.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the attribute type as an alternative to the numeric OID. Each of these names must be unique across the set of all attribute types, although it is legal for an attribute type to have the same name as a different type of schema element (e.g., it is acceptable to have an attribute type and an object class that both have the same name). Attribute type names must start with an ASCII alphabetic letter (uppercase or lowercase) and may contain only ASCII letters, numeric digits, and hyphens. If present, the set of names for the attribute type should consist of one or more spaces (as a separator from the numeric OID), the string “NAME”, one or more additional spaces, and the attribute type names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the attribute type name, and a single quote. This format can only be used for attribute types that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first attribute type name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for attribute types that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the attribute type should not be considered available for use in the server and should not be referenced in any non-obsolete object classes, DIT content rules, or name forms.
+
+  </li>
+  <li>
+    An optional reference to a superior attribute type, from which the attribute type may inherit its syntax and/or any or all of its matching rules. If present the superior attribute type reference should consist of one or more spaces, the string “SUP”, one or more spaces, and the name or numeric OID of the superior attribute type (not surrounded by single quotes). Superior attribute types will be discussed in more detail below.
+
+  </li>
+  <li>
+    An optional reference to the equality matching rule that should be used for the attribute type. If this is not specified, then the attribute type may inherit an equality matching rule from its supertype, or the server may assign a default equality matching rule based on its syntax. If present, the equality matching rule specification should consist of one or more spaces, the string “EQUALITY”, one or more spaces, and the name or numeric OID of the desired equality matching rule.
+
+  </li>
+  <li>
+    An optional reference to the ordering matching rule that should be used for the attribute type (if the ordering rule should not be inherited or assigned based on the associated attribute syntax). If present, the ordering matching rule specification should consist of one or more spaces, the string “ORDERING”, one or more spaces, and the name or numeric OID of the desired ordering matching rule.
+
+  </li>
+  <li>
+    An optional reference to the substring matching rule that should be used for the attribute type (if it should not be inherited or assigned based on the attribute syntax). If present, the substring matching rule should consist of one or more spaces, the string “SUBSTR”, one or more spaces, and the name or numeric OID of the desired substring matching rule.
+
+  </li>
+  <li>
+    An optional reference to the attribute syntax that should be used for the attribute type. If this is not specified, then the attribute type will inherit its syntax from the superior attribute type (according to <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a>, a valid attribute type definition must include at least one of the SUP or SYNTAX elements, but some servers may assign a default syntax for an attribute type if its definition contains neither). If an attribute syntax and/or one or more matching rules are defined for an attribute type, then they must all be compatible with each other (e.g., you cannot have an attribute type with a DN syntax but a boolean equality matching rule). If present, the attribute syntax should be specified with one or more spaces, the string “SYNTAX”, one or more spaces, the numeric OID of the attribute syntax and an optional integer value surrounded by curly braces (with no spaces separating the value in curly braces from the If the numeric OID is followed by an integer value in curly braces, then this value may serve as a hint to the server that it should be prepared to store values of at least that length.
+
+  </li>
+  <li>
+    An optional string “SINGLE-VALUE”, preceded by one or more spaces. If present, this indicates that attributes of this type are only allowed to have a single value (although an attribute with the same attribute type but a different set of options will be allowed in the same entry, with the same or a different value). If absent, then attributes of this type will be allowed to have multiple values.
+
+  </li>
+  <li>
+    An optional string “COLLECTIVE”, preceded by one or more spaces. If present, this indicates that values for this type of attribute will be dynamically generated via the collective attribute mechanism described in <a href="https://docs.ldap.com/specs/rfc3671.txt" target="_blank">RFC 3671</a>. Collective attributes will be described in more detail below.
+
+  </li>
+  <li>
+    An optional string “NO-USER-MODIFICATION”, preceded by one or more spaces. If present, this indicates that values for this type of attribute will be generated and managed by the server and may not be altered by external clients (e.g., the modifyTimestamp attribute, which is automatically updated whenever an entry is altered, is an example of an attribute whose attribute type definition includes the NO-USER-MODIFICATION constraint). If an attribute type includes the NO-USER-MODIFICATION constraint, then it must also have an operational usage.
+
+  </li>
+  <li>
+    An optional usage string, which indicates how the value is expected to be used within the server. If present, this must consist of one or more spaces, the string “USAGE”, one or more spaces, and one of the following usage strings:
+    <ul>
+      <li>
+        userApplications: This indicates that the attribute type is meant to hold data primarily intended for interaction by third-party clients. If an attribute type does not have an explicitly-specified usage, then it will be assumed to have a usage of userApplications.
+
+      </li>
+      <li>
+        directoryOperation: This indicates that the attribute type is meant to hold data that may be used by or provided by the server in some way (e.g., to hold metadata about the associated entry or to influence the way the server should behave). This is the usage most commonly used by operational attributes and it is typically treated in the same manner as the distributedOperation usage.
+
+      </li>
+      <li>
+        distributedOperation: This indicates that the attribute type is meant to hold operational data that is meant to be used across multiple servers and therefore its values should be replicated.
+
+      </li>
+      <li>
+        dSAOperation: This indicates that the attribute type is meant to hold operational data that is meant to be specific to a particular server instance and therefore its values should not be replicated.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+  </li>
+</ol>
+
+<p>
+  For example, the following is the attribute type definition for the uid attribute, as defined in <a href="https://docs.ldap.com/specs/rfc4519.txt" target="_blank">RFC 4519</a>:
+</p>
+
+<pre>( 0.9.2342.19200300.100.1.1NAME 'uid' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )</pre>
+
+<p>
+  This indicates that the uid attribute type has an OID of “0.9.2342.19200300.100.1.1” and a directory string syntax with case-ignore equality and substring matching (since no ordering matching rule is specified, ordering matching is not supported for attributes of this type). It does not inherit from any superior attribute type. It is not single-valued, not obsolete, not operational, and not collective, and it does not have a description.
+</p>
+
+<h1>Attribute Type Inheritance</h1>
+<p>
+  As noted above, attribute type definitions may include a “SUP” element to indicate that it has a superior type. There are two potential reasons for doing this: to allow the subordinate attribute type to inherit some of its properties from another attribute type, and to group a number of attribute types together under a single name.
+</p>
+
+<p>
+  If an attribute type has a superior type, then the subordinate type may either automatically inherit the same syntax as its supertype, or it may override that and specify its own syntax. Note, however, that if a subtype does use a different syntax than its supertype, then the supertype’s syntax must allow all possible values for the subtype’s syntax (e.g., it is acceptable for the supertype to have a directory string syntax and the subtype a printable string syntax, but not for the supertype to have a DN syntax and the subtype to have an integer syntax). It is also possible for a subordinate type to inherit or override the equality matching rule, ordering matching rule, and/or substring matching rule.
+</p>
+
+<p>
+  Another significant benefit from the use of attribute type inheritance is that you can have multiple attribute types with a single superior type, and then collectively reference them using the supertype. For example, <a href="https://docs.ldap.com/specs/rfc4519.txt" target="_blank">RFC 4519</a> defines a name attribute type, and defines the cn, sn, c, l, o, ou, title, givenName, initials, generationQualifier, and dmdName attributes as subtypes of name. This means that, when retrieving an entry, if you request the name attribute, then any of the subordinate types will also be returned. Similarly, a filter like “(name=John)” would match not only an entry containing the exact attribute name with a value of John, but it would also match entry with a givenName value of John (or any other of the name subtypes).
+</p>
+
+<h1>Operational Attributes</h1>
+<p>
+  An operational attribute is any attribute whose attribute type definition has a USAGE of directoryOperation, distributedOperation, or dSAOperation. The information held in operational attributes is generally not considered to be part of the data set meant to be accessed by typical LDAP clients, but rather is used internally by the server. Some of the ways that operational attributes may be used include:
+</p>
+
+<ul>
+  <li>
+    To hold some kind of state information associated with the entry containing the operational attribute. For example, a directory server may use an operational attribute to keep track of authentication failures so that the account can be locked after too many unsuccessful attempts. These kinds of state attributes are often meant to be maintained by the server, but some servers may allow clients to alter certain state attributes for some purposes (e.g., to manually unlock a user account that has been locked after too many failed binds).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    To hold some kind of configuration that alters the way the server treats the entry containing the operational attribute (and/or some or all of its subordinates). For example, some directory servers use operational attributes to hold access control rules that grant or prevent access to information in the entry and/or its subordinates. In such cases, specialized clients are generally responsible for managing the values of these kinds of operational attributes, but these attributes are generally not considered part of the entry data and most clients will not need to interact with them.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    To provide additional information about the entry that may be of benefit to clients. For example, some directory servers provide an operational attribute that lists the groups in which that user is a member. These kinds of operational attributes are generally maintained by the server, and their values may even be dynamically generated so that they are not actually stored.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    To provide additional information about the capabilities of the server. For example, the server root DSE offers a number of operational attributes that specify things like which controls, extended operations, and SASL mechanisms are supported by the server. These kinds of attributes are typically provided for the benefit of clients to allow them to customize their behavior based on the features that the server supports.
+  </li>
+</ul>
+
+<p>
+  Because operational attributes are not considered part of the regular data that most clients interact with, they are treated differently from user attributes. Those differences include:
+</p>
+
+<ul>
+  <li>
+    Operational attributes are not included by default in search result entries. When a client performs a search without explicitly specifying the attributes to return, only user attributes will be included. In order to include operational attributes, the client must request them by name, or (in servers that support it) they may request “+” to indicate that all operational attributes should be included.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An operational attribute may be present in an entry even if it is not permitted by any of the object classes in that entry. Object class definitions generally do not reference operational attributes in their MUST or MAY sections.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Many operational attributes are not intended to be directly altered by clients but instead are managed by the server. The corresponding attribute type definitions for these attributes should include the NO-USER-MODIFICATION element.
+  </li>
+</ul>
+
+<h1>Collective Attributes</h1>
+<p>
+  An attribute type definition that includes the COLLECTIVE keyword is used to indicate that attributes of that type are intended to have their value supplied automatically by the server rather than managed by external clients. Collective attributes are fully defined in <a href="https://docs.ldap.com/specs/rfc3671.txt" target="_blank">RFC 3671</a>, but the basic premise is that you create a special kind of entry with the collectiveAttributeSubentry object class which defines both the criteria for entries that should be included in the collection and the collective attribute values that should appear in entries that match that criteria.
+</p>
+
+<p>
+  Every collective attribute type must have a superior attribute type. A collective attribute type may have either a collective or non-collective attribute type as its superior, but a non-collective attribute type is not allowed have a collective attribute type as its superior. This ensures that every collective attribute is ultimately a subtype of a non-collective attribute. Whenever an entry has one or more attribute values set via the collective attribute mechanism, the name of the non-collective superior type will be used for that attribute. For example, if c-telephoneNumber is a collective attribute that is subordinate to the non-collective telephoneNumber attribute (and it is customary to name collective attributes by prefixing the name of their non-collective supertype with “c-”), then an entry which includes the value specified by c-telephoneNumber will have that value appear in the telephoneNumber attribute.
+</p>
+
+<p>
+  Attributes whose values are set by the collective attribute mechanism cannot be altered by external clients. If an entry matches the criteria for multiple subtree specifications, then it will include all of the collective values from all of the relevant collective attribute subentries.
+</p>
+
+<p>
+  Note that because of the limitations and inconveniences around the use of collective attributes, some directory servers offer other features (e.g., virtual attributes or class of service) for providing dynamically-generated values instead of or in addition to support for collective attributes. However, the behavior exhibited by the server is generally the same, in that these attributes appear to be present in the entry even though their values aren’t actually contained in the stored representation of that entry. Some servers do offer features (e.g., in the form of “virtual attributes only” and “real attributes only” controls) to allow clients to distinguish between “real” attributes and “virtual” attributes, but there is no official standard for doing so.
+</p>

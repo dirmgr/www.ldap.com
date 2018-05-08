@@ -1,0 +1,90 @@
+<p>
+  The attributes that appear in an entry’s RDN are called the naming attributes for that entry. For example, in the DN “givenName=John+sn=Doe,ou=People,dc=example,dc=com”, the naming attributes are givenName and sn.
+</p>
+
+<p>
+  By default, the only restrictions enforced for naming attributes are that the attribute values which appear in an entry’s RDN are also present in the set of attributes for the entry (so the entry “givenName=John+sn=Doe,ou=People,dc=example,dc=com” must include a givenName attribute in which one of the values is John and an sn attribute in which one of the values is Doe). However, a name form can be used to define additional constraints around the naming attributes for an entry by specifying a set of required and/or optional naming attribute types for an entry with a given structural class.
+</p>
+
+<p>
+  The list of name forms defined in the server will be listed in the nameForms attribute of the subschema subentry. Name form definitions must use the following syntax (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.7.2):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    The numeric OID that uniquely identifies this name form.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the name form as an alternative to the numeric OID. Each of these names must be unique across the set of all name forms, although it is legal for a name form to have the same name as a different type of schema element. Name form names must start with an ASCII alphabetic letter (uppercase or lowercase) and may contain only ASCII letters, numeric digits, and hyphens. If present, the set of names for the name form should consist of one or more spaces (as a separator from the numeric OID), the string “NAME”, one or more additional spaces, and the name form names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the name form name, and a single quote. This format can only be used for name forms that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first name form name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for name forms that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the name form should not be considered available for use in the server and should not be referenced in any non-obsolete DIT structure rules.
+
+  </li>
+  <li>
+    The reference to the structural object class with which the name form is associated. This must be specified using one or more spaces, the string “OC”, one or more spaces, and the name or OID of the structural object class with which the name form is associated. This element is required.
+
+  </li>
+  <li>
+    The set of mandatory naming attributes for entries with the associated structural object class. This is a required element, and it should be specified using one or more spaces, the string “MUST”, one or more spaces, and the set of names or OIDs of the attribute types required to be present in the RDN of any entry with the associated structural object class. The mandatory naming attribute names should be specified in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the mandatory attribute type. This format can only be used for name forms that have a single mandatory attribute type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first mandatory attribute type. If there are additional mandatory attributes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last mandatory attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for name forms that have one or more mandatory attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of naming attributes that may optionally be used for entries with the associated structural object class. If there are one or more optional naming attributes, then they should be specified using one or more spaces, the string “MAY”, one or more spaces, and the set of names or OIDs of the optional attribute types in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the optional attribute type. This format can only be used for name forms that have a single optional attribute type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first optional attribute type. If there are additional optional attributes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last optional attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for name forms that have one or more optional attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+  </li>
+</ol>
+
+<p>
+  For example, the the following is the name form definition for the uddiBusinessEntityNameForm name form, as defined in <a href="https://docs.ldap.com/specs/rfc4403.txt" target="_blank">RFC 4403</a>:
+</p>
+
+<pre>( 1.3.6.1.1.10.15.1 NAME 'uddiBusinessEntityNameForm' OC uddiBusinessEntity MUST ( uddiBusinessKey ) )</pre>
+
+<p>
+  This name form specifies that any entry with a structural object class of uddiBusinessEntity must have an RDN that consists only of the uddiBusinessKey attribute.
+</p>

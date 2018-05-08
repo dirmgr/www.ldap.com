@@ -1,0 +1,130 @@
+<p>
+  Object classes are used to indicate what type of object is represented by an entry, and to specify the types of attributes that may be included in the entry. As with attribute types, object classes do not require the kind of special logic that is needed for attribute syntaxes and matching rules, and therefore object class definitions may be represented as simple strings.
+</p>
+
+<p>
+  Object classes fall into three categories: abstract, structural, and auxiliary:
+</p>
+
+<ul>
+  <li>
+    Abstract classes are those that may specify a set of required and optional attribute types, but that are only intended to be used if they are extended by other object classes. Abstract classes can be extended by any type of object class (including other abstract classes), but if an entry contains an abstract object class, then it must also contain at least one non-abstract object class that inherits from it. The special top object class is abstract and serves as the basis for all other object classes.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Structural classes are those that specify the main type of object that an entry represents (e.g., a user, a group, a device, etc.). Structural classes may inherit from abstract or structural object classes, but not from auxiliary classes.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Auxiliary classes may be used to provide information about additional characteristics for an entry that augment the base type of entry described by the structural class but do not turn it into a different kind of entry. For example, the strongAuthenticationUser object class (as described in <a href="https://docs.ldap.com/specs/rfc4523.txt" target="_blank">RFC 4523</a> section 5.5) may be added to an entry to indicate that the user represented by that entry has a certificate that may be useful for authentication. Auxiliary classes may inherit from abstract or auxiliary object classes, but not from structural classes.
+  </li>
+</ul>
+
+<p>
+  LDAP object classes are somewhat analogous to Java programming concepts. An abstract object class is much like an abstract Java class in that just as you can’t directly instantiate an abstract Java class but must instantiate a non-abstract subclass, you can’t create an entry with an abstract object class unless the entry has at least one non-abstract object class that inherits from that abstract class. A structural object class in LDAP is like a non-abstract Java class, while an auxiliary object class is like an interface that a Java class implements. An LDAP entry can only have one structural class, just as a Java object can only be defined in a single class (although both structural object classes and Java classes can extend other abstract and non-abstract classes), and an LDAP entry can have any number of auxiliary classes, just as a Java class can implement any number of interfaces.
+</p>
+
+<p>
+  Note that while the LDAP specification requires every entry to have exactly one structural object class, some directory servers do not strictly enforce this requirement. Some directory servers may allow entries that have multiple unrelated structural classes, and/or may allow entries that do not have any structural class at all. If you are using such a server, it is strongly recommended that you take extra care to ensure that you do not create entries that violate standard constraints so that you do not introduce problems that could affect your ability to migrate your data to a different type of directory server that does follow the rules. It’s also important to note that support for other schema elements is dependent upon the ability to correctly identify the structural object class for an entry, so an entry without a structural class, or with multiple structural classes, may not be able to take advantage of name forms, DIT content rules, or DIT structure rules.
+</p>
+
+<p>
+  The list of object classes defined in the server will be listed in the objectClasses attribute of the subschema subentry. Object class definitions must use the following syntax (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.1):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    The numeric OID that uniquely identifies the object class.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the object class as an alternative to the numeric OID. Each of these names must be unique across the set of all object classes, although it is legal for an object class to have the same name as a different type of schema element (e.g., it is acceptable to have an attribute type and an object class that both have the same name). Object class names must start with an ASCII alphabetic letter (uppercase or lowercase) and may contain only ASCII letters, numeric digits, and hyphens. If present, the set of names for the object class should consist of one or more spaces (as a separator from the numeric OID), the string “NAME”, one or more additional spaces, and the object class names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the object class name, and a single quote. This format can only be used for object classes that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first object class name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for object classes that have one or more names.
+
+      </li>
+     </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the object class should not be considered available for use in the server and should not be referenced in any non-obsolete DIT content rules or name forms.
+
+  </li>
+  <li>
+    An optional reference to one or more superior object classes, from which the object class may inherit its type (abstract, structural, or auxiliary) and sets of mandatory and optional attributes. Most object classes will have a single superior class, but multiple superior classes are allowed. If present, the set of superior classes should consist of one or more spaces, the string “SUP”, one or more additional spaces, and the superior class names in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the superior object class. This format can only be used for object classes that have a single superior class.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first superior class. If there are additional superior classes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last superior class name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for object classes that have one or more superior classes.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional string that indicates the type of object class. If present, this should be one or more spaces followed by one of “ABSTRACT”, “STRUCTURAL”, or “AUXILIARY”. If this is not present, then the subordinate object class will inherit the type of its superior class.
+
+  </li>
+  <li>
+    An optional set of attributes that will be required to be present in any entry containing the object class. If present, the set of mandatory attribute types should be specified with one or more spaces, the string MUST, one or more additional spaces, and the mandatory attribute names in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the mandatory attribute type. This format can only be used for object classes that have a single mandatory attribute type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first mandatory attribute type. If there are additional mandatory attributes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last mandatory attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for object classes that have one or more mandatory attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of attribute types that may optionally be present in any entry containing the object class. Note that an optional attribute type is only optional if it is not made mandatory by a superior or subordinate object class or by a DIT content rule, and if it is not prohibited by a DIT content rule. If present, the set of optional attribute types should be specified with one or more spaces, the string MAY, one or more additional spaces, and the optional attribute names in one of the following formats:
+    <ul>
+      <li>
+        The name or OID of the optional attribute type. This format can only be used for object classes that have a single optional attribute type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first optional attribute type. If there are additional optional attributes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more additional spaces. After the last optional attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for object classes that have one or more optional attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+
+  </li>
+</ol>
+
+<p>
+  For example, the following is the object class definition for the person object class, as defined in <a href="https://docs.ldap.com/specs/rfc4519.txt" target="_blank">RFC 4519</a>:
+</p>
+
+<pre>( 2.5.6.6 NAME 'person' SUP top STRUCTURAL MUST ( sn $ cn) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )</pre>
+
+<p>
+  This indicates that the person object class is a structural class with OID 2.5.6.6. Entries with the person object class are required to include the sn and cn attribute types, and may also include any or all of the userPassword, telephoneNumber, seeAlso, and description attribute types. And because the person object class inherits from the top object class, entries containing the person object class are required to also include the objectClass attribute type (which is declared as mandatory in the top object class). The person object class is not obsolete and does not have a description.
+</p>

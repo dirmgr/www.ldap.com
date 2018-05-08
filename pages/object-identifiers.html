@@ -1,0 +1,63 @@
+<p>
+  An object identifier, or OID, is a sequence of numbers separated by periods, like “1.23.456.7.89”. OIDs are used in many areas of technology, and you may have come across them if you have done any work in network management or PKI as they are heavily used in SNMP and digital certificates. But OIDs are used in many ways in LDAP, including:
+</p>
+
+<ul>
+  <li>
+    They serve as the canonical identifiers for a number of types of schema elements.
+  </li>
+  <li>
+    They are used to identify LDAP request and response controls.
+  </li>
+  <li>
+    They are used to identify LDAP extended request and response types.
+  </li>
+</ul>
+
+<p>
+  On one hand, OIDs are not all that user friendly. For example, if you want to issue an LDAP search and have the server sort the results before returning them, you need to know that the server-side sort request control has an OID of “1.2.840.113556.1.4.473”. If you want to determine the identity of a user authenticated on a connection, you need to know that the “Who Am I?” extended request has an OID of “1.3.6.1.4.1.4203.1.11.3”. A good LDAP API can be of tremendous help in cases like this because it can know the necessary OIDs on your behalf so that you don’t have to be able to remember them or keep track of them on your own. In addition, this site provides an <a href="https://ldap.com/ldap-oid-reference-guide/">LDAP OID Reference Guide</a> with a number of object identifiers used in LDAP and LDAP-related applications.
+</p>
+
+<p>
+  However, a significant benefit of OIDs is that they can be used to easily represent unique identifiers without a risk of introducing conflicts. OIDs have an inherent hierarchy, and if an organization is assigned its own OID base, it can define its own OIDs below that base without fear of conflicting with OIDs created by other organizations. OIDs are also relatively compact, so this global uniqueness can be achieved without the need for really long names (although this is more important for protocols in which the size of a message may be restricted to a single packet, like SNMP over UDP).
+</p>
+
+<h1>Obtaining Your Own OID Base and Managing an OID Hierarchy</h1>
+<p>
+  If you are going to use LDAP in any significant way, you will almost certainly find it necessary to define your own attribute types and object classes for representing the data that you want to store in a directory server. And because every attribute type and object class must have its own unique OID, you’ll need to have a way to obtain those OIDs.
+</p>
+
+<p>
+  In some directory servers, you can cheat by using “fake” OIDs. For example, some servers allow you to create an attribute type with an OID that is the same as the name of that attribute type with “-oid” appended to it (e.g., if the attribute type is named “my-test-attribute”, then you might be able to get away with using “my-test-attribute-oid” as the OID for that attribute type). While this is convenient if you just need to define some attribute types and/or object classes for a quick test, you should never use this mechanism for anything that you’re going to rely on. Not all directory servers support this capability, so using these “fake” OIDs might cause problems if the directory server software is replaced.
+</p>
+
+<p>
+  A much better, more standards-compliant approach is to use “real” numeric OIDs. This only takes slightly more effort and will be much better for your applications and data in the long term. In many organizations with many groups that may need to use OIDs for one reason or another, you may unfortunately run into politics and bureaucracy, but once that’s all sorted out, at least the technical aspect is relatively straightforward. If your organization already has a registered OID base, then work with whomever is in charge of managing your internal OID registry to see what the process is for managing OIDs. But if your organization does not already have an OID base and it is within your purview to obtain one, then you can do so by simply filling out the online form at <a href="https://pen.iana.org/pen/PenApplication.page" target="_blank">https://pen.iana.org/pen/PenApplication.page</a>. Assuming that the request is approved, then IANA (the Internet Assigned Numbers Authority) will allocate an OID base for your organization below “1.3.6.1.4.1”, which is the range allocated for private enterprises. For example, the OID base that has been allocated for documentation examples is “1.3.6.1.4.1.32473”. You can see a list of all allocated OID bases for private enterprises at <a href="https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers" target="_blank">https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers</a>.
+</p>
+
+<p>
+  If it falls under your authority to manage OIDs for your organization, then it is highly recommended that you come up with some structure that you can use for organizing them that will make it relatively easy to allocate OIDs as needed while avoiding conflicts. There are, of course, many possible ways to do this, but one way might be as follows:
+</p>
+
+<ul>
+  <li>
+    The first number below your OID base could be for the different protocols/technologies that might use custom OIDs in your organization (e.g., 1 for LDAP, 2 for SNMP, 3 for PKI, etc.).
+  </li>
+  <li>
+    The second number could be for the particular application with which the schema element is associated, so that custom schema elements for different applications don’t introduce conflicts.
+  </li>
+  <li>
+    For LDAP-based applications, the third number could be used to distinguish the type of element for which OIDs may need to be allocated (e.g., 1 for attribute types, 2 for object classes, 3 for attribute syntaxes, 4 for matching rules, 5 for controls, 6 for extended operations, 7 for features, etc.).
+  </li>
+  <li>
+    The fourth number could be a sequential counter that is incremented for each new OID allocated below that parent.
+  </li>
+</ul>
+
+<p>
+  For example, if your OID base is “1.3.6.1.4.1.32473”, then the OID “1.3.6.1.4.1.32473.1.2.1.15” might represent the 15th OID allocated for an attribute type within the second registered LDAP-based application.
+</p>
+
+<p>
+  If you will have multiple people that may need to allocate OIDs, then it makes sense to have the OID registry located in some commonly-accessible area that allows authorized users to create their own allocations while avoiding conflicts. For example, a wiki or version-controlled text file works well for this purpose.
+</p>

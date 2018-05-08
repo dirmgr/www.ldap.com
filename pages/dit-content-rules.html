@@ -1,0 +1,108 @@
+<p>
+  As previously described, the set of object classes for an entry indicate which attribute types may be (or are required to be) included in that entry. A DIT content rule can augment this by imposing additional constraints for an entry with a specified structural object class. This can include altering which attribute types are required, optional, and prohibited in entries with that structural object class, as well as indicating which auxiliary object classes can be used in conjunction with that structural class.
+</p>
+
+<p>
+  The list of DIT content rules defined in the server will be listed in the dITContentRules attribute of the subschema subentry. DIT content rule definitions must use the following syntax (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.6):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    The numeric OID of the structural object class with which the DIT content rule is associated.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the DIT content rule as an alternative to the OID of the associated structural object class. Each of these names must be unique across the set of all DIT content rules, although it is legal for a DIT content rule to have the same name as a different type of schema element. DIT content rule names must start with an ASCII alphabetic letter (uppercase or lowercase) and may consist only of ASCII letters, numeric digits, and hyphens. If present, the set of DIT content rule names should consist of one or more spaces (as a separator from the numeric OID), the string “NAME”, one or more additional spaces, and the DIT content rule names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the DIT content rule name, and a single quote. This format can only be used for DIT content rules that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first DIT content rule name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT content rules that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the name form should not be considered available for use in the server.
+
+  </li>
+  <li>
+    An optional set of auxiliary object classes that may be used in conjunction with the structural class. Any auxiliary class not included in this list will not be allowed in conjunction with the associated structural object class. If this element is absent, then no auxiliary classes will be allowed for use with the structural class. If present, then the set of allowed auxiliary classes should be specified as one or more spaces, the string “AUX”, one or more spaces, and the set of allowed auxiliary classes in one of the following forms:
+    <ul>
+      <li>
+        The name or OID of the allowed auxiliary object class. This format can only be used for DIT content rules that have a single allowed auxiliary object class.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first allowed auxiliary object class. If there are additional allowed auxiliary classes, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more spaces. After the last allowed auxiliary class name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT content rules that have one or more allowed auxiliary object classes.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of mandatory attributes that will be required in entries with the associated structural class, in addition to those listed as mandatory in the entry’s associated object classes. Any mandatory attribute types listed here do not necessarily need to be allowed by the entry’s object classes. If present, the set of additional mandatory attributes should be specified as one or more spaces, the string “MUST”, one or more spaces, and the set of mandatory attribute types in one of the following forms:
+    <ul>
+      <li>
+        The name or OID of the mandatory attribute type. This format can only be used for DIT content rules that have a single mandatory type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first mandatory attribute type. If there are additional mandatory types, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more spaces. After the last mandatory attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT content rules that have one or more mandatory attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of optional attributes that will be allowed in entries with the associated structural class, even if they are not otherwise allowed by any of the object classes in those entries. If present, the set of additional optional attributes should be specified as one or more spaces, the string “MAY”, one or more spaces, and the set of optional attribute types in one of the following forms:
+    <ul>
+      <li>
+        The name or OID of the optional attribute type. This format can only be used for DIT content rules that have a single optional type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first optional attribute type. If there are additional optional types, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more spaces. After the last optional attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT content rules that have one or more optional attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of prohibited attributes that will not be allowed in entries with the associated structural class, even if they are otherwise allowed by one or more of the object classes in those entries. This cannot be used to prohibit attribute types that are listed as mandatory in any of the associated object classes. If present, the set of prohibited attributes should be specified as one or more spaces, the string “NOT”, one or more spaces, and the set of prohibited attribute types in one of the following forms:
+    <ul>
+      <li>
+        The name or OID of the prohibited attribute type. This format can only be used for DIT content rules that have a single prohibited type.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the name or OID of the first prohibited attribute type. If there are additional prohibited types, each name or OID must be preceded by zero or more spaces, a dollar sign character, and zero or more spaces. After the last prohibited attribute type name or OID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT content rules that have one or more prohibited attribute types.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+  </li>
+</ol>
+
+<p>
+  None of the major LDAP specifications include any DIT content rule definitions. However, the following is an example of a DIT content rule definition that augments the inetOrgPerson structural class to allow only the strongAuthenticationUser auxiliary class, that requires the uid attribute (in addition to the cn and sn attributes already required by inetOrgPerson), that also allows the c attribute (which specifies the user’s country and would not otherwise be allowed by the entry’s object classes), and that prohibits the use of the telexNumber and telexTerminalIdentifier attributes:
+</p>
+
+<pre>( 2.16.840.1.113730.3.2.2 NAME 'inetOrgPerson-content-rule' AUX strongAuthenticationUser MUST uid MAY c NOT ( telexNumber $ telexTerminalIdentifier ) )</pre>
+
+<p>
+  Note that according to <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 2.4.3, a fully standards-compliant directory server will not allow an entry to include any auxiliary object classes if there is no DIT content rule associated with that entry’s structural class. While some servers use a more relaxed constraint and allow any auxiliary class to be used in conjunction with an entry that is not governed by any DIT content rule, if you intend to use auxiliary object classes then it is recommended that you also define the appropriate DIT content rule(s) to allow their use.
+</p>

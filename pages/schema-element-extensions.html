@@ -1,0 +1,95 @@
+<p>
+  Schema element definitions may include zero or more extensions, which are textual elements that may provide additional information about that element, and in some cases may describe additional functionality or constraints associated with that element.
+</p>
+
+<p>
+  If a schema element definition includes one or more extensions, then each extension must have the following format:
+</p>
+
+<ol>
+  <li>
+    One or more spaces to separate the extension from other components in the schema element definition.
+
+  </li>
+  <li>
+    The name of the extension. The name must start with “X-”, and the remainder of the name may contain only ASCII letters (uppercase and/or lowercase), hyphens, and/or underscores.
+
+  </li>
+  <li>
+    One or more spaces to separate the extension name from its value(s).
+
+  </li>
+  <li>
+    The value(s) for the extension. This may take either of the following forms:
+    <ul>
+      <li>
+        A single quote, followed by the text for the value, and another single quote. This format is only allowed for extensions with a single value.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, the first extension value surrounded by single quotes, an optional set of additional extension values where each is preceded by at least one space and includes the value surrounded by single quotes, zero or more spaces, and a close parenthesis. This format is allowed for extensions that have one or more values.
+
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>
+  Each extension value must contain one or more UTF-8 characters, with any single quote characters escaped as “\27” and any backslash characters escaped as “\5c”. Extension values cannot be empty strings, and all extensions must have at least one value.
+</p>
+
+<p>
+  LDAP does not define any standard schema extensions, but many directory servers accept any properly-formatted extension as a means of annotating the schema element. For example, one of the most commonly-used extension types is “<tt>X-ORIGIN</tt>”, which is typically used to indicate the source of the associated schema element, and the string “<tt>X-ORIGIN ‘RFC 4519’</tt>” might be used to indicate that the associated schema element is defined in <a href="https://docs.ldap.com/specs/rfc4519.txt" target="_blank">RFC 4519</a>.
+</p>
+
+<p>
+  Some directory servers may use certain extensions to describe additional constraints for the schema element that the normal LDAP syntax doesn’t support. For example, the Ping Identity Directory Server defines a number of different extension types that allow you to enforce constraints on the types of values that may be included in those attributes. Some of those extensions include:
+</p>
+
+<ul>
+  <li>
+    <tt>X-ALLOWED-VALUE</tt>: Specifies the set of values that attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-APPROX</tt>: Specifies the name or OID of the approximate matching rule that should be used in conjunction with the specified attribute type.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MAX-INT-VALUE</tt>: Specifies the maximum integer value that attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MAX-VALUE-COUNT</tt>: Specifies the maximum number of values that attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MAX-VALUE-LENGTH</tt>: Specifies the maximum number of UTF-8 characters that values of attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MIN-INT-VALUE</tt>: Specifies the minimum integer value that attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MIN-VALUE-COUNT</tt>: Specifies the minimum number of values that attributes of that type will be allowed to have.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>X-MIN-VALUE-LENGTH</tt>: Specifies the minimum number of UTF-8 characters that values of attributes of that type will be allowed to have.
+  </li>
+</ul>

@@ -1,0 +1,335 @@
+<p>
+  A matching rule encapsulates a set of logic that may be used to perform some kind of matching operation against two LDAP values. There are three basic kinds of matching rules defined in LDAP:
+</p>
+
+<ul>
+  <li>
+    An equality matching rule may be used to determine whether two values are logically equivalent to each other.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An ordering matching rule may be used to determine whether one value should be ordered before or after another in a sorted list (e.g., for the purposes of server-side sorting, as well as for evaluating greater-or-equal and less-or-equal filters).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A substring matching rule may be used to determine whether a value matches a provided substring assertion.
+  </li>
+</ul>
+
+<p>
+  In addition, although the official LDAP specification does not specifically reference approximate matching rules, some servers provide support for this type of rule, which is used to determine whether two values are approximately equal to each other.
+</p>
+
+<p>
+  The logic involved in a matching rule is generally dependent upon the syntax of the values involved. This is because there may be multiple logically-equivalent ways of representing a value in a given syntax (for example, there are multiple ways of representing a given time in the generalized time syntax, and there are multiple ways of representing a distinguished name in the DN syntax), and therefore two values may be logically equivalent even if they do not match when performing a byte-for-byte comparison.
+</p>
+
+<p>
+  Note that some attribute syntaxes may not support all kinds of matching. For example, consider the Boolean syntax. While it makes sense to be able to determine whether two Boolean values are logically equivalent, it doesn’t make any sense to be able to determine whether one value is greater than or less than another because neither true nor false is inherently greater than or less than the other. Similarly, it doesn’t make sense to support substring matching for Boolean values because there are only two valid Boolean values.
+</p>
+
+<p>
+  As with attribute syntaxes, matching rules require specialized logic and therefore cannot be created as easily as most other types of schema elements (if the server allows you to create them at all). Information about the set of matching rules that an LDAP server supports may be found in the matchingRules attribute of the subschema subentry, with values encoded in the following format (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.3):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    A numeric OID that uniquely identifies the matching rule.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the matching rule as an alternative to the OID. Each of these names must be unique across all matching rules defined in the server, but may potentially overlap with the names of other schema elements. Matching rule names must start with an ASCII letter (uppercase or lowercase) and may contain only ASCII letters, numeric digits, and the hyphen character. If present, the matching rule names must follow the numeric OID by one or more spaces, then the string “NAME” and one or more additional spaces, and finally the name(s) for the matching rule in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the matching rule name, and a single quote. This format can only be used for matching rules that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the name of the first matching rule, and a single quote. If there are additional names, then they must also be placed in single quotes with at least one space separating the names. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for matching rules that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces to separate it from the previous element, the string “DESC”, one or more spaces, a single quote, a string of any set of UTF-8 characters (with the single quote escaped as “\27” and the backslash escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the matching rule should not be considered available for use in attribute type definitions or extensible match search filters.
+
+  </li>
+  <li>
+    One or more spaces followed by the string “SYNTAX”, one or more spaces, and the numeric OID of the attribute syntax to which values should conform if matching operations are to be performed against them.
+
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+
+  </li>
+</ol>
+
+For example, the definition of the caseIgnoreMatch matching rule is as follows:
+
+ <pre>( 2.5.13.2 NAME 'caseIgnoreMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )</pre>
+
+<p>
+  Some of the most commonly-used matching rules are described in more detail below.
+</p>
+
+<h1>Case-Ignore Matching</h1>
+<p>
+  As the name implies, case-ignore matching rules are those that ignore differences in capitalization which comparing values, but these matching rules also generally ignore insignificant spaces. For the purpose of this matching, insignificant spaces include:
+</p>
+
+<ul>
+  <li>
+    Any sequence of space characters that immediately follow a space character. That is, all sequences of multiple consecutive spaces will be treated as if they were just a single space.
+  </li>
+  <li>
+    Any space characters that appear at the beginning or end of a value that also contains one or more non-space characters. That is, if a value contains only spaces, then it will match any other value that contains spaces (regardless of the number of spaces in each), but if a value contains any non-space characters then leading and trailing spaces will be ignored.
+  </li>
+</ul>
+
+<p>
+  The most commonly-used case-ignore matching rules are:
+</p>
+
+<ul>
+  <li>
+    caseIgnoreMatch (OID 2.5.13.2): An equality matching rule that will declare two directory string values equivalent if they differ only in capitalization or insignificant spaces.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseIgnoreIA5Match (OID 1.3.6.1.4.1.1466.109.114.2): An equality matching rule that will declare two IA5 string values equivalent if they differ only in capitalization or insignificant spaces.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseIgnoreListMatch (OID 2.5.13.11): An equality matching rule that will declare two postal address values equivalent if they contain the same set of lines in the same order, ignoring differences in capitalization and insignificant spacing within each of the lines.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseIgnoreOrderingMatch (OID 2.5.13.6): An ordering matching rule that will use a lexicographic ordering to determine the relative sorted order of two directory string values, ignoring differences in capitalization and insignificant spaces. Lexicographic ordering is essentially alphabetical ordering, except that there is also an inherent order for non-alphabetic characters (the order in which they are defined in the UTF-8 character set).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseIgnoreSubstringsMatch (OID 2.5.13.4): A substring matching rule that will determine whether a directory string value matches a provided substring assertion, ignoring differences in capitalization and insignificant spaces.
+    caseIgnoreIA5SubstringsMatch (OID 1.3.6.1.4.1.1466.109.114.3): A substring matching rule that will determine whether an IA5 string value matches a provided substring assertion, ignoring differences in capitalization and insignificant spaces.
+  </li>
+</ul>
+
+<h1>Case-Exact Matching</h1>
+<p>
+  Case-exact matching rules are those that consider differences in capitalization to be significant, although the same rules apply for insignificant spaces for case-exact matching as for case-ignore matching.
+</p>
+
+<p>
+  The most commonly-used case-exact matching rules are:
+</p>
+
+<ul>
+  <li>
+    caseExactMatch (OID 2.5.13.5): An equality matching rule that will declare two directory string values equivalent if they differ only in insignificant spaces.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseExactIA5Match (OID 1.3.6.1.4.1.1466.109.114.1): An equality matching rule that will declare two IA5 string values equivalent if they differ only in insignificant spaces.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseExactOrderingMatch (OID 2.5.13.6): An ordering matching rule that will use lexicographic ordering to determine the relative sorted order of two directory string values, ignoring differences in insignificant spaces.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    caseExactSubstringsMatch (OID 2.5.13.7): A substring matching rule that will determine whether a directory string value matches a provided substring assertion, ignoring differences in insignificant spaces.
+  </li>
+</ul>
+
+<p>
+  Note that although <a href="https://docs.ldap.com/specs/rfc2307.txt" target="_blank">RFC 2307</a> makes mention of a caseExactIA5SubstringsMatch matching rule, no other specification defines or even mentions such a rule. Although some servers may support it, it is not part of the official set of LDAP standards.
+</p>
+
+<h1>Octet String Matching</h1>
+<p>
+  Octet string matching rules are very simple rules that perform byte-by-byte comparisons of octet string values. All capitalization and spacing is considered significant.
+</p>
+
+<p>
+  The standard octet string matching rules are:
+</p>
+
+<ul>
+  <li>
+    octetStringMatch (OID 2.5.13.17): An equality matching rule that will declare two octet string values equivalent only if they are comprised of exactly the same sequence of bytes.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    octetStringOrderingMatch (OID 2.5.13.18): An ordering matching rule that will perform a bit-by-bit comparison (in big endian ordering) of two octet string values until a difference is found. The first case in which a zero bit is found in one value but a one bit is found in another will cause the value with the zero bit to be considered less than the value with the one bit.
+  </li>
+</ul>
+
+<h1>Boolean Matching</h1>
+<p>
+  As already noted, it does not make sense to attempt to perform ordering or substring matching with Boolean values, so there is only a single Boolean matching rule:
+</p>
+
+<ul>
+  <li>
+    booleanMatch (OID 2.5.13.13): An equality matching rule that will consider two Boolean values equivalent only if they are both true or if they are both false.
+  </li>
+</ul>
+
+<h1>Distinguished Name Matching</h1>
+<p>
+  As with Boolean values, LDAP only officially supports equality matching for distinguished names. However, as there are two syntaxes whose values can be distinguished names (the DN syntax and the name and optional UID syntax), there are two corresponding matching rules:
+</p>
+
+<ul>
+  <li>
+    distinguishedNameMatch (OID 2.5.13.1): An equality matching rule that will consider two DN values if they represent the same distinguished name. That is, they have the same set of RDNs in the same order (with the order of elements in a multivalued RDN not considered significant). For each RDN element, the determination of whether corresponding values are equivalent will be achieved using the equality matching rule for the associated attribute type. For example, in the DN values “o=example.com” and “o=Example.com”, the determination of whether “example.com” is equivalent to “Example.com” will be performed using the equality matching rule for the o attribute (which has a caseIgnoreMatch equality matching rule).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    uniqueMemberMatch (OID 2.5.13.23): An equality matching rule that will consider two name and optional UID values if they represent the same distinguished name (using the same determination as the distinguishedNameMatch rule) and either are both missing the optional UID element or both have the same optional UID value. If one name and optional UID value includes the optional UID element and another does not, or if both have optional UID elements comprised of different bit strings, then those values will not be considered equivalent.
+  </li>
+</ul>
+
+<h1>Generalized Time Matching</h1>
+<p>
+  Timestamp matching is only slightly complicated by the fact that generalized time values may have different levels of precision. For example, one generalized time value may have a precision of only hours, while another may have a precision of milliseconds (or nanoseconds, or perhaps something even more precise). But in such cases, any optional component missing from a generalized time value will be considered to have a value of zero (e.g., the value “2014010203Z” will be treated as if it were “20140102030000.0Z”). In addition, if the values to be compared are in different time zones, then an appropriate adjustment will be made to compare them as if they were in the UTC time zone.
+</p>
+
+<p>
+  There are two standard generalized time matching rules:
+</p>
+
+<ul>
+  <li>
+    generalizedTimeMatch (OID 2.5.13.27): An equality matching rule that will consider two generalized time values equivalent if they represent the same time, to any level of precision.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    generalizedTimeOrderingMatch (OID 2.5.13.28): An ordering matching rule that will consider generalized time values that represent an earlier time to be less than generalized time values that represent a later time.
+  </li>
+</ul>
+
+<h1>Integer Matching</h1>
+<p>
+  If you compare numbers with lexicographic ordering, you may get unexpected results. With lexicographic matching, the value “100” is considered less than the value “5” because “1” has a lower lexicographic order than “5”. As such, if you need to store an integer value then you should do so in an attribute with an integer syntax and integer matching rules to ensure that the proper numeric ordering is performed.
+</p>
+
+<p>
+  The standard integer matching rules are:
+</p>
+
+<ul>
+  <li>
+    integerMatch (OID 2.5.13.14): An equality matching rule that will consider two integer values equivalent if they represent the same number.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    integerOrderingMatch (OID 2.5.13.15): An ordering matching rule that will use numeric ordering to determine whether one integer value is less than, greater than, or equal to another integer value.
+  </li>
+</ul>
+
+<h1>Numeric String Matching</h1>
+<p>
+  Despite the fact that numeric strings can only consist of ASCII numeric digits and spaces, numeric strings are treated more like strings than numbers. However, all spaces are considered insignificant, so only the digits themselves are compared.
+</p>
+
+<p>
+  The official numeric string matching rules are:
+</p>
+
+<ul>
+  <li>
+    numericStringMatch (OID 2.5.13.8): An equality matching rule that will consider two numeric strings to be equivalent if they contain the same digits in the same order, ignoring any spaces that may be present in either value.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    numericStringOrderingMatch (OID 2.5.13.9): An ordering matching rule that will use lexicographic ordering to compare the digits contained in numeric string values (ignoring any spaces that may be present in either value). Because lexicographic ordering is used, a value that looks like a larger number may be considered less than a value that looks like a smaller number if the first value has a smaller digit in an earlier position (e.g., in numeric string ordering, the value “1234” is considered less than “567” because “1” is lexicographically less than “5”).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    numericStringSubstringsMatch (OID 2.5.13.10): A substring matching rule that will determine whether a numeric string value matches a provided substring assertion, ignoring any spaces that may be included in the value or substring assertion.
+  </li>
+</ul>
+
+<h1>Telephone Number Matching</h1>
+<p>
+  Telephone number matching is treated much like numeric strings in that spaces are considered insignificant. In telephone number matching, hyphens are also considered insignificant.
+</p>
+
+<p>
+  The official telephone number matching rules are:
+</p>
+
+<ul>
+  <li>
+    telephoneNumberMatch (OID 2.5.13.20): An equality matching rule that will consider two telephone number values to be equivalent if their string representations are equivalent after removing any spaces or hyphens.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    telephoneNumberSubstringsMatch (OID 2.5.13.21): A substring matching rule that will determine whether a telephone number value matches a provided substring assertion, ignoring any spaces or hyphens that may be included in the value or substring assertion.
+  </li>
+</ul>
+
+<h1>UUID Matching</h1>
+<p>
+  UUID matching is intended to work with values that conform to the UUID syntax. Differences in capitalization are not considered significant.
+</p>
+
+<p>
+  The UUID matching rules defined in <a href="https://docs.ldap.com/specs/rfc4530.txt" target="_blank">RFC 4530</a> are:
+</p>
+
+<ul>
+  <li>
+    uuidMatch (OID 1.3.6.1.1.16.2): An equality matching rule that will consider two UUID values to be equivalent if they differ only in capitalization.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    uuidOrderingMatch (OID 1.3.6.1.1.16.3): An ordering matching rule that will use case-insensitive lexicographic ordering to determine a relative sort order for two UUID values. Note that since there isn’t really a logical order for UUIDs, this matching rule is purely provided for convenience and completeness and doesn’t do anything like reflect the order in which UUID values are generated.
+  </li>
+</ul>

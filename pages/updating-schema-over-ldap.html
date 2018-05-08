@@ -1,0 +1,46 @@
+<p>
+  Although directory servers typically ship with support for a wide range of standard schema, most LDAP-enabled applications of any significance will require custom schema elements for use in representing the data for that application. All servers provide some mechanism for updating the schema defined in that server, but there is not necessarily a standard way to accomplish this. However, the long-expired <a href="https://docs.ldap.com/specs/draft-poitou-ldap-schema-update-02.txt" target="_blank">draft-poitou-ldap-schema-update-02</a> Internet Draft does propose an approach that a number of servers support. This draft states that new schema elements should be added by performing a modify operation against the subschema subentry using the add modification type to specify the desired changes.
+</p>
+
+<p>
+  For example, the following demonstrates the process that could be used to add two new attribute types, example-test-attr-1 and example-test-attr-2, and an auxiliary object class, example-test-oc. It assumes that we have already determined that the appropriate schema is defined in the “cn=schema” entry:
+</p>
+
+<pre>dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: ( 1.3.6.1.4.1.32473.1.1.1
+ NAME 'example-test-attr-1'
+ DESC 'A first example attribute'
+ EQUALITY caseIgnoreMatch
+ ORDERING caseIgnoreOrderingMatch
+ SUBSTR caseIgnoreSubstringsMatch
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+attributeTypes: ( 1.3.6.1.4.1.32473.1.1.2
+ NAME 'example-test-attr-2'
+ DESC 'A second example attribute'
+ EQUALITY caseIgnoreMatch
+ ORDERING caseIgnoreOrderingMatch
+ SUBSTR caseIgnoreSubstringsMatch
+ SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+add: objectClasses
+objectClasses: ( 1.3.6.1.4.1.32473.1.2.1
+ NAME 'example-test-oc'
+ SUP top
+ AUXILIARY
+ MAY ( example-test-attr-1 $
+ example-test-attr-2 ) )
+-</pre>
+
+<p>
+  Removing a schema element may be possible using the delete modification type to remove the specific values that correspond to the schema elements that are no longer desired. However, this is more problematic than adding new schema elements for several reasons. First, if any data in the server makes use of a given schema element, then some ways of interacting with that data could be adversely affected by removing that element. In addition, there may be problems with removing a schema element that may be extended by another schema element (e.g., removing an object class from which another class inherits). In general, removing a schema element is discouraged without first making sure that the element is not referenced by any data, configuration, or schema.
+</p>
+
+<p>
+  Replacing an existing schema element may be possible by performing a modification that combines the removal of the old value and the addition of the new value. The changes should be made in the same modify operation so that they will be processed atomically and there will not be any intermediate period of time in which the former element is removed and the new element is not yet added.
+</p>
+
+<p>
+  It is possible that some servers may offer alternate approaches for managing the schema. Consult the documentation for the directory server you are using to determine the best way to manage the schema for that server.
+</p>

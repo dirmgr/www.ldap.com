@@ -1,0 +1,45 @@
+<p>
+  A relational database schema contains information about the structure of the database, including information about the tables, about the columns of each of those tables, and the data types and constraints of each of those columns. In LDAP, the schema provides much the same kind of information, but because information is arranged very differently in a directory server than a relational database, the expression of those schema elements is substantially different.
+</p>
+
+<p>
+There are a number of different types of elements that may comprise an LDAP schema. Every LDAP schema must include the following elements:
+</p>
+
+<ul>
+  <li>
+    <a href="https://ldap.com/attribute-syntaxes/">Attribute Syntaxes</a> define the types of data that can be represented in a directory server.
+  </li>
+  <li>
+    <a href="https://ldap.com/matching-rules/">Matching Rules</a> define the kinds of comparisons that can be performed against LDAP data.
+  </li>
+  <li>
+    <a href="https://ldap.com/attribute-types/">Attribute Types</a> define named units of information that may be stored in entries.
+  </li>
+  <li>
+    <a href="https://ldap.com/object-classes/">Object Classes</a> define named collections of attribute types which may be used in entries containing that class, and which of those attribute types will be required rather than optional.
+  </li>
+</ul>
+
+<p>
+  LDAP schemas may also include additional elements that can impose further restrictions on the structure of the data in the server. These include:
+</p>
+
+<ul>
+  <li>
+    <a href="https://ldap.com/name-forms/">Name Forms</a> may be used to restrict the kinds of attributes which may be used as the naming attributes for entries of a particular type.
+  </li>
+  <li>
+    <a href="https://ldap.com/dit-content-rules/">DIT Content Rules</a> may be used to augment object class definitions and further indicate the kinds of attributes that must, may, and must not appear in entries of a particular type.
+  </li>
+  <li>
+    <a href="https://ldap.com/dit-structure-rules/">DIT Structure Rules</a> may be used to define information about hierarchical relationships that are allowed to exist in the server.
+  </li>
+  <li>
+    <a href="https://ldap.com/matching-rule-uses/">Matching Rule Uses</a> may be used to impose restrictions on the kinds of attributes with which particular matching rules may be used.
+  </li>
+</ul>
+
+<p>
+  Each of these kinds of schema element is described in greater detail in its own section using the links above. However, because many schema elements make use of object identifiers (OIDs) as a means of identifying themselves, you should also read the <a href="https://ldap.com/object-identifiers/">Object Identifiers</a> section. Similarly, most types of schema elements allow you to include custom extensions with additional information about the element, and the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> page describes the syntax for these extensions. There are also sections for <a href="https://ldap.com/retrieving-schema-over-ldap/">Retrieving Schema Over LDAP</a> and <a href="https://ldap.com/updating-schema-over-ldap/">Updating Schema Over LDAP</a>.
+</p>

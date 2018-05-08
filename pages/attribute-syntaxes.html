@@ -1,0 +1,332 @@
+<p>
+  An attribute syntax is the LDAP equivalent of a data type. Every attribute type is associated (either explicitly or implicitly) with an attribute syntax, and all values for attributes of that type must abide by the constraints of that syntax.
+</p>
+
+<p>
+  Because support for an attribute syntax requires server-side logic to define the constraints associated with that syntax, the set of attribute syntaxes available for use in a server cannot be extended as easily as defining new attribute types or object classes. Some servers may offer an API that could allow a third-party developer to create a custom attribute syntax, while other servers may not provide any mechanism for extending the set of available syntaxes.
+</p>
+
+<p>
+  The LDAP server should provide information about the syntaxes it supports in the ldapSyntaxes attribute of the subschema subentry. Values of this attribute must have the following form (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.5):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    A numeric OID that uniquely identifies the syntax.
+
+  </li>
+  <li>
+    An optional descriptive name. If present, this will be separated from the numeric OID by one or more spaces, and will consist of the text “DESC” followed by one or more spaces, a single quote, the descriptive name, and the closing quote. The name may contain any UTF-8 characters except the single quote (which must be escaped as “\27”) or the backslash (which must be escaped as “\5c”).
+
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+
+  </li>
+</ol>
+
+<p>
+  Note that the format of an attribute syntax definition is itself defined by an attribute syntax: the “LDAP syntax description” syntax, which is defined as follows (in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.18):
+</p>
+
+<pre>( 1.3.6.1.4.1.1466.115.121.1.54 DESC 'LDAP Syntax Description' )</pre>
+
+<p>
+  Some of the most notable attribute syntaxes supported by LDAP servers are described in detail below. A number of additional attribute syntaxes are described in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> and other specifications.
+</p>
+
+
+<h1>Directory String</h1>
+<p>
+  The directory string syntax is basically a catch-all syntax for UTF-8 strings. It allows values with this syntax to have any combination of one or more UTF-8 characters (empty directory string values are not allowed, although some directory servers ignore this constraint).
+</p>
+
+<p>
+  The directory string syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.6, and has an OID of “1.3.6.1.4.1.1466.115.121.1.15”.
+</p>
+
+<h1>IA5 String</h1>
+<p>
+  An IA5 string is a collection of zero or more characters from the IA5 character set (as defined in the ISO 646 specification). This is a 7-bit character set that, at least in the US, is basically the same as ASCII. There, however, some characters in this character set that may be localized differently in different regions (e.g., something other than the dollar sign for the currency symbol). Unlike directory string, IA5 strings may be empty.
+</p>
+
+<p>
+  The IA5 syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.15, and has an OID of “1.3.6.1.4.1.1466.115.121.1.26”.
+</p>
+
+<h1>Printable String</h1>
+<p>
+  A printable string is a collection of one or more characters (printable strings cannot be empty) from the printable character set, which includes the following characters:
+</p>
+
+<ul>
+  <li>
+    All ASCII uppercase and lowercase letters.
+  </li>
+  <li>
+    All ASCII numeric digits.
+  </li>
+  <li>
+    The ASCII single quote.
+  </li>
+  <li>
+    The ASCII open and close parentheses.
+  </li>
+  <li>
+    The ASCII plus sign.
+  </li>
+  <li>
+    The ASCII comma.
+  </li>
+  <li>
+    The ASCII hyphen.
+  </li>
+  <li>
+    The ASCII period.
+  </li>
+  <li>
+    The ASCII equal sign.
+  </li>
+  <li>
+    The ASCII forward slash.
+  </li>
+  <li>
+    The ASCII colon.
+  </li>
+  <li>
+    The ASCII question mark.
+  </li>
+  <li>
+    The ASCII space.
+  </li>
+</ul>
+
+<p>
+  The printable string syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.29, and has an OID of “1.3.6.1.4.1.1466.115.121.1.44”.
+</p>
+
+<h1>Boolean</h1>
+<p>
+  The Boolean syntax is used to represent Boolean values. Technically, the only legal values are “TRUE” and “FALSE”, although some servers may accept other values (e.g., ignoring differences in capitalization, allowing logically equivalent alternatives like “t”, “yes”, or “on” to indicate a value of true, etc.).
+</p>
+
+<p>
+  The Boolean syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.3 and has an OID of “1.3.6.1.4.1.1466.115.121.1.7”.
+</p>
+
+<h1>Integer</h1>
+<p>
+  The integer syntax is used to represent whole numbers of any size, whether positive, negative, or zero. A value of zero is represented as “0”. A positive value is represented as a digit of 1-9 followed by zero or more digits of 0-9. A negative value is represented as a hyphen followed by a digit of 1-9 followed by zero or more digits of 0-9.
+</p>
+
+<p>
+  The integer syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.16 and has an OID of “1.3.6.1.4.1.1466.115.121.1.27”.
+</p>
+
+<h1>Numeric String</h1>
+<p>
+  The numeric string syntax is used to hold strings comprised of one or more ASCII numeric digits digits and/or space characters. The hyphen is not allowed, so it is not possible to represent negative values.
+</p>
+
+<p>
+  The numeric string syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.23 and has an OID of “1.3.6.1.4.1.1466.115.121.1.36”.
+</p>
+
+<h1>Octet String</h1>
+<p>
+  The octet string syntax may be used to hold any sequence of zero or more bytes, regardless of whether they represent valid UTF-8 characters or raw binary data. Although there used to be a binary syntax, it has been deprecated and the octet string syntax should be used instead.
+</p>
+
+<p>
+  The octet string syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.25 and has an OID of “1.3.6.1.4.1.1466.115.121.1.40”.
+</p>
+
+<h1>DN</h1>
+<p>
+  The DN syntax may be used to hold any valid distinguished name, including the zero-length DN (which represents the root DSE) as described in <a href="https://docs.ldap.com/specs/rfc4514.txt" target="_blank">RFC 4514</a>.  For more information about distinguished names, see <a href="https://ldap.com/ldap-dns-and-rdns/">LDAP DNs and RDNs</a>.
+</p>
+
+<p>
+  The DN syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.9 and has an OID of “1.3.6.1.4.1.1466.115.121.1.12”.
+</p>
+
+<h1>Name and Optional UID</h1>
+<p>
+  Most of the time, the name and optional UID syntax is equivalent to the DN syntax. A name and optional UID value always contains a distinguished name, and although it is technically possible to include an additional bit string identifier on the end (by following the DN with an octothorpe, single quote, a sequence of binary digits, close quote, and the letter “B”), this “optional UID” component is virtually never used in real-world deployments. In theory, it should only be used as a means of distinguishing two different entries with the same DN (which would not be allowed to coexist in the same directory server instance because every entry in a directory must have a unique DN).
+</p>
+
+<p>
+  The only thing notable about the name and optional UID syntax is that it is the syntax assigned to the uniqueMember attribute type, which is used to indicate membership in groups with the groupOfUniqueNames object class. Since this is a relatively popular type of group, this syntax is used with some frequency.
+</p>
+
+<p>
+  The name and optional UID syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.21 and has an OID of “1.3.6.1.4.1.1466.115.121.1.34”.
+</p>
+
+<h1>Generalized Time</h1>
+<p>
+  The generalized time syntax is used to represent a specific time. Generalized time values are comprised of the following components:
+</p>
+
+<ol>
+  <li>
+    A four-digit year (e.g., “2018”).
+
+  </li>
+  <li>
+    A two-digit month (with “01” representing January, through “12” representing December).
+
+  </li>
+  <li>
+    A two-digit day of the month (with “01” representing the first day of the month).
+
+  </li>
+  <li>
+    A two-digit hour of the day, using the 24-hour time format (e.g., with “00” representing midnight, “01” representing 1 a.m., “12” representing noon, and “13” representing 1 p.m., etc.).
+
+  </li>
+  <li>
+    An optional two-digit minute of the hour, from “00” to “59”.
+
+  </li>
+  <li>
+    An optional two-digit second of the minute, from “00” to “60” (where “60” is only used for leap seconds). This element is only allowed for generalized time values that also include the optional two-digit minute.
+
+  </li>
+  <li>
+    An optional fractional component, comprised of a period or comma followed by one or more ASCII numeric digits. If present, then this fractional component represents a fraction of the most specific unit of time represented in the value leading up to it (i.e., if the generalized time value only includes an hour precision before the period or comma, then this will represent a fraction of an hour; if the generalized time contains only minute precision before the period or comma, then this will represent a fraction of a minute; if the generalized time contains second precision before the period or comma, then this will represent a fraction of a second). For generalized time values that have precision to the second and a fractional component that includes three digits, then those three digits will represent the number of milliseconds, but the fractional component may technically include any number of digits.
+
+  </li>
+  <li>
+    A mandatory time zone indicator. This may be in one of the following forms:
+
+  </li>
+  <ul>
+    <li>
+      The character “Z”, which indicates that the generalized time value represents a time in the coordinated universal time (UTC, which is also known as GMT).
+
+    </li>
+    <li>
+      A plus sign or minus sign, a two-digit hour, and an optional two-digit minute. This represents the UTC offset for the generalized time value.
+
+    </li>
+  </ul>
+</ol>
+
+<p>
+  For example, a generalized time value of “<tt>20140102030405.678Z</tt>” represents a time of 3:04:05.678 a.m. on January 2, 2014 in the UTC time zone.
+</p>
+
+<p>
+  The generalized time syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.13 and has an OID of “1.3.6.1.4.1.1466.115.121.1.24”.
+</p>
+
+<h1>Telephone Number</h1>
+<p>
+  The telephone number syntax is used to represent telephone number values which are recommended to be in compliance with the E.123 format, but may allow minor variations (e.g., dashes to separate components rather than spaces). For example, the value “<tt>+1 512 555 1212</tt>” represents a number in the area of Austin, Texas, United States (as indicated by the “+1” country code and “512” area code).
+</p>
+
+<p>
+  The telephone number syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.31 and has an OID of “1.3.6.1.4.1.1466.115.121.1.50”.
+</p>
+
+<h1>Postal Address</h1>
+<p>
+  The postal address syntax may be used to hold multi-line mailing address values, in which the dollar sign is used as the line delimiter. Each line may be comprised of one or more UTF-8 characters, except that within each line the dollar sign must be escaped as “\24” and the backslash character must be escaped as “\5c”.
+</p>
+
+<p>
+  For example, the value “<tt>John Doe$123 Main Street$PO Box 456$Anytown, US 12345</tt>” is used to indicate the following multi-line address:
+</p>
+
+<blockquote>John Doe
+123 Main Street
+PO Box 456
+Anytown, US 12345</blockquote>
+
+<p>
+  The postal address syntax is defined in <a href="https://docs.ldap.com/specs/rfc4517.txt" target="_blank">RFC 4517</a> section 3.3.28 and has an OID of “1.3.6.1.4.1.1466.115.121.1.41”.
+</p>
+
+<h1>UUID</h1>
+<p>
+  The UUID syntax is used to hold universally unique identifier values as described in <a href="https://docs.ldap.com/specs/rfc4122.txt" target="_blank">RFC 4122</a>. UUID values contain the following components:
+</p>
+
+<ol>
+  <li>
+    Eight hexadecimal digits
+  </li>
+  <li>
+    A hyphen
+  </li>
+  <li>
+    Four hexadecimal digits
+  </li>
+  <li>
+    A hyphen
+  </li>
+  <li>
+    Four hexadecimal digits
+  </li>
+  <li>
+    A hyphen
+  </li>
+  <li>
+    Four hexadecimal digits
+  </li>
+  <li>
+    A hyphen
+  </li>
+  <li>
+    Twelve hexadecimal digits
+  </li>
+</ol>
+
+<p>
+  For example, the string “<tt>12345678-90ab-cdef-1234-567890abcdef</tt>” represents a valid UUID value.
+</p>
+
+<p>
+  The UUID syntax is defined in <a href="https://docs.ldap.com/specs/rfc4530.txt" target="_blank">RFC 4530</a> section 2.1 and has an OID of “1.3.6.1.1.16.1”.
+</p>
+
+<h1>Authentication Password</h1>
+<p>
+  The authentication password syntax may be used to represent an encoded password that may be stored in a directory server and used in the course of authenticating a user. Authentication password values contain the following components:
+</p>
+
+<ol>
+  <li>
+    The name of the scheme used to encode the password (e.g., the cryptographic digest or encryption algorithm).
+
+  </li>
+  <li>
+    A dollar sign, optionally preceded and/or followed by zero or more spaces.
+
+  </li>
+  <li>
+    An authInfo element, whose meaning may vary based on the scheme. For example, if the scheme represents a cryptographic digest, this may be an encoded representation of the salt that was combined with the cleartext password in order to obtain the digest. The authInfo element may contain any characters from the printable string character set except the dollar sign and the space.
+
+  </li>
+  <li>
+    A dollar sign, optionally preceded and/or followed by zero or more spaces.
+
+  </li>
+  <li>
+    An authValue element, whose meaning may vary based on the scheme. For example, if the scheme represents a cryptographic digest, this may be an encoded representation of the digest resulting from the combination of the cleartext password with a salt. The authValue element may contain any characters from the printable string character set except the dollar sign and the space.
+
+  </li>
+</ol>
+
+<p>
+  The authentication password syntax is defined in <a href="https://docs.ldap.com/specs/rfc3112.txt" target="_blank">RFC 3112</a> section 2.1 and has an OID of “1.3.6.1.4.1.4203.1.1.2”.
+</p>

@@ -1,0 +1,75 @@
+<p>
+  By default, LDAP permits any kind of entry to exist anywhere in the DIT. However, DIT structure rules can be used to define restrictions around the hierarchical relationships that entries may have. Every DIT structure rule is associated with a name form, which in turn is associated with a structural object class. DIT structure rules may also reference superior rules, and in that case then only entries with the structural class for a subordinate rule may exist below entries with a structural class of the superior rule.
+</p>
+
+<p>
+  The list of DIT structure rules defined in the server will be listed in the dITStructureRules attribute of the subschema subentry. DIT structure rules must use the following syntax (as described in <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> section 4.1.7.1):
+</p>
+
+<ol>
+  <li>
+    An open parenthesis followed by zero or more spaces.
+
+  </li>
+  <li>
+    An integer that identifies the DIT structure rule. All DIT structure rules must have a unique rule ID.
+
+  </li>
+  <li>
+    An optional set of names that may be used to reference the DIT structure rule as an alternative to the numeric rule ID. Each of these names must be unique across the set of all DIT structure rules, although it is legal for a DIT structure rule to have the same name as a different type of schema element. DIT structure rule names must start with an ASCII alphabetic letter (uppercase or lowercase) and may consist only of ASCII letters, numeric digits, and hyphens. If present, the set of DIT structure rule names should consist of one or more spaces (as a separator from the numeric OID), the string “NAME”, one or more additional spaces, and the DIT structure rule names in one of the following formats:
+    <ul>
+      <li>
+        A single quote, the DIT structure rule name, and a single quote. This format can only be used for DIT structure rules that have a single name.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, a single quote, the first DIT structure rule name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT structure rules that have one or more names.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
+
+  </li>
+  <li>
+    The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the DIT structure rule should not be considered available for use in the server and should not be referenced as superior to any non-obsolete DIT structure rules.
+
+  </li>
+  <li>
+    The reference to the name form with which the DIT structure rule is associated (which in turn ties it to a structural object class). This must be specified using one or more spaces, the string “FORM”, one or more spaces, and the name or OID of the associated name form. This element is required.
+
+  </li>
+  <li>
+    An optional set of superior rule IDs for this DIT structure rule. If present, this ultimately specifies the types of entries (by structural object class) that entries with the associated structural object class may be placed beneath. If this is not present, then the server may decide where entries with the associated entry may exist (e.g., some may allow them only as naming context entries; others may allow them anywhere). If this is present, then it should be specified as one or more spaces, the string “SUP”, one or more spaces, and the superior rule IDs in one of the following forms:
+    <ul>
+      <li>
+        The numeric rule ID. This format can only be used for DIT structure rules that have a single superior rule ID.
+
+      </li>
+      <li>
+        An open parenthesis, zero or more spaces, and the first superior rule ID. If there are additional superior rule IDs, each must be separated from the previous rule ID by one or more spaces. After the last superior rule ID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT structure rules that have one or more superior rule IDs.
+
+      </li>
+    </ul>
+  </li>
+  <li>
+    An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
+
+  </li>
+  <li>
+    Zero or more spaces followed by a close parenthesis.
+  </li>
+</ol>
+
+<p>
+  For example, consider the following DIT structure rules defined in <a href="https://docs.ldap.com/specs/rfc4403.txt" target="_blank">RFC 4403</a>:
+</p>
+
+<pre>( 1 NAME 'uddiBusinessEntityStructureRule' FORM uddiBusinessEntityNameForm )
+
+( 2 NAME 'uddiContactStructureRule' FORM uddiContactNameForm SUP ( 1 ) )</pre>
+
+<p>
+  The first of these rules has a rule ID of 1 and is associated with the uddiBusinessEntityNameForm name form, which is in turn associated with the uddiBusinessEntity structural object class. The second rule has a rule ID of 2 and is associated with the uddiContactNameForm name form, which in turn is associated with the uddiContact structural object class, and a superior rule ID of 1. This means that entries with the uddiContact structural object class should only be allowed to exist below entries with the uddiBusinessEntity structural object class.
+</p>
