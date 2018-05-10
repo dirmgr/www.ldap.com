@@ -1,0 +1,400 @@
+<p>
+  Filters are a key element in defining the criteria used to identify entries in search requests, but they are also used elsewhere in LDAP for various purposes (e.g., in LDAP URLs, in the assertion request control, etc.). Filters are therefore a very important aspect of LDAP and should be well understood by both administrators and application developers.
+</p>
+
+<p>
+  LDAP defines ten basic filter types, each of which is more fully described in the remainder of this section.
+</p>
+
+<h1>Presence Filters</h1>
+<p>
+  A presence filter is used to determine whether an entry contains a specified attribute. If an entry contains at least one value for a particular attribute, then that entry will match a presence filter targeting the attribute. If an entry does not contain any values for the attribute, then that entry will not match a presence filter targeting the attribute.
+</p>
+
+<p>
+  The string representation of a presence filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    The attribute description (potentially including attribute options)
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    An asterisk
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  For example, a presence filter that will match any entry that contains one or more cn values would be “<tt>(cn=*)</tt>”. The presence filter “<tt>(objectClass=*)</tt>” is often used as a kind of catch-all to match any entry, because every entry must have at least one objectClass value.
+</p>
+
+<h1>Equality Filters</h1>
+<p>
+  An equality filter is used to determine whether an entry contains a specified attribute value. If an entry includes the specified value, regardless of whether it has any other values for the target attribute, then that entry will match an equality filter for that value. If an entry does not contain any values for the attribute, or if none of the values matches the target value, then that entry will not match the equality filter.
+</p>
+
+<p>
+  The string representation of an equality filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    The attribute description (potentially including attribute options)
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    The value to compare (aka the assertion value)
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  For example, the equality filter “<tt>(givenName=John)</tt>” will match any entry that contains a givenName attribute with a value of John. However, this is not necessarily as straightforward as it might sound because there can be multiple ways of representing a given value (e.g., John, john, JOHN, JoHn, etc.). It is the job of an equality matching rule to determine whether two values are equivalent. Matching rules are discussed in greater detail in the <a href="https://ldap.com/understanding-ldap-schema/">Understanding Schema</a> section.
+</p>
+
+<h1>Greater-Or-Equal Filters</h1>
+<p>
+  A greater-or-equal filter is used to determine whether an entry contains at least one value for a specified attribute that is greater than or equal to a provided value. If an entry has one or more values for an attribute that are determined to be greater than or equal to the target value, then the filter will match that entry, even if it has other values that are determined to be less than the target value.
+</p>
+
+<p>
+  The string representation of a greater-or-equal filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    The attribute description (potentially including attribute options)
+  </li>
+  <li>
+    A greater-than symbol
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    The value to compare (aka the assertion value)
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  The determination of whether one value is greater than or equal to another is the function of the ordering matching rule for the attribute type, and the logic used may vary from one attribute type to another. For example, an attribute type whose value is expected to be numeric may use a numeric comparison, whereas an attribute type whose value is expected to be text may use a lexicographic comparison (and therefore a filter like “<tt>(targetAttribute&gt;=10)</tt>” may or may not be satisfied by an entry with a targetAttribute value of “2” because that value is numerically smaller but lexicographically greater than the value “10”).
+</p>
+
+<p>
+  For some kinds of attributes, it may not even make sense to try to make an ordering comparison (e.g., for an attribute type whose values are intended to be the names of colors, it doesn’t make any sense to ask if the color red is greater than or equal to the color blue), and therefore those attributes may not have an ordering matching rule. Matching rules will be discussed in greater detail in the <a href="https://ldap.com/understanding-ldap-schema/">Understanding Schema</a> section.
+</p>
+
+<h1>Less-Or-Equal Filters</h1>
+<p>
+  To understand what a less-or-equal filter is and how it works, re-read the description of greater-or-equal filters above, but substitute the word “less” for every occurrence of the word “greater”, and the “&lt;” symbol for every occurrence of the “&gt;” symbol.
+</p>
+
+<h1>Substring Filters</h1>
+<p>
+  A substring filter may be used to determine whether an entry contains at least one value for a specified attribute that matches a given substring assertion. A substring assertion is comprised of the following components:
+</p>
+
+<ul>
+  <li>
+    An optional subInitial component. If present, then this text must appear at the beginning of a matching attribute value and must not overlap with any text matching a subAny or subFinal component.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Zero or more subAny components. If present, then the text of each subAny component must appear somewhere in a matching attribute value in a manner that does not overlap with any text matching a subInitial or subFinal component. If there are multiple subAny components, then they must appear in a matching value in the order in which they have been provided in the substring filter without overlapping.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An optional subFinal component. If present, then this text must appear at the end of a matching attribute value and must not overlap with any text matching a subInitial or subAny component.
+  </li>
+</ul>
+
+<p>
+  A substring filter must have at least one subInitial, subAny, or subFinal component.
+</p>
+
+<p>
+  The string representation of a substring filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    The attribute description (potentially including attribute options)
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    If there is a subInitial component, then include it here
+  </li>
+  <li>
+    An asterisk
+  </li>
+  <li>
+    If there are any subAny components, then include them here, with each followed by an asterisk
+  </li>
+  <li>
+    If there is a subFinal component, then include it here
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  For example, the string “<tt>(cn=John*)</tt>” represents a substring filter with a subInitial component of “John” and no subAny or subFinal components. The string “<tt>(cn=*John*)</tt>” represents a substring filter with a single subAny component of “John” and no subInitial or subFinal components. The string “<tt>(cn=*John*Doe*)</tt>” represents a substring filter with two subAny components of “John” and “Doe” and no subInitial or subFinal components. The string “<tt>(cn=*Doe)</tt>” represents a substring filter with a subFinal component of “Doe” and no subInitial or subAny elements. The string “<tt>(cn=J*o*h*n*D*o*e)</tt>” represents a substring filter with a subInitial component of “J”, five subAny components of “o”, “h”, “n”, “D”, and “o”, and a subFinal component of “e”.
+</p>
+
+<p>
+  As you might have guessed, the determination of whether an attribute value matches a substring assertion is performed by a substring matching rule. And as with greater-or-equal and less-or-equal filters, there are some kinds of attributes for which substring matching might not make any sense, and therefore no substring matching rule is defined.
+</p>
+
+<h1>Approximate Match Filters</h1>
+<p>
+  An approximate match filter may be used to determine whether an entry contains at least one value for a specified attribute that is approximately equal to a given value. The LDAP specifications do not define what exactly “approximately equal to” means, so that is left up to individual server implementations to determine. Many servers use a “sounds like” mechanism with an algorithm based on Soundex or one of the Metaphone variants.
+</p>
+
+<p>
+  The string representation of an approximate match filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    The attribute description (potentially including attribute options)
+  </li>
+  <li>
+    A tilde character
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    The value to compare (aka the assertion value)
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  For example, it might be reasonable to expect a filter of “<tt>(givenName~=John)</tt>” to match entries with givenName values of either John or Jon.
+</p>
+
+<p>
+  Although it seems like a significant oversight or omission, the LDAP specifications do not make any provision for approximate matching rules. A number of directory servers provide this capability anyway so that it may be possible to configure the approximate match behavior on a per-attribute basis, but the inconsistency of approximate matching capabilities between server implementations makes approximate matching something that is often avoided in LDAP-enabled applications.
+</p>
+
+<h1>Extensible Match Filters</h1>
+<p>
+  Extensible match filters are more complex than the other filter types discussed so far, but they are also more powerful and flexible. There are three primary reasons you may wish to use an extensible match filter:
+</p>
+
+<ul>
+  <li>
+    To override the default matching rule that would normally be used for a particular attribute. For equality, greater-or-equal, less-or-equal, and substring filters, the server will automatically pick the matching rule that will be used to perform the matching based on the definition for the corresponding attribute type in the server schema. This may or may not also be the case for approximate match filters. If you want to use a different, non-default matching rule for a particular attribute (e.g., to perform case-sensitive matching for an attribute that is normally treated in a case-insensitive manner), then an extensible match filter can allow you to do that.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    To determine whether a particular value exists in any attribute in an entry. Equality, greater-or-equal, less-or-equal, substring, and approximate match filters all require you to specify a particular attribute that should be targeted (although as will be described in the section on attribute types in the section on LDAP schema, the use of attribute inheritance allows for some limited bending of this constraint). But extensible match filters allow you to omit the attribute type and search for a matching value in any attribute in the entry (or at least any attribute that supports the desired matching rule).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    To determine whether a particular value exists in the attributes used to comprise the DN for the entry. Presence, equality, greater-or-equal, less-or-equal, substring, and approximate match filters will only examine the attributes contained in an entry and will not look at attributes contained in the DN of the entry (although as previously noted, the attributes contained in the leftmost RDN component of an entry’s DN must be present in that entry). An extensible match filter allows you to perform matching against attributes in other RDN components used to construct the entry’s DN.
+  </li>
+</ul>
+
+<p>
+  The string representation of an extensible match filter is constructed as follows:
+</p>
+
+<ol>
+  <li>
+    An open parenthesis
+  </li>
+  <li>
+    An optional attribute description (potentially including attribute options) if the filter should only match values of a single attribute
+  </li>
+  <li>
+    An optional colon followed by the string “dn” if the filter should treat attributes used to make up the entry’s DN as if those attributes were part of the entry
+  </li>
+  <li>
+    An optional colon followed by the name or numeric OID of the matching rule that should be used to perform the matching
+  </li>
+  <li>
+    A colon
+  </li>
+  <li>
+    An equal sign
+  </li>
+  <li>
+    The value to compare (aka the assertion value)
+  </li>
+  <li>
+    A close parenthesis
+  </li>
+</ol>
+
+<p>
+  All extensible match filters must specify either the attribute description or the matching rule, or both. However, this means that there are a number of possible forms that an extensible match filter may take based on what exactly the goal of the search is. For example:
+</p>
+
+<ul>
+  <li>
+    The filter “<tt>(givenName:=John)</tt>” may be used to determine whether the entry contains a givenName attribute with a value of John, using the default equality matching rule for the givenName attribute. This is logically equivalent to the equality filter “<tt>(givenName=John)</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter “<tt>(givenName:dn:=John)</tt>” may be used to determine whether the entry contains a givenName attribute with a value of John, or if a givenName attribute appears with a value of John anywhere in the DN of the entry, using the default matching rule for the givenName attribute.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter “<tt>(givenName:caseExactMatch:=John)</tt>” may be used to determine whether the entry contains a givenName attribute with the value of John using case-exact matching.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter “<tt>(givenName:dn:2.5.13.5:=John)</tt>” may be used to determine whether the entry contains a givenName attribute with a value of John, or if the entry’s DN includes a givenName attribute with a value of John using the matching rule with OID 2.5.13.5 to make the determination.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter “<tt>(:caseExactMatch:=John)</tt>” may be used to determine whether the entry contains any attribute with a value of John using case-exact matching.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter “<tt>(:dn:2.5.13.5:=John)</tt>” may be used to determine whether the entry or its DN contains any attribute with a value of John using case-exact matching.
+  </li>
+</ul>
+
+<h1>AND Filters</h1>
+<p>
+  An AND filter is a type of filter that encapsulates zero or more other filters and will evaluate to true only if all of the filters that it encapsulates evaluate to true. The string representation of an AND filter is constructed by starting with the string “<tt>(&amp;</tt>” followed by the string representations of all of the encapsulated filters concatenated together, and then the string “<tt>)</tt>” at the end. For example, the filter “<tt>(&amp;(givenName=John)(sn=Doe))</tt>” will only match entries that contain both a givenName attribute with a value of John and an sn attribute with a value of Doe.
+</p>
+
+<p>
+  Note that it is possible to have an AND filter that does not encapsulate any components. This filter has a string representation of “<tt>(&amp;)</tt>” and is called the LDAP “true” filter because it will match any entry.
+</p>
+
+<p>
+  Also note that it is possible to have any number of components in an AND filter, so there is no need to limit an AND filter to two components. For example, the filters “<tt>(&amp;(attr1=a)(attr2=b)(attr3=c)(attr4=d))</tt>” and “<tt>(&amp;(attr1=a)(&amp;(attr2=b)(&amp;(attr3=c)(attr4=d))))</tt>” are logically equivalent, but the first one is simpler to read and understand (not to mention to verify that you have the right number of closing parentheses at the end), and in many directory servers is also more efficient to process. And because some directory servers place a limit on how deeply-nested filters are allowed to get, filters of the second form are more likely to be rejected than filters of the first form (although the nesting limit is usually high enough that you won’t encounter it under normal conditions).
+</p>
+
+<p>
+  Finally, note that some filters may end up with a result of “undefined” rather than true or false. For example, if you were to construct a greater-or-equal filter that targets an attribute which does not have an ordering matching rule, then the result is undefined rather than true or false. An AND filter that has any component that evaluates to undefined will never evaluate to true. An AND filter that has any component that evaluates to false will always evaluate to false. An AND filter that has one or more components that evaluate to undefined and zero or more components that evaluate to true will evaluate to undefined. If the end result of evaluating a filter is undefined, then that will be treated as logically equivalent to false.
+</p>
+
+<h1>OR Filters</h1>
+<p>
+  An OR filter is a type of filter that encapsulates zero or more other filters and will evaluate to true only if at least one of the filters that it encapsulates evaluates to true. The string representation of an OR filter is constructed by starting with the string “<tt>(|</tt>” followed by the string representations of all of the encapsulated filters concatenated together, and then the string “<tt>)</tt>” at the end. For example, the filter “<tt>(|(givenName=John)(givenName=Jon)(givenName=Johnathan)(givenName=Jonathan))</tt>” will match any entry that has one or more of the givenName values contained in that filter.
+</p>
+
+<p>
+  As with an AND filter, it is possible to have an OR filter that does not encapsulate any components. This filter has a string representation of “<tt>(|)</tt>” and is called the LDAP “false” filter because it will never match any entry. And also as with the AND filter, it is generally a better idea to have one OR filter with a lot of components than to construct a more complicated filter that nests a lot of OR filters together.
+</p>
+
+<p>
+  An OR filter with one or more components that evaluate to undefined will never evaluate to false. An OR filter that has at least one component that evaluates to true will evaluate to true. An OR filter in which every component evaluates to false will evaluate to false. An OR filter with one or more components that evaluate to undefined and zero or more components that evaluate to false will evaluate to undefined.
+</p>
+
+<h1>NOT Filters</h1>
+<p>
+  A NOT filter encapsulates exactly one filter component (although that filter component may be an AND or OR filter that encapsulates several components) and negates the result of that encapsulated filter. That is, if the filter inside the NOT filter evaluates to true, then the NOT filter will evaluate to false, and if the filter inside the NOT filter evaluates to false, then the NOT filter will evaluate to true. If the filter inside the NOT filter evaluates to undefined, then the NOT filter will also evaluate to undefined.
+</p>
+
+<p>
+  The string representation of a NOT filter is constructed by starting with “<tt>(!</tt>” followed by the string representation of the encapsulated filter, and then the string “<tt>)</tt>” at the end. For example, the filter “<tt>(!(givenName=John))</tt>” will match any entry that does not match “(givenName=John)”, which is to say any entry that does not include a givenName attribute at all, or any entry that includes a givenName attribute that does not have a value of John.
+</p>
+
+<p>
+  Note that it is probably better to think of a NOT filter as a negation rather than a Boolean NOT. Otherwise, it has the potential to get confusing when you consider the possibility that an attribute can have multiple values. For example, if you consider an entry that has givenName values of both John and Johnathan, you might be tempted to think that the filter “<tt>(!(givenName=John))</tt>” would evaluate to true because the entry has a givenName value that is not John. However, that is not the case because the NOT filter simply negates the value of the encapsulated filter, and because that entry would match “<tt>(givenName=John)</tt>” the entry must not match “<tt>(!(givenName=John))</tt>”. It is unfortunately not possible to construct a standard LDAP filter that expresses the logic “any entry that contains at least one givenName value other than John” (although you could perhaps do so with the help of an extensible match filter that references a custom matching rule).
+</p>
+
+<h1>The String Representation of LDAP Filters</h1>
+<p>
+  For the most part, the string representation of filters has already been described in the above sections for each type of filter. However, there are special characters which must be escaped if they appear in the assertion value of an equality, greater-or-equal, less-or-equal, approximate match, or extensible match filter, or in a subInitial, subAny, or subFinal component of a substring filter. The required escape sequences are:
+</p>
+
+<ul>
+  <li>
+    Any occurrence of the null character must be escaped as “<tt>\00</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any occurrence of the open parenthesis character must be escaped as “<tt>\28</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any occurrence of the close parenthesis character must be escaped as “<tt>\29</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any occurrence of the asterisk character must be escaped as “<tt>\2a</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any occurrence of the backslash character must be escaped as “<tt>\5c</tt>”.
+  </li>
+</ul>
+
+<p>
+  This required escaping removes any possibility of ambiguity that could cause one type of filter to be misinterpreted as a different type of filter. For example, the filter “<tt>(cn=*)</tt>” is a presence filter that will match any entry with one or more values for the cn attribute, whereas the filter “<tt>(cn=\2a)</tt>” is an equality filter that will match any entry that has a cn attribute with a value that is the asterisk. It is very important to ensure that if you construct a filter using a string representation based on user input, you properly escape any of the above special characters in order to avoid the LDAP filter equivalent of an SQL injection attack.
+</p>
+
+<p>
+  Although not required, you may escape any other characters that you want in the assertion value (or substring component) of a filter. This may be accomplished by prefixing the hexadecimal representation of each byte of the UTF-8 encoding of the character to escape with a backslash character. For example, if you wanted to escape the character <tt>ñ</tt> you would represent it as “<tt>\c3\b1</tt>”.
+</p>
+
+<p>
+  For the complete specification of the string representation of LDAP filters, see <a href="https://docs.ldap.com/specs/rfc4515.txt" target="_blank">RFC 4515</a>.
+</p>

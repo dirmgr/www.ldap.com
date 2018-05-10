@@ -1,0 +1,91 @@
+<p>
+  Bind operations are used to authenticate clients (and the users or applications behind them) to the directory server, to establish an authorization identity that will be used for subsequent operations processed on that connection, and to specify the LDAP protocol version that the client will use.
+</p>
+
+<p>
+  Authentication consists of at least two parts: identifying who or what is authenticating, and supplying some kind of proof of that identity (usually something only that user should know or have, like a static and/or password, a certificate, a hardware or software token, and/or biometric information). In many servers, there may be additional steps, like checking password policy state and other constraints that must be satisfied to allow the bind to succeed.
+</p>
+
+<p>
+  LDAP bind requests provide the ability to use either simple or SASL authentication. In simple authentication, the account to authenticate is identified by the DN of the entry for that account, and the proof identity comes in the form of a password. The password is transmitted without any form of obfuscation, so it is strongly recommended that simple authentication be used only over an encrypted connection (e.g., one that has been secured by SSL/TLS, or with the StartTLS extended operation). An anonymous simple bind can be performed by providing empty strings as the bind DN and password (technically, the LDAPv3 specification states that only the password must be empty, but this has been responsible for many security problems with LDAP clients in the past, and many servers require that if an empty password is provided then an empty DN must also be given).
+</p>
+
+<p>
+  SASL authentication uses the Simple Authentication and Security Layer, as defined in <a href="https://docs.ldap.com/specs/rfc4422.txt" target="_blank">RFC 4422</a>. SASL is an extensible framework that makes it possible to plug almost any kind of authentication into LDAP (or any of the other protocols that use SASL). SASL authentication is performed with a SASL mechanism name and an encoded set of credentials. Some SASL mechanisms may require the client and server to exchange information multiple times (via multiple bind requests and responses) in order to complete the authentication process.
+</p>
+
+<p>
+  An LDAP bind request includes three elements:
+</p>
+
+<ul>
+  <li>
+    The LDAP protocol version that the client wants to use. This is an integer value, and version 3 is the most recent version. Some very old clients (or clients written with very old APIs) may still use LDAP version 2, but new applications should always be written to use LDAP version 3.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The DN of the user to authenticate. This should be empty for anonymous simple authentication, and is typically empty for SASL authentication because most SASL mechanisms identify the target account in the encoded credentials. It must be non-empty for non-anonymous simple authentication.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The credentials for the user to authenticate. For simple authentication, this is the password for the user specified by the bind DN (or an empty string for anonymous simple authentication). For SASL authentication, this is an encoded value that contains the SASL mechanism name and an optional set of encoded SASL credentials.
+  </li>
+</ul>
+
+<p>
+  Note that LDAPv3 does not require clients to perform a bind operation before they can issue other types of requests to the server. If an LDAP client issues some other kind of request without first performing a bind, then the client will be considered unauthenticated. This is the same authentication state that results from an anonymous simple bind (using an empty bind DN and an empty password), and is also the authentication state that results from an unsuccessful bind operation.
+</p>
+
+<p>
+  When a simple bind operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. A SASL bind response may also include encoded server SASL credentials for use in subsequent processing. For a SASL mechanism that requires multiple request/response cycles, all responses except the last one will include a “SASL bind in progress” result code to indicate that the authentication process has not yet completed.
+</p>
+
+<p>
+  Some of the most common types of results for a bind operation include:
+</p>
+
+<ul>
+  <li>
+    If the target user was successfully authenticated, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client requests an LDAP protocol version that the server does not support, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-protocolError">protocolError</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client attempts to use a type of authentication that the server does not support, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-authMethodNotSupported">authMethodNotSupported</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client attempts to use a type of authentication that is not appropriate for the target user, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-inappropriateAuthentication">inappropriateAuthentication</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client attempts to bind as a user that does not exist in the server, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidCredentials">invalidCredentials</a>” result, although some servers may use a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result in this case.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client attempts to bind with incorrect credentials (for example, the wrong password when using simple authentication), then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidCredentials">invalidCredentials</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client attempts to perform a simple bind with a DN but no password, the server may either return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result to indicate that the connection was authenticated anonymously, or an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-unwillingToPerform">unwillingToPerform</a>” result to indicate that it does not permit simple bind requests that contain a DN without a password.
+  </li>
+</ul>

@@ -1,0 +1,43 @@
+<p>
+  LDAPv3 is an extensible protocol, and can be used to accomplish things that weren’t considered when the specification was developed. One of the primary ways that this can be achieved is through the use of extended operations.
+</p>
+
+<p>
+  An extended request has two elements:
+</p>
+
+<ul>
+  <li>
+    An <a href="https://ldap.com/object-identifiers/">object identifier</a> that indicates the type of extended operation that the client is requesting. This must be present.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An optional value that contains more information to use during request processing. If a value is provided, then the encoding format used for that value will vary based on the type of operation being performed.
+  </li>
+</ul>
+
+<p>
+  The corresponding extended result has all of the elements of a standard LDAP result (including a required result code and optional matched DN, diagnostic message, referrals, and response controls), but it may also include an optional OID to identify the type of response message, and an optional value containing an encoded representation of additional information about the processing that was performed.
+</p>
+
+<p>
+  Because different kinds of extended operations can do very different things, the result codes that may be returned for different kinds of extended operations may also vary by operation type. It is conceivable, for example, that an extended operation could complete all of its intended processing without any problems, but that it could still be appropriate to return a result other than “success” for that operation. However, some of the general results that may be returned for extended operation processing include:
+</p>
+
+<ul>
+  <li>
+    If the request OID represents a type of extended request that the server does not support, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-protocolError">protocolError</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the client does not have permission to use the given extended request, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+  </li>
+</ul>
+
+<p>
+  A well-behaved client should generally attempt to verify that the server supports a particular type of extended operation before sending a request of that type to the server. This can be accomplished by retrieving the server’s root DSE and verifying that the supportedExtension attribute includes the OID for the extended request to be issued.
+</p>

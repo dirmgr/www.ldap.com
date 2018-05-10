@@ -1,0 +1,663 @@
+<p>
+  LDAP is a standard wire protocol, which means that every LDAP-compliant server uses exactly the same binary protocol to communicate with clients. Although this protocol is not really all that complex if you know how to interpret it, it’s much more suitable to being read by computers than by people. However, there is also a standard text-based representation for LDAP data, as well as for representing changes to that data. That representation is called the LDAP Data Interchange Format, or LDIF (pronounced el diff) for short.
+</p>
+
+<p>
+  Most directory servers provide both a raw backup mechanism (which usually just involves copying the database contents) and a way to export the data to LDIF. It’s usually faster (and sometimes dramatically so) to take and restore raw backups than to export and import LDIF files, but there are still a number of advantages to performing regular LDIF exports:
+</p>
+
+<ul>
+  <li>
+    In some types of directory servers, it may not be possible to restore a backup from one instance into another instance, especially if the two instances are running on different operating systems or hardware platforms. It is almost certainly the case that you won’t be able to restore a backup into a directory server from a different vendor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    LDIF exports are good safeguards against database corruption (whether by software bug or hardware failure). It is of course possible for an LDIF export to become corrupted as well, but even then it is much easier to perform at least a partial recovery.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    LDIF exports can be used to more easily recover data that was accidentally deleted or altered.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    In some servers, performing offline processing against an LDIF export may be a less resource-intensive means of data mining than retrieving all entries over LDAP.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    In some servers, if you want to make large-scale changes to data in the server (e.g., introduce new attributes into every entry, or change the hierarchical structure), it may be more efficient to export the data to LDIF, make the changes, and then import the data back into the server than to make the changes with LDAP operations.
+  </li>
+</ul>
+
+<h1>Base64 Encoding</h1>
+<p>
+  LDIF is a text-based representation of LDAP data, but sometimes raw LDAP data can’t be directly represented as text (e.g., if the value of an attribute includes bytes that don’t represent any character in the UTF-8 character set). At other times, the direct textual representation of LDAP data could conflict with the LDIF syntax in a way that would make it possible to unambiguously determine what the data actually is. It is therefore necessary to have some means of clearly and easily representing raw data in a manner that will not conflict with the structure used to encode data in LDIF.
+</p>
+
+<p>
+  One easy way to accomplish this would be to simply use a hexadecimal (base16) representation of data, in which each byte of raw data is represented by two hexadecimal digits. While this is simple and effective, it is not particularly space-efficient because the base16-encoded representation of the data would be twice as large as the raw form of that data. Fortunately, another alternative exists that allows any raw data to be represented using only ASCII characters and in a way that doesn’t have nearly as much bloat as hexadecimal. That alternate encoding is base64.
+</p>
+
+<p>
+  The base64 format is described in detail in <a href="http://docs.ldap.com/specs/rfc4648.txt" target="_blank">RFC 4648</a>, but the basic premise is that is that it uses an alphabet of 64 characters, with those characters in the following order:
+</p>
+
+<ul>
+  <li>
+    All uppercase ASCII alphabetic letters, in lexicographic order from A to Z.
+  </li>
+  <li>
+    All lowercase ASCII alphabetic letters, in lexicographic order from a to z.
+  </li>
+  <li>
+    All ASCII numeric digits in numeric order from 0 to 9.
+  </li>
+  <li>
+    The plus sign (+)
+  </li>
+  <li>
+    The forward slash (/).
+  </li>
+</ul>
+
+<p>
+  Since 64 is 2<sup>6</sup>, using an alphabet of 64 characters means that each character can represent a unique six-bit combination. As such, you can represent three bytes of raw data (a total of 24 bits) using four characters from the base64 alphabet, meaning that base64-encoded data is only 33% larger than the raw data, whereas the hexadecimal representation is 100% larger.
+</p>
+
+<p>
+  For example, say we wanted to represent the raw data “Hi there!” using a base64 encoding. We would first need to determine what the binary representation of that data is. From the ASCII standard, the binary representations of the characters used in that string are:
+</p>
+
+<table>
+  <tr>
+    <td>H</td>
+    <td>01001000</td>
+  </tr>
+  <tr>
+    <td>i</td>
+    <td>01101001</td>
+  </tr>
+  <tr>
+    <td>{space}</td>
+    <td>00100000</td>
+  </tr>
+  <tr>
+    <td>t</td>
+    <td>01110100</td>
+  </tr>
+  <tr>
+    <td>h</td>
+    <td>01101000</td>
+  </tr>
+  <tr>
+    <td>e</td>
+    <td>01100001</td>
+  </tr>
+  <tr>
+    <td>r</td>
+    <td>01110010</td>
+  </tr>
+  <tr>
+    <td>e</td>
+    <td>01100001</td>
+  </tr>
+  <tr>
+    <td>!</td>
+    <td>00100001</td>
+  </tr>
+</table>
+
+<p>
+  But instead of breaking up the data on eight-bit boundaries, we can break it up on six-bit boundaries and use each six-bit value as an index into the base64 character set (where “000000” represents “A”, “000001” represents “B”, and so on). Doing this, we get the following:
+</p>
+
+<table>
+  <tr>
+    <td>010010</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>100100</td>
+    <td>k</td>
+  </tr>
+  <tr>
+    <td>100000</td>
+    <td>g</td>
+  </tr>
+  <tr>
+    <td>011101</td>
+    <td>d</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>100001</td>
+    <td>h</td>
+  </tr>
+  <tr>
+    <td>100101</td>
+    <td>l</td>
+  </tr>
+  <tr>
+    <td>011100</td>
+    <td>c</td>
+  </tr>
+  <tr>
+    <td>100110</td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>000100</td>
+    <td>U</td>
+  </tr>
+  <tr>
+    <td>100001</td>
+    <td>h</td>
+  </tr>
+</table>
+
+<p>
+  Therefore, the base64-encoded representation of “Hi there!” is “SGkgdGhlcmUh”.
+</p>
+
+<p>
+  The example above works out nicely because the nine bytes of raw data contains 72 bits, which can be also divided twelve 6-bit segments with no bytes left over. But this only happens if the number of raw bytes is a multiple of three. If the number of raw bytes isn’t evenly divisible by three, then you’ll run into a problem where you don’t have enough bits to complete the base64 representation. For example, consider the raw text “Hello”:
+</p>
+
+<table>
+  <tr>
+    <td>H</td>
+    <td>01001000</td>
+  </tr>
+  <tr>
+    <td>e</td>
+    <td>01100001</td>
+  </tr>
+  <tr>
+    <td>l</td>
+    <td>01101100</td>
+  </tr>
+  <tr>
+    <td>l</td>
+    <td>01101100</td>
+  </tr>
+  <tr>
+    <td>o</td>
+    <td>01101111</td>
+  </tr>
+</table>
+
+<p>
+  Breaking this up into six-bit segments for base64 encoding makes it come out uneven:
+</p>
+
+<table>
+  <tr>
+    <td>010010</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>000101</td>
+    <td>v</td>
+  </tr>
+  <tr>
+    <td>101100</td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>011011</td>
+    <td>b</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>1111</td>
+    <td><i>????</i></td>
+  </tr>
+</table>
+
+<p>
+  The way to address this problem is through the addition of padding. We may need to add one or two “pretend” bytes to the end of the raw data so that the total number of bytes comes out to be an even multiple of three. In this case, because we have five raw bytes, we add one “pretend” byte to get six, which is a multiple of three. That will allow us to break up the value into an even number of six-bit segments. For any segment that contains a mix of real bits and pretend bits (which will be represented as dashes), we will assume those pretend bits are zeroes. For any segment that contains only pretend bits, we will use the equal sign as a special base64 padding character. This means that with the addition of that extra “pretend” byte, the second table for the raw data “Hello” now becomes:
+</p>
+
+<table>
+  <tr>
+    <td>010010</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>000101</td>
+    <td>v</td>
+  </tr>
+  <tr>
+    <td>101100</td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>011011</td>
+    <td>b</td>
+  </tr>
+  <tr>
+    <td>000110</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>1111..</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>......</td>
+    <td>=</td>
+  </tr>
+</table>
+
+<p>
+  Therefore, the base64-encoded representation of “Hello” is “SGVsbG8=”.
+</p>
+
+<p>
+  The process of decoding base64-encoded data is simply the reverse of the process used to encode. First, convert each base64 character to the appropriate six-bit representation. Then concatenate all of those six-bit representations together and break them up into eight-bit segments to get the raw bytes. For example, consider the base64-encoded string “TERJRg==”, which we can break into six-bit segments as:
+</p>
+
+<table>
+  <tr>
+    <td>T</td>
+    <td>010011</td>
+  </tr>
+  <tr>
+    <td>E</td>
+    <td>000100</td>
+  </tr>
+  <tr>
+    <td>R</td>
+    <td>010001</td>
+  </tr>
+  <tr>
+    <td>J</td>
+    <td>001001</td>
+  </tr>
+  <tr>
+    <td>R</td>
+    <td>010001</td>
+  </tr>
+  <tr>
+    <td>g</td>
+    <td>10....</td>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>......</td>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>......</td>
+  </tr>
+</table>
+
+<p>
+  And when we concatenate the bits and break them into eight-bit bytes instead, we get:
+</p>
+
+<table>
+  <tr>
+    <td>01001100</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>01000100</td>
+    <td>D</td>
+  </tr>
+  <tr>
+    <td>01001001</td>
+    <td>I</td>
+  </tr>
+  <tr>
+    <td>01000110</td>
+    <td>F</td>
+  </tr>
+</table>
+
+<p>
+  Therefore, the base64-encoded string “TERJRg==” decodes into the raw bytes that comprise the ASCII string “LDIF”.
+</p>
+
+<h1>Requirements for Base64 Encoding LDIF Data</h1>
+<p>
+  Whenever possible, the LDIF specification attempts to allow a human-readable representation of LDAP data. But there are some cases in which it will be necessary to base64-encode data to ensure that it can be safely and unambiguously represented in LDIF.
+</p>
+
+<p>
+  As will be described below, LDIF uses the colon character as a delimiter between an element name (e.g., an attribute description or an LDIF keyword) and its corresponding value, and that colon may optionally be followed by a single space. However, if LDIF includes a base64-encoded value rather than a raw value, it is necessary to use two colons (the second of which may be optionally followed by a single space) rather than one to serve as the delimiter.
+</p>
+
+<p>
+  It is legal to base64-encode any value when representing it in LDIF, but any value that meets any of the following conditions is required to be base64 encoded for use in LDIF:
+</p>
+
+<ul>
+  <li>
+    Any value that begins with a space.
+  </li>
+  <li>
+    Any value that begins with a colon.
+  </li>
+  <li>
+    Any value that begins with a less-than character.
+  </li>
+  <li>
+    Any value that includes a carriage-return or line-break character.
+  </li>
+  <li>
+    Any value that includes the ASCII null character.
+  </li>
+  <li>
+    Any value that contains non-ASCII data.
+  </li>
+</ul>
+
+<p>
+  Although it is not absolutely required, it is strongly recommended that values that end with a space should also be base64 encoded. It is also strongly recommended that values containing ASCII control characters (e.g., tabs, backspace, etc.) be base64 encoded.
+</p>
+
+<h1>The Basic LDIF File Structure</h1>
+<p>
+  The official LDIF specification is provided in <a href="https://docs.ldap.com/specs/rfc2849.txt" target="_blank">RFC 2849</a>, but the general format is fairly straightforward. There are some pretty simple rules to get started:
+</p>
+
+<ul>
+  <li>
+    Blank lines (i.e., lines consisting only of the end-of-line sequence, which may be either the UNIX style consisting only of a newline character, or the Windows style consisting of a carriage return followed by a newline) are used to separate LDIF records. There must be at least one blank line between each record, but there is nothing wrong with having multiple blank lines between records.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any line that starts with a space will be treated as a continuation of the line before it. The LDIF reader must remove exactly one space from the beginning of such lines before appending the rest of the line to the previous line. The first line of an LDIF record (i.e., the first non-blank line after a blank line) cannot begin with a space. Note that while there is no requirement to do so, it is a relatively common practice to wrap long lines by splitting them up into multiple shorter lines in this manner.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any line that starts with an octothorpe character (<tt>#</tt>) is considered a comment and will be ignored. Comments may be placed between LDIF records (as long as there is still at least one blank line to separate the records) or in the middle of an LDIF record (e.g., between two attributes of an entry). Long comments may be wrapped in the same way as lines that don’t contain comments (i.e., by placing a single space at the beginning of all but the first line of the comment), but it is also common to manually split long comments into multiple lines and have each line start with its own octothorpe character.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An LDIF file may start with a version header to indicate the LDIF version. This line (after any unwrapping has been performed) should consist of the text “<tt>version:</tt>”, followed by an optional space, and the version number. At present, only version 1 has been standardized, so the version header (if present) will look like “<tt>version: 1</tt>” (or, if the space is omitted, “<tt>version:1</tt>”). There does not need to be any blank line between the version header and the beginning of the first record, although there is nothing wrong with following the version header with one or more blank lines and/or comment lines.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The first line of every LDIF record must specify the DN of the associated entry. It is generally formatted as the string “<tt>dn:</tt>”, followed by an optional space, and the string representation of the DN. However, it may also be the string “<tt>dn::</tt>” (note the two commas instead of one), followed by an optional space, and the base64-encoded string representation of the DN. Long DN lines may optionally be wrapped into multiple lines as described above.
+  </li>
+</ul>
+
+<p>
+  Most of the other rules are specific to the type of LDIF record, and will be described below in the sections for each type of record.
+</p>
+
+<h1>The LDIF Entry Format</h1>
+<p>
+  The LDIF representation for an entry is very simple. The first line must provide the entry’s DN, in one of the two following forms:
+</p>
+
+<ul>
+  <li>
+    The string “<tt>dn:</tt>”, an optional space, and the string representation of the target entry DN.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>dn::</tt>” (note the two colons), an optional space, and the base64-encoded string representation of the target entry DN.
+  </li>
+</ul>
+
+<p>
+  Each line thereafter must represent a single attribute value, in one of the following three forms:
+</p>
+
+<ul>
+  <li>
+    The attribute description (which may or may not include attribute options), a single colon, an optional space, and the string representation of the attribute value.  For example, “<tt>cn: John Doe</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The attribute description (which may or may not include attribute options), two colons, an optional space, and the base64-encoded representation of the attribute value.  For example, “<tt>cn:: SGVsbG*=</tt>”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The attribute description (which may or may not include attribute options), a single colon, a less-than symbol, an optional space, and a URL that specifies the way to obtain the value for the attribute. The LDIF specification only mentions the “file://” URL format specifically (as a way to reference files on the local filesystem), but some LDIF parsers may support other types of URLs.  For example, “<tt>cn:&lt; file:///path/to/data</tt>”
+  </li>
+</ul>
+
+<p>
+  If an attribute has multiple values, then a separate line will be used for each value, with the attribute description repeated on each of those lines. The special objectClass attribute will be used to represent the set of object classes for an entry.
+</p>
+
+<p>
+  For example, the following is the LDIF representation of the entry “dc=example,dc=com” which includes the object classes top and domain, and only the dc and description attributes:
+</p>
+
+<pre>dn: dc=example,dc=com
+objectClass: top
+objectClass: domain
+dc: example
+description: This is the first description value
+description: This is the second description value</pre>
+
+<p>
+  The DN line must be first, but the order in which the attributes are listed should not be considered significant. For attributes with multiple values, the order in which those values appear should also not be considered significant. Further, there is no requirement that all values of a multivalued attribute be listed together, so you can have values for one or more other attributes between different values for the same attribute. As such, the following entry is logically equivalent to the one listed above:
+</p>
+
+<pre>dn: dc=example,dc=com
+description: This is the second description value
+objectClass: domain
+dc: example
+objectClass: top
+description: This is the first description value</pre>
+
+<h1>The LDIF Change Record Formats</h1>
+<p>
+  LDIF provides a way to represent not only static LDAP data, but also operations that can alter LDAP data. Just as LDAP defines four basic types of operations for altering data (add, delete, modify, and modify DN), LDIF defines four types of change records for representing those LDAP operations.
+</p>
+
+<p>
+  The actual syntax for each type of LDIF change record depends on the type of change being represented. However, all four types of change records start with the same three elements. The first element is the DN of the entry targeted by the change, in one of the following two forms:
+</p>
+
+<ul>
+  <li>
+    The string “<tt>dn:</tt>”, an optional space, and the string representation of the target entry DN.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>dn::</tt>”, an optional space, and the base64-encoded string representation of the target entry DN.
+  </li>
+</ul>
+
+<p>
+  Next is an optional element that can be used to represent any controls that should be included as part of the change if sent as an LDAP request. This element is often omitted to indicate that no controls are necessary, but if it is present then it should be in one of the following forms:
+</p>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, and the numeric OID for the control. The control will have a criticality of false and no value.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, one or more spaces, and a string of either “<tt>true</tt>” or “<tt>false</tt>” to represent the criticality for the control. The control will not have a value.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, a single colon, an optional space, and the raw value to use for the control. The control will have a criticality of false.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, two colons, an optional space, and the base64-encoded value to use for the control. The control will have a criticality of false.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, a single colon, a less-than symbol, an optional space, and a URL that specifies the way to obtain the value for the control. The control will have a criticality of false.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, one or more spaces, a string of either “<tt>true</tt>” or “<tt>false</tt>” to represent the criticality for the control, a single colon, an optional space, and the raw value to use for the control.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, one or more spaces, a string of either “<tt>true</tt>” or “<tt>false</tt>” to represent the criticality for the control, two colons, an optional space, and the base64-encoded value to use for the control.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The string “<tt>control:</tt>”, an optional space, the numeric OID for the control, one or more spaces, a string of either “<tt>true</tt>” or “<tt>false</tt>” to represent the criticality for the control, a single colon, a less-than symbol, an optional space, and a URL that specifies the way to obtain the value for the control.
+  </li>
+</ul>
+
+<p>
+  Strictly speaking, the LDIF specification does not allow the entire control definition to be base64-encoded (by starting with “<tt>control::</tt>” and an optional space and then base64-encoding the rest of the definition). Although some LDIF parsers may be able to accept a base64-encoded control definition, there really is no reason to use this representation because all valid OID and criticality strings are safe to include in LDIF without base64-encoding, and the control definition includes a provision for just base64-encoding the control value.
+</p>
+
+<p>
+  The third element common to all types of LDIF change records is the string “<tt>changetype:</tt>” followed by an optional space and one of the following strings: <tt>add</tt>, <tt>delete</tt>, <tt>modify</tt>, <tt>moddn</tt>, and <tt>modrdn</tt> (<tt>moddn</tt> and <tt>modrdn</tt> can be used interchangeably in the LDIF representation of a modify DN change record). Note that as with control definitions, the LDIF specification does not allow the changetype to be base64 encoded (although some LDIF parsers may be able to handle this encoding). Also note that while the LDIF specification requires a changetype element to be present in all LDIF change records, some LDIF parsers have the ability to assume that an LDIF change record without a changetype element represents an add change record. This makes it easier to create LDAP add operations from an LDIF file containing entries rather than LDIF change records.
+</p>
+
+<p>
+  The remainder of an LDIF change record varies based on the type of change being processed.
+</p>
+
+<h2>LDIF Add Change Records</h2>
+<p>
+  Since an add operation is used to add an entry to the DIT, an LDIF add change record simply reflects the content of the entry to add. As such, an LDIF add change record looks very much like an LDIF entry, except for the line that specifies the changetype.
+</p>
+
+<p>
+  For example, the following is an LDIF add change record that could be used to add an “ou=test,dc=example,dc=com” entry:
+</p>
+
+<pre>dn: ou=test,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: organizationalUnit
+ou: test</pre>
+
+<h2>LDIF Delete Change Records</h2>
+<p>
+  The only component of an LDAP delete request is the DN of the entry to delete. The same is true for an LDIF delete change record: it requires only the DN and the changetype elements to be present.
+</p>
+
+<p>
+ For example, the following is an LDIF delete change record that could be used to delete the “ou=test,dc=example,dc=com” entry:
+</p>
+
+<pre>dn: ou=test,dc=example,dc=com
+changetype: delete</pre>
+
+<h2>LDIF Modify Change Records</h2>
+<p>
+  Like an LDAP modification, an LDIF modify change record can be used to specify one or more changes to an entry. In an LDIF modify change record, the individual modifications to apply are listed immediately below the changetype line and consist of the following elements:
+</p>
+
+<ol>
+  <li>
+    A line that contains the modification type (one of “<tt>add</tt>”, “<tt>delete</tt>”, “<tt>replace</tt>”, or “<tt>increment</tt>”), followed by a colon, zero or more spaces, and the attribute description for the target attribute.
+
+  </li>
+  <li>
+    Zero or more lines that specify the values for the modification. Each value line consists of the attribute description followed by a colon, zero or more spaces, and a value for that modification. Alternately, the value can be represented in other valid LDIF formats, like two colons, zero or more spaces, and the base64-encoded representation of the value.
+
+  </li>
+  <li>
+    A line with a single dash character. This is used as a delimiter to separate individual modifications for cases in which an LDIF change record specifies multiple changes to the same entry. Technically, the LDIF specification indicates that every modification needs to end with a dash, but many LDIF implementations support leaving off the dash after the last modification.
+
+  </li>
+</ol>
+
+<p>
+  For example, the following is an LDIF modify change record that could be used to make a number of changes to the “ou=test,dc=example,dc=com” entry, including adding a description attribute with multiple values, replacing the value(s) for the postalCode attribute with a single value, and removing all values for the seeAlso attribute:
+</p>
+
+<pre>dn: ou=test,dc=example,dc=com
+changetype: modify
+add: description
+description: First description value
+description: Second description value
+-
+replace: postalCode
+postalCode: 12345
+-
+delete: seeAlso
+-</pre>
+
+<h2>LDIF Modify DN Change Records</h2>
+<p>
+  An LDIF modify DN change record is comprised of the following elements after the changetype:
+</p>
+
+<ol>
+  <li>
+    A line containing the string “<tt>newrdn</tt>” followed by a colon, zero or more spaces, and the new RDN to use for the target entry. This line is required.
+
+  </li>
+  <li>
+    A line containing the string “<tt>deleteoldrdn</tt>” followed by a colon, zero or more spaces, and the number “<tt>1</tt>” if the old RDN values are to be removed from the entry, or the number “<tt>0</tt>” if the old RDN values are to be kept in the entry even though they no longer appear in the RDN. This line is required.
+
+  </li>
+  <li>
+    An optional line to specify the DN of the new parent below which the entry should be moved. This line may be omitted if the entry is not being moved beneath a new parent, but if it is present, then it should consist of the string “<tt>newsuperior</tt>” followed by a colon, zero or more spaces, and the new superior entry DN.
+  </li>
+</ol>
+
+<p>
+  For example, the following is an LDIF modify DN change record that can be used to rename the entry “cn=Test User,ou=People,dc=example,dc=com” to be “uid=test.user,ou=People,dc=example,dc=com”, while keeping the cn value in the entry. Since the entry is still below the same parent (“ou=People,dc=example,dc=com”), no new superior DN is required.
+</p>
+
+<pre>dn: cn=Test User,ou=People,dc=example,dc=com
+changetype: moddn
+newrdn: uid=test.user
+deleteoldrdn: 0</pre>

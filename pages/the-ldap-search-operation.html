@@ -1,0 +1,138 @@
+<p>
+  A search operation can be used to retrieve partial or complete copies of entries matching a given set of criteria. The elements of an LDAP search request include:
+</p>
+
+<ul>
+  <li>
+    The search base DN. This specifies the base of the subtree in which the search is to be constrained. This must be provided, but it may be the null DN.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The search scope. This specifies the portion of the target subtree that should be considered. Supported search scope values include:
+    <ul>
+      <li>
+        baseObject (often referred to as “base”): Indicates that only the entry specified as the search base should be considered. None of its subordinates will be considered.
+
+      </li>
+      <li>
+        singleLevel (often referred to as “one”): Indicates that only the immediate children of the entry specified as the search base should be considered. The base entry itself should not be considered, nor any descendants of the immediate children of the base entry.
+
+      </li>
+      <li>
+        wholeSubtree (often referred to as “sub”): Indicates that the entry specified as the search base, and all of its subordinates to any depth, should be considered. Note that in the special case that the search base DN is the null DN, the root DSE should not be considered in a wholeSubtree search.
+
+      </li>
+      <li>
+        subordinateSubtree (often referred to as “subordinates”): Indicates that the entry specified by the search base should not be considered, but all of its subordinates to any depth should be considered.
+
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The alias dereferencing behavior, which indicates how the server should treat any aliases encountered while processing the search. Supported dereference behavior values include:
+    <ul>
+      <li>
+        neverDerefAliases: Indicates that the server should dereference any aliases encountered while processing the search.
+
+      </li>
+      <li>
+        derefInSearching: Indicates that the server should not attempt to dereference the search base entry if it is itself an alias, but any aliases encountered within the scope of the search should be dereferenced.
+
+      </li>
+      <li>
+        derefFindingBaseObj: Indicates that, if the entry specified as the search base is an alias, then the server should dereference that alias, but any aliases encountered within the scope of the search should not be dereferenced.
+        derefAlways: Indicates that, if the entry specified as the search base is an alias, then the server should dereference that alias, and any aliases encountered within the scope of the search should also be dereferenced.
+
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The size limit for the search. This specifies the maximum number of entries that should be returned from the search. A value of zero indicates no limit. Note that the server may also impose a size limit for the search operation, and in that case the smaller of the client-requested and server-imposed size limits will be enforced.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The time limit for the search. This specifies the maximum length of time, in seconds, that the server should spend processing the search. A value of zero indicates no limit. Note that the server may also impose a time limit for the search operation, and in that case the smaller of the client-requested and server-imposed time limits will be enforced.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A typesOnly flag. If this is given a value of true, then it indicates that entries that match the search criteria should be returned containing only the attribute descriptions for the attributes contained in that entry but should not include the values for those attributes. If this is given a value of false, then it indicates that the attribute values should be included in the entries that are returned.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter for the search. This specifies criteria to use to identify which entries within the scope should be returned. See <a href="https://ldap.com/ldap-filters/">LDAP Filters</a> for more information about the types of filters that may be used.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A set of attributes to request for inclusion in entries that match the search criteria and are returned to the client. If a specific set of attribute descriptions are listed, then only those attributes should be included in matching entries. The special value “*” indicates that all user attributes should be included in matching entries. The special value “+” indicates that all operational attributes should be included in matching entries. The special value “1.1” indicates that no attributes should be included in matching entries. Some servers may also support the ability to use the “@” symbol followed by an object class name (e.g., “@inetOrgPerson”) to request all attributes associated with that object class. If the set of attributes to request is empty, then the server should behave as if the value “*” was specified to request that all user attributes be included in entries that are returned.
+  </li>
+</ul>
+
+<p>
+  When a directory server receives a valid, authorized search request, then it will identify any entries within the specified scope that match the given filter. All of those entries (or at least those that the requester has permission to retrieve) will be returned to the client in search result entry messages. Each search result entry message will include the DN of the matching entry, along with zero or more of the attributes contained in that entry, based on the set of requested attributes from the search request and the set of attributes that the requester has permission to retrieve. If the search request had a typesOnly value of true, then those attributes will be returned without their values; otherwise the attributes will be returned with all values that the requester has permission to retrieve.
+</p>
+
+<p>
+  If the server determines during the course of the search that there may be entries in other servers that match the search criteria, then the server may also return one or more search result reference messages that include referral URIs that the client may or may not decide to follow.
+</p>
+
+<p>
+  Once the server has returned all appropriate search result entry and search result reference messages, it will return a search result done message to indicate that all processing for that search operation has completed. This search result done message is basic LDAP response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. Some of the most common types of results for a search operation include:
+</p>
+
+<ul>
+  <li>
+    If the search operation completed successfully and the server returned all matching entries that the requester had permission to retrieve, then the search result done message should have a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result code.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the entry specified by the search base DN does not exist, then the search result done message should have a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result code. If any of the ancestors of the search base entry does exist, then the result may include a matched DN element with the DN of the most subordinate ancestor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the specified search base DN is malformed, then the search result done message should have an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result code.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the search criteria matched more entries than were allowed by the client-requested or server-imposed size limit, then the search result done message should have a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-sizeLimitExceeded">sizeLimitExceeded</a>” result code. Note that it is common for servers to return matching entries to the client up to the effective size limit for the operation before returning the “sizeLimitExceeded” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the time required to process the operation reached the client-requested or server-imposed time limit, then the search result done message should have a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-timeLimitExceeded">timeLimitExceeded</a>” result code. Note that any matching entries identified before the effective time limit was reached may have been returned to the client before the “timeLimitExceeded” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the filter includes an attribute type that is not defined in the server schema, then the search result done message may have an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-undefinedAttributeType">undefinedAttributeType</a>” result code. However, some servers may choose to treat filter components using an undefined attribute type as if they do not match any entries.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to perform the search, then the search result done message should have an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result code. Note that this is different from the case in which the search request itself is allowed but the search criteria matches entries that the client is not permitted to access, and it is also different from the case in which the client has permission to access only a subset of the attributes in matching entries. In such cases, the search result done message may still have a result code of “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” but there may be some matching entries that are excluded from the results, and/or some attributes excluded from matching entries, in order to prevent the client from accessing information it is not permitted to retrieve.
+  </li>
+</ul>

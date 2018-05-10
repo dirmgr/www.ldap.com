@@ -1,0 +1,61 @@
+<p>
+  An add operation may be used to create a new entry in the DIT. An add request includes the DN of the entry to create and the attributes to include in that entry. The set of attributes must include the objectClass attribute to specify the object classes to include in the entry, and any attributes required by those object classes and any associated DIT content rule. The attributes used in the entry’s RDN must be present in the entry, but the server should automatically include them in the entry even if they are not contained in the add request. Unless the DN of the entry to add is one of the naming context DNs defined for the server, then the immediate parent of the entry to add must already exist in the server, and there must not already be an entry with that DN in the server.
+</p>
+
+<p>
+  When the add operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. The following are some of the most common types of add results that may be returned:
+</p>
+
+<ul>
+  <li>
+    If the add operation was processed successfully, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the add request includes an attribute that is not defined in the schema, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-undefinedAttributeType">undefinedAttributeType</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the add request includes an attribute with a value that does not comply with the constraints of its associated attribute syntax, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidAttributeSyntax">invalidAttributeSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the DN of the entry to add is not a naming context DN and the parent entry does not already exist, then it should fail with a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result. If any of the ancestors of the target entry does exist, then the result may include a matched DN element with the DN of the most subordinate ancestor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the DN of the entry is malformed, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to add the entry, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If there is a problem with the set of object classes for the entry to add (e.g., if any object class is not defined in the schema, if it does not include exactly one structural object class, or if it includes an auxiliary class that is not permitted for use with the structural class), then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassViolation">objectClassViolation</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the entry is missing an attribute required by one of the object classes or a DIT content rule, or if it includes an attribute that is not permitted by any of the object classes or a DIT content rule, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassViolation">objectClassViolation</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the DN of the entry to add matches the DN of an entry already in the directory server, then it should fail with an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-entryAlreadyExists">entryAlreadyExists</a>” result.
+  </li>
+</ul>

@@ -1,0 +1,117 @@
+<p>
+  A modify operation can be used to alter the contents of an existing entry in the directory server. A single modify operation can include changes that affect multiple attributes (as long as those attributes are all in the same entry), and all of those changes will be processed atomically, so that they will either all succeed or will all fail as a unit, and the server will not expose the entry in a partially-modified state. It is not possible for a modify operation to make any change that would ultimately remove any attribute value used in the entry’s RDN; a modify DN operation must be used for any change that would alter an entry’s DN.
+</p>
+
+<p>
+  A modify request includes the DN of the entry to update and a set of one or more modifications. Each modification includes a modification type, the attribute description for the target attribute, and an optional set of values. The following kinds of modifications are supported:
+</p>
+
+<ul>
+  <li>
+    If the modification type is “add”, then there must be an attribute description and a set of values. If the specified attribute does not already exist in the target entry, then it will be added with all of the provided values. If the attribute does exist, then the provided values will be added to the existing values for that attribute. Under normal circumstances, a modify operation cannot be used to add a value that already exists in the entry.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modification type is “delete” and there is an attribute description without any values, then all values for the specified attribute will be removed from the entry. Under normal circumstances, a modify operation cannot be used with the delete modification type to remove an attribute that does not already exist (although the “replace” modification type can be used to accomplish this).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modification type is “delete” and there is an attribute description with one or more values, then only the specified values will be removed from the entry. Under normal circumstances, a modify operation cannot be used to delete an attribute value that does not already exist in the entry.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modification type is “replace” and there is an attribute description without any values, then all values for the specified attribute will be removed from the entry. If the specified attribute does not exist in the entry, then this will have no effect.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modification type is “replace” and there is an attribute description with one or more values, then any existing values for the specified attribute will be removed and replaced with the provided values. If the specified attribute did not previously have any values in the entry, then the attribute will be added with the provided set of values.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modification type is “increment”, then there must be an attribute description with exactly one value, and that value must be a positive or negative integer. The target attribute must exist in the entry with exactly one value, and that value must be an integer. The increment operation will update the specified attribute so that its new value will be the sum of the provided value and the existing value.
+  </li>
+</ul>
+
+<p>
+  If a modify request includes multiple modifications, then they will be applied in the order that they are listed in the modify request. If one modification depends on another modification in the same request, then it should be listed after the modification on which it depends.
+</p>
+
+<p>
+  When a modify operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. Some of the most common types of results for a modify operation include:
+</p>
+
+<ul>
+  <li>
+    If the modification completes successfully and all of the requested changes are applied, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request targets an entry that does not exist, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result. If any of the ancestors of the target entry does exist, then the result may include a matched DN element with the DN of the most subordinate ancestor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request includes a malformed DN, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to target an attribute type that is not defined in the schema, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-undefinedAttributeType">undefinedAttributeType</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to add an attribute value that already exists in the entry, or attempts to add an additional value to a single-valued attribute, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-attributeOrValueExists">attributeOrValueExists</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to add or replace attribute values and includes a value that does not conform to the associated attribute syntax, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidAttributeSyntax">invalidAttributeSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to use a delete modification type to remove an attribute or value that does not exist in the entry, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchAttribute">noSuchAttribute</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to remove an attribute value that is used in the entry’s RDN, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-notAllowedOnRDN">notAllowedOnRDN</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to add an attribute that is not allowed by any of the object classes or DIT content rule, or to remove an attribute that is required by any of the object classes or DIT content rule, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassViolation">objectClassViolation</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify request attempts to change the structural class for the entry, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassModsProhibited">objectClassModsProhibited</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to perform the requested modify operation, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+<  </li>
+</ul>

@@ -1,0 +1,65 @@
+<p>
+  An LDAP compare operation may be used to determine whether a specified entry has a particular attribute value. The elements contained in a compare request include:
+</p>
+
+<ul>
+  <li>
+    The DN of the entry for which the determination is to be made.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The attribute description (the attribute type name and zero or more attribute options) of the attribute for which to make the determination.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The assertion value for which to make the determination.
+  </li>
+</ul>
+
+<p>
+  When the compare operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. Some of the most common types of responses for a compare operation include:
+</p>
+
+<ul>
+  <li>
+    If the target entry exists and does contain the specified attribute value, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-compareTrue">compareTrue</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the target entry exists and does not contain the specified attribute value, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-compareFalse">compareFalse</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the target entry does not exist, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result. If any of the ancestors of the target entry does exist, then the result may include a matched DN element with the DN of the most subordinate ancestor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the specified entry DN is malformed, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the target attribute type is not defined in the server schema, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-undefinedAttributeType">undefinedAttributeType</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to make the determination, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+  </li>
+</ul>
+
+<p>
+  Note that it is possible to accomplish a similar result with a search operation (by specifying a search base of the target entry DN, a baseObject scope, and a filter like “(attributeDescription=assertionValue)”). However, the compare operation may be able to accomplish this more efficiently than a search because if the filter matches, then the search operation will have two response messages (a search result entry message containing some or all of the matching entry, and a search result done message to indicate that the search is complete) whereas the compare operation needs only a single response message. In addition, it is conceivable that a server’s access control configuration may allow a client to perform a compare operation even if it would not allow the client to retrieve the target entry. But if the client will need to retrieve attributes from the target entry, then a search operation is the better choice because the compare operation does not return any information from the target entry.
+</p>

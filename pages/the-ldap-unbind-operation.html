@@ -1,0 +1,11 @@
+<p>
+  An unbind operation allows the client to signal to the directory server that it is about to close its connection to the server. Upon receiving this request, the server should then close its connection to the client so that the connection is no longer usable even if the client fails to actually disconnect after sending the unbind request. There are no elements inside of an unbind request, and there is no result message to be sent in response to an unbind request.
+</p>
+
+<p>
+  Note that even though the name of the operation suggests that it is a counterpart to the bind operation, it does not have the effect of merely reverting the connection to an unauthenticated state. An unbind operation leaves the connection in an invalid state and neither the client nor the server should attempt to perform any additional communication over a connection on which the unbind operation has been processed. If a client wishes to revert a connection to an unauthenticated state, then it should perform an anonymous simple bind (i.e., a simple bind request with a zero-length bind DN and a zero-length password) on that connection.
+</p>
+
+<p>
+  Also note that sending an unbind request is generally considered a courtesy. Although an unbind request indicates to the server that the client is ready to close the connection, the server should also be able to handle the case in which the client merely disconnects without first sending an unbind request. However, preceding a disconnect with an unbind request is recommended to aid with troubleshooting, because if the server detects the loss of a client connection that was not preceded by an unbind request, then it may not be possible to determine whether the client actually initiated the closure or whether it might have been caused by some kind of network issue or other problem.
+</p>

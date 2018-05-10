@@ -1,0 +1,19 @@
+<p>
+  LDAP is an asynchronous protocol. While many clients send an LDAP request and then wait for the result before sending the next request, this pattern is not required. It is possible to send multiple LDAP requests over the same connection so that the server can process them in parallel, and then receive the results as they are returned by the server, potentially in a different order than the corresponding requests were sent.
+</p>
+
+<p>
+  Each LDAP request message includes a message ID that must be an integer value between 1 and 2147483647 (inclusive). This must be unique across all active requests (clients typically start with 1 and then increment by 1 for each subsequent request, and then rolling back around to 1 after sending request 2147483647; however this is not strictly required), and the server will include the request’s message ID in all response messages for that request. The client can use these response message IDs to match them up with the corresponding request.
+</p>
+
+<p>
+  If a client sends a request but then decides that it is no longer interested in getting any more response messages for that operation, then it can send an abandon request to the server to indicate that the server should stop processing for that request. The abandon request protocol operation contains only the message ID for the request to abandon, and the server may then try to identify and interrupt the processing for that operation. It is only possible to abandon an operation requested earlier over the same connection; LDAP does not currently provide any standard way to attempt to interrupt processing for an operation requested over a different connection.
+</p>
+
+<p>
+  Note that there is no response to an abandon operation, and there is no guarantee that the server will be able to honor that request. The operation may still complete, and if it is a write operation then the changes included in that request may still be applied. The server may or may not send a response for the operation if it completes after an abandon is received, so the lack of response should not be interpreted as an indication that the operation was abandoned.
+</p>
+
+<p>
+  The cancel extended operation addresses some of the shortcomings associated with the abandon operation. In particular, the extended request will receive a response indicating whether the cancel was successful or why it failed (whereas an abandon request will not receive a response), and if the target operation was canceled, then it will receive a result indicating that it was canceled (whereas an operation that was abandoned may not receive any response). In general, if the directory server supports the cancel extended operation, then it should probably be used instead of the abandon operation.
+</p>

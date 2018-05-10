@@ -1,0 +1,37 @@
+<p>
+  A delete operation may be used to remove an entry from a directory server. The only element of the delete request is the DN of the entry to remove. In most cases, the target entry must be a leaf entry (i.e., an entry without any subordinates), although some servers may support the inclusion of a subtree delete request control to allow an entry to be deleted along with its subordinates.
+</p>
+
+<p>
+  When a delete operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. Some of the most common types of results for a delete operation include:
+</p>
+
+<ul>
+  <li>
+    If the delete operation completes successfully and the entry is removed, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the target entry does not exist, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result. If any of the ancestors of the target entry does exist, then the result may include a matched DN element with the DN of the most subordinate ancestor.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the target entry has one or more subordinate entries, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-notAllowedOnNonLeaf">notAllowedOnNonLeaf</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the specified DN is malformed, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to perform the delete operation, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+  </li>
+</ul>

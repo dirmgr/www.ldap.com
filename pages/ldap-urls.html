@@ -1,0 +1,135 @@
+<p>
+  An LDAP URL is a string that can be used to encapsulate the address and port of a directory server, the DN of an entry within that server, or the criteria for performing a search within that server. LDAP URLs have a handful of common uses in LDAP:
+</p>
+
+<ul>
+  <li>
+    They can be returned in a referral to indicate that the requested operation should be processed in another server or elsewhere in the same server. Referrals will be discussed in more detail below.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    They can be used to define a dynamic group (i.e., a group whose membership is automatically determined based on matching a given set of criteria). Dynamic groups will be discussed in more detail in another section.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Some LDAP client APIs use LDAP URLs to provide information about a directory server to which a connection should be established, or the properties of a search to be processed. The elements of a search request will be discussed in detail in another section.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Some directory servers use LDAP URLs to target entries or sets of entries in access control rules. The format of access control rules is not standardized, so different directory server vendors may use different mechanisms for expressing access control rules, and that discussion is outside the scope of this page.
+  </li>
+</ul>
+
+<p>
+  LDAP URLs may include the following components:
+</p>
+
+<ul>
+  <li>
+    The scheme. The official specification states that this must always be “ldap” but some servers may also use “ldaps” to indicate LDAP communication secured by SSL/TLS. All LDAP URLs must include a scheme followed by a colon and two forward slashes (e.g., “ldap://”).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The address and/or port of the target directory server. The address may be an IPv4 or IPv6 address or a resolvable name. If the address is omitted, then the assumption is that the client has some knowledge of the address to use (e.g., if an LDAP URL returned in a referral does not include an address, then it may imply the address of the server with which the client is already communicating). If the port is omitted, then you should assume a default port of 389 (unless the scheme is “ldaps”, in which case the default port would be 636). If both an address and port are present, they should be separated by a colon. If the URL contains only an address but no port, then only the string representation of the address is needed. If the URL contains only a port but no address, then the port should be preceded by a colon. For example, “ds.example.com:389” contains both an address and port, “ds.example.com” contains only an address with no port, “:389” contains only a port with no address, and “” contains neither an address nor a port.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The DN of an entry. If the LDAP URL is used to represent search criteria, then this will be the base DN for that search. If present, then this should be preceded by a forward slash to separate it from the address and port. If no DN is specified, then the zero-length DN (targeting the server root DSE) should be assumed.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A comma-delimited list of attributes to request to be included in entries returned by a search processed from the LDAP URL. If this is present, then the DN element must also be present (although it may be a zero-length DN), and the set of attributes to request should be separated from that DN by a question mark. The list of attributes to request may be a zero-length string to indicate that all user attributes should be requested. If a non-empty value is returned, then it may include individual attribute names or OIDs, object class names preceded by an at symbol, special tokens like *, +, or 1.1. For example, to request the givenName, sn, and mail attributes, a value of “givenName,sn,mail” would be used.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The scope to use for the search criteria. The value may be one of “base” (to indicate a scope of baseObject), “one” (to indicate a scope of singleLevel), or “sub” (to indicate a scope of wholeSubtree), or it may be “subordinates” in servers that support the subordinate subtree search scope. If a scope is provided, then the list of attributes to request must be present (although it may be an empty string), and the scope should be separated from that attribute list by a question mark. If no scope is provided, then a value of “base” should be assumed.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The filter to use for the search criteria. This may be the string representation of any valid search filter as described earlier in this chapter. If a filter is provided, then the scope must also be present, and the filter should be separated from that scope by a question mark. If no filter is provided, then a filter of (objectClass=*) should be assumed.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A comma-delimited list of extensions that may be used to provide additional information about the context for the LDAP URL. Each extension must contain at least an OID to identify the type of extension, may optionally be followed by an equal sign and a string representation of the value, and may optionally be preceded by an exclamation point to indicate that the extension is critical. There are no standard LDAP URL extensions defined, and LDAP URL extensions are rarely (if ever) used. However, if an LDAP URL does include one or more extensions, then the filter element must be present, and the list of extensions must be separated from that filter by a question mark.
+  </li>
+</ul>
+
+<p>
+  The following are examples of valid LDAP URLs:
+</p>
+
+<ul>
+  <li>
+    <tt>ldap://</tt> — This is the bare minimum representation of an LDAP URL, containing only the scheme.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>ldap://ds.example.com:389</tt> — This LDAP URL includes the scheme, address, and port.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>ldap:///</tt> — This LDAP URL includes the scheme, an implied address and port, and an implied DN of the zero-length string (as denoted by the third forward slash).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>ldap://ds.example.com:389/dc=example,dc=com</tt> — This LDAP URL includes the scheme, an explicit address and port, and a target entry DN of dc=example,dc=com.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    <tt>ldap://ds.example.com:389/dc=example,dc=com?givenName,sn,cn?sub?(uid=john.doe)</tt> — This LDAP URL provides a full set of search criteria and includes the scheme, an explicit address and port, a base DN of dc=example,dc=com, a requested attribute list containing givenName, sn, and cn attributes, a wholeSubtree scope, and a filter of (uid=john.doe).
+  </li>
+</ul>
+
+<p>
+  LDAP URLs follow the basic constraints for URIs defined in <a href="https://docs.ldap.com/specs/rfc3986.txt" target="_blank">RFC 3986</a> and therefore require that special characters be percent-encoded (i.e., each byte of the UTF-8 encoding of the character should be represented as a percent sign followed by the two hexadecimal digits that comprise identify that byte). In general, special characters include all characters except ASCII letters and digits, and the following symbols: dash, period, underscore, tilde, colon, forward slash, question mark, octothorpe, open square bracket, close square bracket, at sign, exclamation point, dollar sign, ampersand, single quote, open parenthesis, closing parenthesis, asterisk, plus sign, comma, semicolon, and equal sign.
+</p>
+
+<p>
+  However, there are also a couple of other special cases in LDAP URLs that require additional escaping. Those special cases include:
+</p>
+
+<ul>
+  <li>
+    Any question mark that appears in a DN, filter, or extension value should be escaped as <tt>\3f</tt>.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Any comma that appears in an extension value should be escaped as <tt>\2c</tt>.
+  </li>
+</ul>
+
+<p>
+  While LDAP URLs do provide a fairly compact way to identify an entry in a directory server or provide a set of search criteria, they do have a couple of pretty significant shortcomings. As previously discussed, the official LDAP URL specification allows only a scheme of “ldap” and therefore there is no way indicate any form of security. Some servers do use “ldaps” if communication with the server is expected to be secured with SSL/TLS), but the general expectation is that the client should have some knowledge of whether communication with a server should be secured. There is also no way for an LDAP URL to include authentication or authorization information, and again the general expectation is that if the client is expected to authenticate to the target server, then it should have some way of knowing how to do that.
+</p>
+
+<p>
+  The complete specification for LDAP URLs is provided in <a href="https://docs.ldap.com/specs/rfc4516.txt" target="_blank">RFC 4516</a>.
+</p>

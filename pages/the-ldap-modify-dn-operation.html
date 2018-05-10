@@ -1,0 +1,83 @@
+<p>
+  A modify DN operation can be used to alter the DN of an existing entry in the server. This may include changing the RDN for the entry and/or moving the entry to a new location in the DIT. The LDAP specification does not prevent renaming and/or moving an entry that has subordinate entries, although some directory servers may not support subtree move/rename operations or may impose restrictions on such operations.
+</p>
+
+<p>
+  The elements of a modify DN request include:
+</p>
+
+<ul>
+  <li>
+    The current DN of the entry to update. This must be provided.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The new RDN to use for the entry. This must be provided, even if the operation is intended to move the entry to a new location in the DIT without altering its DN (in which case, you should specify a new RDN that is the same as its current RDN).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    A flag that indicates whether to remove the old RDN value(s) from the entry. This must be provided. If this flag has a value of true and the new RDN is different from the entry’s current RDN, then any attribute values that were present in the entry’s former RDN that are not present in the new RDN will be removed from the entry.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    An optional new superior DN for the entry. If the entry is to be moved to a new location in the DIT, then the DN of the new parent entry should be given as the new superior DN. If the modify DN request intends only to alter the RDN without changing the location of the entry in the DIT, then the new superior element should not be included in the request.
+  </li>
+</ul>
+
+<p>
+  When a modify DN operation completes, the server will return a basic response that includes a result code, and optional matched DN, diagnostic message, referrals, and/or response controls. Some of the most common types of results for a modify DN operation include:
+</p>
+
+<ul>
+  <li>
+    If the modify DN operation completes successfully and the entry is properly moved and/or renamed, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-success">success</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation targets an entry that does not exist, or if the request includes a new superior DN and that entry does not exist, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-noSuchObject">noSuchObject</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation includes a malformed current DN, new RDN, or new superior DN, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-invalidDNSyntax">invalidDNSyntax</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation would result in the entry having a DN that conflicts with an entry that already exists in the server, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-entryAlreadyExists">entryAlreadyExists</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation would result in the entry having a DN that violates a naming constraint (e.g., a name form definition that applies to the entry’s structural object class), then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-namingViolation">namingViolation</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation targets an entry that has subordinate entries and the server does not support subtree move/rename operations, then the server should return a “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-notAllowedOnNonLeaf">notAllowedOnNonLeaf</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the modify DN operation would result in an entry that includes an attribute that is not allowed by any of its object classes or DIT content rule, or that would be missing an attribute that is required by any of its object classes or DIT content rule, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-objectClassViolation">objectClassViolation</a>” result.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If the requester does not have permission to perform the modify DN operation, then the server should return an “<a href="https://ldap.com/ldap-result-code-reference-core-ldapv3-result-codes#rc-insufficientAccessRights">insufficientAccessRights</a>” result.
+  </li>
+</ul>

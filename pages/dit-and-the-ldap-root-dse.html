@@ -1,0 +1,138 @@
+<p>
+  LDAP directory servers present data arranged in tree-like hierarchies in which each entry may have zero or more subordinate entries. This structure is called the Directory Information Tree, or DIT. Each tree has a single root entry, which is called the naming context (or in some servers, a suffix). Note, however, that despite the tree analogy, LDAP DITs are often pretty flat, with the vast majority of entries being leaf entries (i.e., entries that do not have any children), and only a relatively small number of non-leaf entries. This isn’t universally the case, but it is nevertheless a common occurrence.
+</p>
+
+<p>
+  All LDAP servers must expose a special entry, called the root DSE, whose DN is the zero-length string. This entry will be described in detail below, but one of the operational attributes that it exposes is called namingContexts, which provides a list of all of the DNs that act as naming contexts for the DITs that may be held in the server. Note, however, that it is acceptable for servers to have DITs that are outside the declared set of naming contexts if those entries are intended to provide some operational purpose for the server (e.g., to expose the server configuration, to provide monitoring information about the health of the server, to provide schema information, etc.) rather than holding data supplied by users of the directory service.
+</p>
+
+<p>
+  There is no standard that mandates any particular structure for LDAP DITs, so directory servers may hold entries in any kind of hierarchical arrangement. However, there are some common conventions. In a large number of deployments, the entry that serves as the naming context for a tree falls into one of the following categories:
+</p>
+
+<ul>
+  <li>
+    The entry has an object class of domain and a naming attribute of dc (which is short for domain component). This convention is derived from the specification contained in <a href="https://docs.ldap.com/specs/rfc2247.txt" target="_blank">RFC 2247</a>, in which the naming context is comprised of multiple components that make up the DNS domain of the organization with which it is associated. For example, if the organization has a domain of example.com, then the naming context would probably be something like dc=example,dc=com. It is perfectly legal for a naming context to have multiple components, so just because the server has an entry with a DN of dc=example,dc=com there does not necessarily have to be an entry with a DN of dc=com.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The entry has an object class of organization and a naming attribute of o. The value of the o attribute may be the name of the organization (e.g., o=Example Corp), but it is also a fairly common practice to make it the DNS domain name for the organization (e.g., o=example.com).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The entry has an object class of country and a naming attribute of c. The value of the c attribute should be the two-character ISO 3166 country code for the country in which the server resides (e.g., c=US). This was a common style of naming for X.500 deployments, but is no longer all that common in the LDAP world (except perhaps for directories that primarily exist to serve as PKI registries, because this kind of structure is commonly used for certificate subjects), especially among multinational organizations (or organizations that aspire to be multinational organizations). It is not uncommon for DITs with a country-based naming context to also include other geographic information in the hierarchy, as well as the name of the organization (e.g., o=Example Corp,l=Austin,st=Texas,c=US), as was also the convention in X.500 and is commonly used in certificate subject naming.
+  </li>
+</ul>
+
+<p>
+  You are, of course, free to use however many RDN components and whatever attributes you wish to comprise the naming contexts for your directory service.
+</p>
+
+<p>
+  It is also common for there to be sub-hierarchies (often called branches) below the naming context. These branches are often used to separate different types of entries below different parents. For example, user entries may exist below “ou=People,dc=example,dc=com”, group entries below “ou=Groups,dc=example,dc=com”, and data about applications below “ou=Applications,dc=example,dc=com”.
+</p>
+
+<h1>The LDAP Root DSE</h1>
+<p>
+  All LDAPv3 servers should provide a special entry that provides information about the capabilities of that server and the data that it contains. This entry is called the root DSE (where DSE stands for “DSA-specific entry”), and it is the entry that has the null DN (i.e., the DN with zero RDNs, and a string representation that is the empty string).
+</p>
+
+<p>
+  Some of the attributes that may be present in a root DSE entry include:
+</p>
+
+<ul>
+  <li>
+    namingContexts: This specifies the naming contexts that are defined for the server. These are the base DNs for the trees containing data that clients are generally intended to interact with. This will generally exclude base DNs of trees that contain administrative or operational data like server configuration, monitor data, changelog data, etc.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    subschemaSubentry: This specifies the location of the primary schema for the directory server. Note that directory servers may support multiple schemas for different portions of the DIT, and <a href="https://docs.ldap.com/specs/rfc4512.txt" target="_blank">RFC 4512</a> states that every entry in the server should include a subschemaSubentry operational attribute that specifies the location of the schema that governs that entry.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedLDAPVersion: This specifies the versions of the LDAP protocol that the server supports. Virtually all LDAP servers should have a value of “3” to indicate that they support LDAPv3, and many will also have a value of “2” to indicate that they have at least some level of support for the now-defunct but still occasionally used LDAPv2.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedControl: This specifies the OIDs of all of the request controls that the server is willing to accept.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedExtension: This specifies the OIDs of all the extended request types that the server is willing to accept.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedSASLMechanisms: This specifies the names of all the SASL mechanisms that the server can support for use in bind operations.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedFeatures: This specifies the OIDs of features that the server supports that are not directly tied to a control, extended request, or SASL mechanism. For example, if the server supports the increment modification type, it should include “1.3.6.1.1.14” as one of the values of the supportedFeatures attribute.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    supportedAuthPasswordSchemes: This specifies the names of all of the password storage schemes that the server supports for use in conjunction with the authentication password syntax.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    altServer: This specifies a list of URIs (generally in the form of LDAP URLs) of other servers (presumably which contain an identical copy of the data) that may be accessed if that server instance becomes unavailable.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    vendorName: This specifies the name of the vendor (or organization) that created the directory server software.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    vendorVersion: This specifies the version for the directory server software (which also often includes the product name, like “Ping Identity Directory Server 7.0.0.0”).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    changelog: This specifies the base DN of an LDAP-accessible changelog with information about add, delete, modify, and modify DN operations processed within the server. This can be used to help keep the data in other repositories in sync with information in the directory server.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    firstChangeNumber: This specifies the change number for the oldest change in the changelog. Most changelog implementations offer some kind of purging mechanism to prevent it from growing without bound, so this value may change over time.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    lastChangeNumber: This specifies the change number for the most recent change in the changelog.
+  </li>
+</ul>
+
+<p>
+  Note that some servers may not support all of these attributes, and even in cases where they are supported, they may not always be present (e.g., if no changelog is enabled, then the changelog-related attributes will not be present). Further, individual directory server implementations may also include their own non-standard attributes to provide additional information about the server.
+</p>
+
+<p>
+  LDAP clients are strongly encouraged to use the information provided in the root DSE in order to understand the capabilities of the server and craft their requests accordingly. For example, a client should not attempt to include a control in a request if its OID is not listed in the root DSE’s supportedControl attribute, but should instead try to see if the desired result could be achieved using a different mechanism (e.g., an alternate type of control, or through the use of additional client-side processing).
+</p>
