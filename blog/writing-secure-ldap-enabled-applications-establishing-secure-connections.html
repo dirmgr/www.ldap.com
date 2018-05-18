@@ -1,0 +1,247 @@
+<p>
+  LDAP directory servers often contain sensitive data, including personally identifiable information about individuals, user passwords, account details, etc. It’s critical for administrators to configure the server so that access to all of this information is restricted and only accessible to clients that are legitimately authorized to interact with it. However, it’s also essential for the applications interacting with that data to protect that data.
+</p>
+
+<p>
+  This is the first in a series of blog posts that will provide tips for securing your LDAP-enabled applications. In this post, I’ll discuss securing the communication between the client and the server.
+</p>
+
+<h1>Always use TLS-encrypted communication</h1>
+<p>
+  It’s 2018. Unencrypted communication shouldn’t be a thing anymore. Even if all your communication happens on a locked-down private network, there’s no good reason for traffic between clients and servers (and also between servers and servers, for that matter) to pass in the clear.
+</p>
+
+<p>
+  There are a few options for encrypting communication between clients and servers:
+</p>
+
+<ul>
+  <li>
+    Establish a connection to a server port that requires TLS (transport layer security, the successor to SSL) for all communication.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Establish an unencrypted connection to the server and then use the LDAP StartTLS extended operation to convert the connection from insecure to secure.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Establish an unencrypted connection to the server and then use a SASL bind request that protects the provided credentials and supports a “confidentiality” quality-of-protection to encrypt all communication after that point.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Use some other external mechanism (like IPsec or stunnel) to encrypt the communication in a manner that the client doesn’t require any specific knowledge of the encryption in the client.
+  </li>
+</ul>
+
+<p>
+  Of these options, the first one is the best and is really the only one that you should consider. It’s the gold standard for secure communication and the best supported by both clients and servers. It doesn’t incur that much performance overhead, and it doesn’t have to cost anything. You can get free certificates signed by a legitimate authority through the <a href="https://letsencrypt.org/" target="_blank">Let’s Encrypt</a> service, or if you only have internal clients to worry about, you can maintain your own certification authority so that you can use longer-term certificates signed by a common issuer. Self-signed server certificates are also an option, and the communication is just as secure when using them as when using a certificate signed by a commercial authority, but self-signed certificates don’t give the client the same set of options when it comes to deciding whether to trust the server.
+</p>
+
+<p>
+  Both StartTLS and SASL confidentiality require the communication to be initially unencrypted, and therefore at least that part of the communication is subject to observation and undetectable manipulation. StartTLS and SASL confidentiality also allow for the possibility that the security layer could be closed while leaving the underlying connection established, which would cause the communication to revert to an insecure state. On top of that, SASL confidentiality is not as widely supported as TLS or the StartTLS extended operation, and it doesn’t necessarily have the same level of support for authenticating the server to the client.
+</p>
+
+<p>
+  Using an external security mechanism like IPsec is the least desirable option. The client and server will likely not know anything about the encryption at all, which also means that they won’t know if that encryption isn’t in place. A misconfiguration could leave the communication exposed, and neither party would know about it. It also means that the server might not permit certain operations that are only allowed for clients using a secure connection because it can’t tell that there is a security layer in place.
+</p>
+
+<p>
+  Although you might be tempted to only secure things like bind operations and password changes, you should resist that temptation. It’s true that you want to encrypt credentials, but that’s not the only sensitive information that’s stored in the server. Clients might need to retrieve or update that data, and it’s much easier to just encrypt everything than to try to decide which data needs to be protected and which is okay to go in the clear. Securing everything protects against mistakes where the client might have inadvertently transferred data in the clear. Further, TLS provides more benefit than just encryption; it’s also got a trust mechanism built into it so, so clients can be more confident that they are actually communicating with the legitimate server and not some impostor.
+</p>
+
+<h1>Only support strong TLS protocols and cipher suites</h1>
+<p>
+  When establishing a TLS-encrypted connection, the client kicks off the negotiation process by sending a TLS client hello message. Among other things, this client hello message specifies the maximum TLS protocol version that the client supports and the cipher suites that the client is willing to use. The server ultimately decides which TLS protocol version and cipher suite will be used for the communication (and it tells the client what it has chosen in the server hello message that it sends back in response to the client hello), but the client can decide whether it wants to accept what the server has chosen. Clients should only accept sufficiently strong cryptography to ensure that the communication really is secure.
+</p>
+
+<p>
+  Note that if you’re using Java, you might need to install a custom policy file to enable support for the strongest encryption options. Because of stupid political reasons, companies based in the United States aren’t allowed to make the strongest forms of encryption available to certain blacklisted countries. As such, many Java versions ship with a default configuration that doesn’t allow anyone to use these strongest encryption algorithms, and you have to install a special policy file that unlocks the strong encryption options. Search for something like “Java unlimited strength jurisdiction policy files” to learn more information about this. Fortunately, the most recent Java releases (Java 9 and later, and the most recent builds of Java 8) ship with support for strong encryption enabled by default, so if you’re using them, then you might not need to do anything.
+</p>
+
+<p>
+  For the protocol version, clients should never accept anything below TLSv1. If you can get away with it, then only supporting TLSv1.1 and TLSv1.2, or maybe even only TLSv1.2, is even better. The upcoming TLSv1.3 looks like it has even further improvements, so you should probably look into using it once it becomes available. SSLv3 is considered broken and should not be used, and SSLv2 is even worse. The client hello message should include the maximum protocol version that the client is willing to use, and the server is supposed to pick the highest version it supports that is less than or equal to the version that the client provided. Once that’s done the client should make sure to check the negotiated protocol version and ensure that it is acceptable.
+</p>
+
+<p>
+  For the cipher suites, the server is supposed to pick the strongest suite that the client mentions in the client hello message, but the client should check to make sure that the server actually picked one of those and not something weaker. Nevertheless, the client should only suggest cipher suites that support strong encryption.
+</p>
+
+<p>
+  When choosing which suites to exclude, you should consider the following:
+</p>
+
+<ul>
+  <li>
+    Don’t include any suites that use a null symmetric cipher because they don’t actually encrypt anything. These generally include “_WITH_NULL” or “_WITH_ENULL” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that use export-level encryption because export-level encryption is very weak. These generally include “_EXPORT” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that use the IDEA, RC4, or single-DES symmetric ciphers. These ciphers are all known to be weak. These generally include “_IDEA”, “_RC4”, “_ARC4”, “_ARCFOUR”, or “_DES” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that use the weak MD5 digest algorithm. These generally include “_MD5” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that support anonymous key exchange because they don’t use a certificate and therefore don’t offer a trust mechanism. These generally include “_ANON”, “_ANULL”, “_ADH”, or “_AECDH” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that use a non-ephemeral Diffie-Hellman cipher because they don’t support forward secrecy. These generally include “_DH” or “_ECDH” in the name of the suite.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Don’t include any suites that use a non-RSA key with an ephemeral Diffie-Hellman cipher. OWASP recommends only using RSA keys with ephemeral Diffie-Hellman ciphers because DSA and DSS keys can be weak. These generally include “_DHE” or “_ECDHE” in the name of the suite and don’t include “_RSA”.
+  </li>
+</ul>
+
+<p>
+  When choosing which suites to include, you should consider the following:
+</p>
+
+<ul>
+  <li>
+    Prefer suites that support forward secrecy over those that don’t. Forward secrecy ensures that the encryption remains secure even if the certificate’s private key is compromised.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Prefer suites that use an AES cipher over those that don’t (for example, triple-DES), and prefer suites that use 256-bit AES over suites that use 128-bit AES.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Prefer suites that use DHE over suites that use ECDHE, and prefer suites that use ECDHE over suites that use RSA.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Prefer suites that use the Galois/Counter Mode (GCM) over suites that use other modes (like CBC). GCM suites use authenticated encryption and provide stronger assurance that the encrypted data has not been altered.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Prioritize suites in order of the strength of the digest algorithm. 512-bit SHA-2 (although you probably won’t see any suites with this digest algorithm) should be preferred over 384-bit SHA-2, which should be preferred over 256-bit SHA-2, which should be preferred over SHA-1.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Note that suites that contain “_SCSV” are signaling cipher suite values that indicate support for certain TLS features (for example, TLS_EMPTY_RENEGOTIATION_INFO_SCSV indicates that the TLS implementation supports secure renegotiation). It’s good to include them in the list because they can help ensure that the resulting TLS session uses the best set of options possible.
+  </li>
+</ul>
+
+<p>
+  For example, if you’re using Oracle’s Java 8 build 162, I’d recommend enabling the following cipher suites, in order of most preferred to least preferred:
+</p>
+
+<ol>
+  <li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
+  <li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
+  <li>TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</li>
+  <li>TLS_DHE_RSA_WITH_AES_256_CBC_SHA</li>
+  <li>TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</li>
+  <li>TLS_DHE_RSA_WITH_AES_128_CBC_SHA</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</li>
+  <li>TLS_RSA_WITH_AES_256_GCM_SHA384</li>
+  <li>TLS_RSA_WITH_AES_128_GCM_SHA256</li>
+  <li>TLS_RSA_WITH_AES_256_CBC_SHA256</li>
+  <li>TLS_RSA_WITH_AES_256_CBC_SHA</li>
+  <li>TLS_RSA_WITH_AES_128_CBC_SHA256</li>
+  <li>TLS_RSA_WITH_AES_128_CBC_SHA</li>
+  <li>TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</li>
+  <li>SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA</li>
+  <li>SSL_RSA_WITH_3DES_EDE_CBC_SHA</li>
+  <li>TLS_EMPTY_RENEGOTIATION_INFO_SCSV</li>
+</ol>
+
+<p>
+  You may also want to check other resources to help identify the best cipher suite options. The <a href="https://www.ssllabs.com/index.html" target="_blank">Qualys SSL Labs</a> site provides a helpful tool for evaluating the strength of a server’s (predominantly intended for web servers) TLS implementation, but it also offers helpful documentation for tuning TLS settings. Similarly, OWASP (the Open Web Application Security Project) provides a very informative <a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet" target="_blank">Transport Layer Protection Cheat Sheet</a> with lots of useful information.
+</p>
+
+<h1>Properly validate the server’s certificate</h1>
+<p>
+  TLS allows you to ensure that communication between the client and the server is encrypted, but it also offers a second substantial benefit in that it can help the client be confident that the connection is established to the correct, legitimate server. That’s because part of the TLS negotiation involves the server presenting a certificate chain to the client, and the client can then use that chain to verify the identity of the server. Without this step, a client could potentially be tricked into connecting to something that isn’t the legitimate server (e.g., by DNS hijacking or a man-in-the-middle attack), which opens the door for all kinds of badness. For example, a malicious application could act as a simple LDAP proxy server that sits between the client and the real directory server, stealing or altering the communication that passes through, and possibly even injecting its own requests that the server will process as if they had come from the real client.
+</p>
+
+<p>
+  For a TLS-enabled application, blindly trusting the certificate that a server presents is a big no-no. The types of validation that the client should perform include:
+</p>
+
+<ul>
+  <li>
+    Make sure that the certificate issuers are trusted. The client or TLS library should have some kind of certificate trust store that has all of the certificates that are considered trusted, or that are at least considered trusted to sign certificates that will themselves be considered trusted. Make sure that at least the certificate at the root of the chain is in that trust store.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that the certificate is for the right server. A TLS server certificate should include information about the server(s) with which it is intended to be used. The client should make sure that the address it was given to connect to the server is listed in either the CN attribute of the server certificate’s subject or that it’s listed in a subject alternative name extension. This can help ensure that if a trusted certificate’s private key is compromised, it won’t be trusted for use on any systems other than the ones for which it was originally intended.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that the current time is within the validity window for all certificates in the chain. If a certificate is expired, or if it is not yet valid, then it should not be trusted.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that none of the certificates have been revoked. If a certificate should no longer be trusted for some reason (for example, if there is reason to suspect that its private key has been compromised, or if the service for which it was originally intended has been shut down), then that certificate should be revoked. When possible, the client should use OCSP (the online certificate status protocol) or a CRL (certificate revocation list) to ensure that none of the certificates in the chain have been revoked.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that all of the certificates have valid signatures. Every certificate includes a digital signature that was generated by the certificate that issued it. It can be used to confirm that the certificate was actually issued by the authority that it claims and that the certificate has not been altered in any way since it was generated. If you don’t check the signature, then you can’t trust anything that’s in the certificate.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that the certificate uses strong cryptography to minimize the risk that it can be broken. SHA-1 is no longer considered secure, so make sure that the certificate’s signature algorithm uses at least a 256-bit SHA-2 digest. Similarly, 1024-bit RSA is no longer considered secure, so if the certificate has an RSA key pair, make sure that the key size is at least 2048 bits.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Make sure that the all of the constraints associated with certificate extensions are satisfied. Certificate extensions can provide additional information about the certificate, its issuer, and how it is meant to be used. A subject alternative name extension can be used to list the addresses of the servers on which the certificate can be installed. An authority information access extension can tell the client how to check with an OCSP server, and a CRL distribution points extension can provide the location of a certificate revocation list. A basic constraints extension can indicate whether a certificate is allowed to issue other certificates. Key usage and extended key usage extensions provide information about the ways that a certificate is meant to be used.
+  </li>
+</ul>
+
+<p>
+  Some of these checks may be performed automatically by the library that the client is using to provide TLS support, while others may require custom code. Check the documentation for your TLS library to see what it does automatically and what you might need to implement for yourself.
+</p>
