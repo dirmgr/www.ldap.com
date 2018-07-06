@@ -24,17 +24,14 @@
       </li>
       <li>
         An open parenthesis, zero or more spaces, a single quote, the first DIT structure rule name, and a single quote. If there are additional names, each must be surrounded by single quotes and must be separated from the previous name by one or more spaces. After the last name, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT structure rules that have one or more names.
-
       </li>
     </ul>
   </li>
   <li>
     An optional human-readable description. If present, this should consist of one or more spaces, the string “DESC”, one or more spaces, a single quote, a UTF-8 string containing the description (with any single quote characters escaped as “\27” and backslash characters escaped as “\5c”), and a single quote.
-
   </li>
   <li>
     The optional string “OBSOLETE”, preceded by one or more spaces. If present, this indicates that the DIT structure rule should not be considered available for use in the server and should not be referenced as superior to any non-obsolete DIT structure rules.
-
   </li>
   <li>
     The reference to the name form with which the DIT structure rule is associated (which in turn ties it to a structural object class). This must be specified using one or more spaces, the string “FORM”, one or more spaces, and the name or OID of the associated name form. This element is required.
@@ -45,17 +42,14 @@
     <ul>
       <li>
         The numeric rule ID. This format can only be used for DIT structure rules that have a single superior rule ID.
-
       </li>
       <li>
         An open parenthesis, zero or more spaces, and the first superior rule ID. If there are additional superior rule IDs, each must be separated from the previous rule ID by one or more spaces. After the last superior rule ID, there should be zero or more spaces followed by a close parenthesis. This format can be used for DIT structure rules that have one or more superior rule IDs.
-
       </li>
     </ul>
   </li>
   <li>
     An optional set of extensions, in the format described in the <a href="https://ldap.com/schema-element-extensions/">Schema Element Extensions</a> section.
-
   </li>
   <li>
     Zero or more spaces followed by a close parenthesis.
