@@ -1,0 +1,11 @@
+<p>
+  I’ve received an update on the <a href="https://directory.apache.org/api/" target="_blank">Apache LDAP API</a> version 1.0.2 release that I mentioned in a <a href="https://ldap.com/2018/07/09/apache-ldap-api-1-0-2-released/" target="_blank">previous post</a>. The most critical update in this release is a security fix that addresses <a href="https://mail-archives.apache.org/mod_mbox/directory-api/201807.mbox/%3CCAG8%3DFRhFGcy-oO8PEWUpv2nc%3DDL0YBNbjdHkq2jck4g%2BB73UHQ%40mail.gmail.com%3E" target="_blank">CVE-2018-1337</a>, in which a race condition made it possible for a plaintext request to be sent over a connection after the StartTLS extended operation had been initiated but before the security layer had actually been applied to that connection. It sounds like this primarily affects connections associated with a connection pool that were released to the pool and made available for use before the TLS security layer was entirely in place.
+</p>
+
+<p>
+  It seems that the 1.0.1 release of the API included a workaround for the problem, while the 1.0.2 release includes the real fix, which explains the same problem description appearing in both the 1.0.1 and 1.0.2 release announcements.
+</p>
+
+<p>
+  If you’re using the Apache LDAP API, you’re encouraged to update to the 1.0.2 release as quickly as possible.
+</p>
