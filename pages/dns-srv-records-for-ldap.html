@@ -1,0 +1,197 @@
+<p>
+  Most LDAP clients need to be explicitly configured with the addresses of the LDAP servers to use. However, <a href="https://docs.ldap.com/specs/rfc2782.txt" target="_blank">RFC 2782</a> describes an alternative way of figuring out what directory servers are available: DNS SRV resource records, also called DNS service records. If a network’s DNS servers have been configured with the appropriate records, then clients that support this feature can automatically discover the LDAP servers that they should use.
+</p>
+
+<p>
+A DNS SRV resource record has a number of components, including:
+</p>
+
+<ul>
+  <li>
+    The name of the record. This is generally constructed by concatenating the following together: an underscore, the name of the network service, a period, an underscore, the name of the underlying transport protocol, a period, and the domain or subdomain to which the record applies. For example, the name of the record used to identify the LDAP servers in the example.com domain would be “_ldap._tcp.example.com”.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The priority for the record. If there are multiple servers in the environment, then the priority can help the client decide which one it should try first. The priority should be an integer value between 0 and 65535 (inclusive), with lower values taking precedence over higher values. This can be useful for cases in which some servers may be strongly preferred over others. For example, say you’ve got LDAP servers in three different data centers: one local, one across the country, and another on the other side of the world. You’d probably want to use the lowest priority value for the servers in the local data center, a higher value for servers across the country, and an even higher value for servers on the other side of the world.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The weight for the record. The priority always takes precedence over the weight, but If there are multiple servers with the same priority, then the weight is used to specify the relative number of connections that each of them should receive. It’s basically for simple load balancing between servers with the same priority. This should also be an integer value between 0 and 65535, but in this case, a higher weight means that the server should get a larger proportion of the traffic. The value is relative, so a server with a weight of 2 should get about twice many connections as a server with a weight of 1, and a server with a weight of 8 should get about four times as many connections as a server with a weight of 2. If it makes it easier for you to think about it, you can have all the weights for a given priority add up to 100 and treat them as percentages.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The port number on which the server is listening for connections from clients. This should be an integer between 1 and 65535. For LDAP, the standard port is 389, but servers often run on alternate ports (especially if you’re running multiple servers on the same system, or if you’re running as non-root on a UNIX based system and can’t use a port below 1024).
+  </li>
+</ul>
+
+<ul>
+  <li>
+    The fully-qualified domain name (FQDN) of the server to which the record applies.
+  </li>
+</ul>
+
+<h2>Configuring DNS SRV Records in BIND9</h2>
+<p>
+  In the BIND9 nameserver, you can configure SRV records in the file that defines the zone for name-to-address lookups for the desired domain.
+</p>
+
+<p>
+  As an example, let’s say that we have the following:
+</p>
+
+<ul>
+  <li>
+    There are four directory servers in the environment: ds1.example.com, ds2.example.com, ds3.example.com, and ds4.example.com.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    All of the servers are listening on port 389.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    ds1 and ds2 are the primary servers. If either or both of them are up, you want them to handle all of the load. That means you should give both of them the same priority value. For this example, let’s use a priority of 10.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    ds3 and ds4 are the backup servers, and should only be used if both ds1 and ds2 are down. That means you should give both of them the same priority value, but that priority value should be larger than the one we gave for ds1 and ds2. So let’s us a priority of 20 for them.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If both ds1 and ds2 are available, we want each of them to get about the same amount of load, so we’ll give them the same weight. Since the intent is for each of them to handle about half the traffic, let’s give them both a weight of 50.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    If both ds1 and ds2 are unavailable, but both ds3 and ds4 are available, we want ds3 to get about 75% of the load while ds4 only gets about 25%. So we need to give ds3 a weight that is three times higher than that of ds4, but for the sake of simplicity, let’s just use 75 and 25.
+  </li>
+</ul>
+
+<p>
+  The records you would use to describe this configuration in a BIND9 zone file would look like:
+</p>
+
+<blockquote>
+  <pre>_ldap._tcp.example.com. IN SRV 10 50 389 ds1.example.com.
+_ldap._tcp.example.com. IN SRV 10 50 389 ds2.example.com.
+_ldap._tcp.example.com. IN SRV 20 75 389 ds3.example.com.
+_ldap._tcp.example.com. IN SRV 20 25 389 ds4.example.com.</pre>
+</blockquote>
+
+<h2>Testing DNS SRV Records From the Command Line</h2>
+<p>
+  If you’ve got these records configured properly, then you should be able to check that with either the <tt>nslookup</tt> or <tt>dig</tt> command-line tools. For <tt>nslookup</tt> (at least on Linux; the command might be different on other operating systems), the command should look like:
+</p>
+
+<blockquote>
+  <pre>$ <b>nslookup -type=SRV _ldap._tcp.example.com</b>
+Server:        127.0.0.1
+Address:    127.0.0.1#53
+
+_ldap._tcp.example.com    service = 20 25 389 ds4.example.com.
+_ldap._tcp.example.com    service = 10 50 389 ds1.example.com.
+_ldap._tcp.example.com    service = 20 75 389 ds3.example.com.
+_ldap._tcp.example.com    service = 10 50 389 ds2.example.com.</pre>
+</blockquote>
+
+<p>
+  Using the <tt>dig</tt> client, the command and output are more like the following:
+</p>
+
+<blockquote>
+  <pre>$ <b>dig SRV _ldap._tcp.example.com</b>
+
+; &lt;&lt;&gt;&gt; DiG 9.9.4-RedHat-9.9.4-72.el7 &lt;&lt;&gt;&gt; SRV _ldap._tcp.example.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 20541
+;; flags: qr aa rd; QUERY: 1, ANSWER: 4, AUTHORITY: 1, ADDITIONAL: 6
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;_ldap._tcp.example.com.        IN    SRV
+
+;; ANSWER SECTION:
+_ldap._tcp.example.com.    10800    IN    SRV    10 50 389 ds2.example.com.
+_ldap._tcp.example.com.    10800    IN    SRV    20 25 389 ds4.example.com.
+_ldap._tcp.example.com.    10800    IN    SRV    20 75 389 ds3.example.com.
+_ldap._tcp.example.com.    10800    IN    SRV    10 50 389 ds1.example.com.
+
+;; AUTHORITY SECTION:
+example.com.        10800    IN    NS    ns.example.com.
+
+;; ADDITIONAL SECTION:
+ds1.example.com.    10800    IN    A    10.0.2.1
+ds2.example.com.    10800    IN    A    10.0.2.2
+ds3.example.com.    10800    IN    A    10.0.2.3
+ds4.example.com.    10800    IN    A    10.0.2.4
+ns.example.com.        10800    IN    A    10.0.2.15
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Wed Jan 23 01:48:25 CST 2019
+;; MSG SIZE  rcvd: 288</pre>
+</blockquote>
+
+<p>
+  This includes a lot of helpful output, but you can add “<tt>+short</tt>” to the end of the command to get a much more concise version of the output, like:
+</p>
+
+<blockquote>
+  <pre>$ <b>dig SRV _ldap._tcp.example.com +short</b>
+10 50 389 ds1.example.com.
+20 75 389 ds3.example.com.
+10 50 389 ds2.example.com.
+20 25 389 ds4.example.com.</pre>
+</blockquote>
+
+<p>
+  Note that with either tool (or any other type of DNS client), if you’ve got your search path configured properly, it should be possible to leave off the domain and just specify the name of the service (for example, just “_ldap._tcp” instead of “_ldap._tcp.example.com”).
+</p>
+
+<h2>Using DNS SRV Records in LDAP Clients</h2>
+<p>
+  Obviously, DNS SRV records aren’t very useful if nothing can use them. To be honest, a lot of software doesn’t support them, and in such cases, you just have to manually configure them to specify which servers to use.
+</p>
+
+<p>
+  But of the software that does support them, the way that you use them may vary from one type of client to another. In some cases, it may be that the client will just automatically send a DNS query for “_ldap._tcp” if you don’t give it any information about which LDAP server to use.
+</p>
+
+<p>
+  In other cases, you might have to explicitly indicate it in some way. For example, in the <a href="http://www.openldap.org/software/man.cgi?query=ldapsearch&apropos=0&sektion=0&manpath=OpenLDAP+2.0-Release&format=html" target="_blank">OpenLDAP version of the <tt>ldapsearch</tt> tool</a>, you can use the “<tt>-H</tt>” argument followed by an LDAP URL that specifies the protocol, host, and port to use (like “<tt>-H ldap://ds.example.com:389/</tt>”). However, it also allows you to specify an LDAP URL without the host or port but that uses a base DN that uses only “dc” components (with special characters escaped, like %3D in place of an equal sign and %2C in place of a comma) to indicate that the tool should request the “_ldap._tcp” record for the specified domain (for example, “<tt>-H ldap:///dc%3Dexample%2Cdc%3Dcom</tt>” will cause it to look up the SRV records for “_ldap._tcp.example.com” and select an appropriate server from that response).
+</p>
+
+<p>
+  If you’re writing your own LDAP client and want to build support for DNS SRV records into it, then you may need to query DNS directly using whatever facility your programming language of choice might allow. However, the LDAP API that you’re using might also have special support for DNS SRV records. For example, the UnboundID LDAP SDK for Java provides a <a href="https://docs.ldap.com/ldap-sdk/docs/javadoc/index.html?com/unboundid/ldap/sdk/DNSSRVRecordServerSet.html" target="_blank"><tt>DNSSRVRecordServerSet</tt> class</a> that can do all the work for you, including providing support for priorities and weights.
+</p>
+
+<h2>Using DNS SRV Records With LDAP Over TLS</h2>
+<p>
+  One of the limitations of using DNS SRV records for LDAP is that these records don’t provide any way to indicate whether the client should use any kind of transport-layer security when contacting the server. It is strongly recommended that you always communicate over a secure channel, but there are a couple of possibilities that you can consider when you want to use DNS SRV records.
+</p>
+
+<p>
+  One option would be to define records for “_ldaps._tcp” instead of or in addition to “_ldap._tcp”. If you do that, and a client wants to establish a secure connection, then it could request the SRV records for “_ldaps._tcp” and then assume that it needs to perform TLS negotiation on the connection before sending any LDAP requests. This is certainly a workable solution, but it does require that the client have support for this feature and know that it should use the “_ldaps._tcp” variant.
+</p>
+
+<p>
+  Another option would be to go ahead and establish an insecure connection to one of the servers returned in response to the “_ldap._tcp” request, but then to immediately use the StartTLS extended operation to convert that insecure connection to a secure one. Again, this does require that the client know that it should do this, but it may be possible to indicate that through configuration options. However, this approach should be used with caution because if the client doesn’t actually send the StartTLS request after establishing the connection, then any LDAP requests and responses that get transferred over that connection will be in the clear.
+</p>
