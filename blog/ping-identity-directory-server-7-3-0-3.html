@@ -1,0 +1,15 @@
+<p>
+  The <a href="https://www.pingidentity.com/en/platform/directory/directory-overview.html" target="_blank">Ping Identity Directory Server</a> version 7.3.0.3 has been released and is available for download. The <a href="https://support.pingidentity.com/s/document-item?bundleId=pingdirectory-73&topicId=bdb1571272471986.html" target="_blank">release notes</a> are available online, but this version addresses two issues:
+</p>
+
+<ul>
+  <li>
+    If an attempt to establish an outbound LDAP connection failed, the server could leak a small amount of memory.  Over time, these small allocations could accumulate and could cause the JVM to run out of memory.
+  </li>
+</ul>
+
+<ul>
+  <li>
+    In a Directory Proxy Server configured to use entry balancing, a search that spanned multiple backend sets could incorrectly return a result of success if all search attempts within one of the backend sets failed with a timeout. It now returns a result of unavailable.
+  </li>
+</ul>
