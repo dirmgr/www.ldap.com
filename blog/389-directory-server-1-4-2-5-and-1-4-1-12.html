@@ -1,0 +1,41 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-2-5.html" target="_blank">1.4.2.5</a> and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-1-12.html" target="_blank">1.4.1.12</a> (the latter released just after version 1.4.11 to fix one additional issue, so those fixes are rolled up together). Changes included in these releases are:
+</p>
+
+<ul>
+  <li>
+    Fixed an issue that could cause database recovery to fail if an empty directory exists in the database directory (1.4.2.5 only)
+  </li>
+
+  <li>
+    Fixed an issue that could cause the server to report a disorderly shutdown (1.4.2.5 only)
+  </li>
+
+  <li>
+    Fixed an issue in processing long lines in the DSE.ldif (1.4.1.12 only)
+  </li>
+
+  <li>
+    Fixed an issue that could cause the server to hang (both versions)
+  </li>
+
+  <li>
+    Fixed an issue that could cause changelog trimming to crash at shutdown if it had an invalid configuration (both versions)
+  </li>
+
+  <li>
+    Fixed an issue that prevented dumping the changelog to a file (both versions)
+  </li>
+
+  <li>
+    Updated docker configuration for Fedora (both versions)
+  </li>
+
+  <li>
+    Enable argument completion in the CLI (both versions)
+  </li>
+
+  <li>
+    Added additional health checks to dsconfg (both versions)
+  </li>
+</ul>
