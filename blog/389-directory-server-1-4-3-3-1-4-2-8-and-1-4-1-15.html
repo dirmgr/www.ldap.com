@@ -1,0 +1,16 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-3-3.html" target="_blank">1.4.3.3</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-2-8.html" target="_blank">1.4.2.8</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-1-15.html" target="_blank">1.4.1.15</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed an issue that could cause database and cache corruption if a deadlock was encountered during modify DN processing (all three versions)</li>
+  <li>Fixed a crash resulting from a null pointer dereference that could occur when attempting to update the configuration (version 1.4.3.3)</li>
+  <li>Fixed a crash that could occur during SASL bind processing (version 1.4.1.15)</li>
+  <li>Fixed a memory leak that could occur in evaluating access control rules based on IP addresses (all three versions)</li>
+  <li>Fixed an issue that could cause an error log message during modify DN processing (all three versions)</li>
+  <li>Fixed a number of health checking issues (all three versions)</li>
+  <li>Updated the server to enforce a hard upper limit on file descriptor usage< (all three versions)</li>
+  <li>Fixed an issue that could affect the ability to use the unique attribute plugin (version 1.4.3.3)</li>
+  <li>Added support for only listening for LDAPS connections (version 1.4.3.3)</li>
+  <li>Added the ability to automatically load PEM-formatted certificates into the certificate database during startup (version 1.4.3.3)</li>
+</ul>
