@@ -1,0 +1,19 @@
+<p>
+  The <a href="https://lsc-project.org/doku.php" target="_blank">LDAP Synchronization Connector</a> (LSC) is an open source tool that can help synchronize data between an LDAP directory server and other types of data sources. The project has released <a href="https://github.com/lsc-project/lsc/releases/tag/v2.1.5" target="_blank">version 2.1.5</a> of the connector, which appears to include the following changes:
+</p>
+
+<ul>
+  <li>Updated the way the system account is created if the connector is installed as a package</li>
+  <li>Added support for mapping binary attribute values</li>
+  <li>It has been updated to work with Java 8</li>
+  <li>Fixed an issue in which it did not properly handle unexpected connection termination</li>
+  <li>Added support for using Javascript in the process of mapping or transforming data</li>
+  <li>Fixed an issue that could interfere with the ability to load multiple plugins on Windows systems</li>
+  <li>Fixed a potential null pointer exception when synchronizing via JDBC</li>
+  <li>Fixed an issue that could prevent values from being removed via JDBC</li>
+  <li>Disabled GSSAPI debugging support that had been inadvertently left enabled</li>
+  <li>Fixed an issue related to log file rotation</li>
+  <li>Fixed an issue related to the order in which XSD files are loaded</li>
+  <li>Updated the embedded HSQLDB database to only listen on the loopback interface</li>
+  <li>Improved a log message that is generated when no source object is found</li>
+</ul>

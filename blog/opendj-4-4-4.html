@@ -1,0 +1,13 @@
+<p>
+  The <a href="https://github.com/OpenIdentityPlatform" target="_blank">Open Identity Platform</a> project has released <a href="https://github.com/OpenIdentityPlatform/OpenDJ/releases/tag/4.4.4" target="_blank">version 4.4.4</a> of the <a href="https://github.com/OpenIdentityPlatform/OpenDJ" target="_blank">OpenDJ Directory Server</a>. The <a href="https://github.com/OpenIdentityPlatform/OpenDJ/compare/93e2ea029d18a6ca81d837c43228f274d4f0ce61...00c8d42cfe3f61592e3df1bfc0846e4e11cfcefc" target="_blank">comparison of changes</a> doesn't provide much information in the commit message summaries, but it looks like some of the changes include:
+</p>
+
+<ul>
+  <li>Updated dependencies.</li>
+  <li>Removed support for TLSv1.3 because it was seen to cause high CPU utilization.</li>
+  <li>Updated Debian packages to remove a dependency on the full Java runtime, allowing it to be with a headless JRE.</li>
+  <li>Fixed an issue that could affect replication of symmetric keys between instances.</li>
+  <li>Updated certificate generation to use SHA-256 digests instead of SHA-1.</li>
+  <li>Reduced the likelihood of out-of-memory errors during LDIF import and index rebuilds.</li>
+  <li>Fixed a Windows build error.</li>
+</ul>
