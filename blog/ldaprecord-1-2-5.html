@@ -1,0 +1,16 @@
+<p>
+  <a href="https://ldaprecord.com/" target="_blank">LdapRecord</a> aims to provide a simple way to interact with LDAP entries using PHP. It’s a pretty new framework, and they seem to be following the “release early, release often” principle, so it looks like they release a new version any time they make a change. I’ve been hesitant to post about each new release in the past because they’ve been pretty frequent (even multiple in the same day in a couple of cases) and I don’t want to flood the site with posts about it. On the other hand, it’s not fair to not mention it at all. So I’ll try to cover them with a reasonable frequency.
+</p>
+
+<p>
+  The 1.2.5 release came out earlier today, but here’s a list of recent releases with a summary of what has changed:
+</p>
+
+<ul>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.5" target="_blank">v1.2.5</a> — Added a Connection::getCache method</li>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.4" target="_blank">v1.2.4</a> — Added support for Laravel 7.0</li>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.3" target="_blank">v1.2.3</a> — Fixed an error that could arise if a null DN was provided to a query builder. Fixed an issue that could prevent correct handling of custom attributes. Added the ability to pass a DN into Model::getName and Model::getRdn methods. Added the ability to pass null into Model::getParentDn to retrieve the parent DN for the model.</li>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.2" target="_blank">v1.2.2</a> — Fixed issues that could arise when calling Model::getQuery or Model::getModifications multiple times.</li>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.1" target="_blank">v1.2.1</a> — Wrap selected columns in an array when building a query.</li>
+  <li><a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.2.0" target="_blank">v1.2.0</a> — Added the ability to restore deleted entries from Active Directory. Added the ability to listen to model events, and created events for modify DN operations.</li>
+</ul>
