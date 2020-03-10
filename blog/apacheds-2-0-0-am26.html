@@ -1,0 +1,17 @@
+<p>
+  The <a href="https://directory.apache.org/" target="_blank">Apache Directory Project</a> has released Apache DS 2.0.0.AM26, which is a preview of their upcoming 2.0.0 release. Although they don’t seem to have actually announced it on their <a href="https://directory.apache.org/mailing-lists-and-irc.html" target="_blank">mailing lists</a> or on <a href="https://twitter.com/ApacheDS" target="_blank">Twitter</a>, the <a href="https://directory.apache.org/apacheds/news.html" target="_blank">News section</a> of their website (which doesn’t seem to support RSS or ATOM to allow subscribing for updates, nor does it provide permalinks to allow direct linking to a particular news item) indicates that it was released on Saturday, March 7. According to that post, some of the changes in this release include:
+</p>
+
+<ul>
+  <li>Added support for LDAP transactions as described in RFC 5805</li>
+  <li>Added support for the increment modification type as described in RFC 4525</li>
+  <li>Added the ability to customize the TLS cipher suites the server will use</li>
+  <li>Include the structuralObjectClass operational attribute in all entries</li>
+  <li>Include the hasSubordinates operational attribute in all entries</li>
+  <li>Performance improvements for add and bind operations</li>
+  <li>Fixed an entry cache configuration issue</li>
+  <li>Fixed an issue with modify DN operations that could prevent old RDN values from being removed</li>
+  <li>Fixed an issue in which write operations could interfere with ongoing searches</li>
+  <li>Fixed an issue that caused the server to use very small TCP send and receive buffers</li>
+  <li>Fixed an issue with the handling of hex-encoded RDN values</li>
+</ul>
