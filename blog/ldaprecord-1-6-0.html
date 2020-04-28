@@ -1,0 +1,10 @@
+<p>
+  <a href="https://ldaprecord.com/" target="_blank">LdapRecord</a> aims to provide a simple way to interact with LDAP entries using PHP. The project has just released <a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.6.0" target="_blank">version 1.6.0</a>, which appears to include the following changes since the 1.5.1 version that I previously reported on:
+</p>
+
+<ul>
+  <li>Fixed an issue in which query results may not use the parent model’s connection (version 1.5.2)</li>
+  <li>Updated failover logic so that when retrying an operation that failed because of a lost connection, the attempt will be retried against the primary server before failing over to secondary servers (version 1.6.0)</li>
+  <li>Members of primary groups are now merged with the members relationship (version 1.6.0)</li>
+  <li>One-to-many relationships can now be merged with other relation results (version 1.6.0)</li>
+</ul>
