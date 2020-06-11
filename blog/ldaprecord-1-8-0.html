@@ -1,0 +1,12 @@
+<p>
+  <a href="https://ldaprecord.com/" target="_blank">LdapRecord</a> aims to provide a simple way to interact with LDAP entries using PHP. The project has just released <a href="https://github.com/DirectoryTree/LdapRecord/releases/tag/v1.8.0" target="_blank">version 1.8.0</a>, which appears to include the following changes since the 1.7.1 version that I previously reported on:
+</p>
+
+<ul>
+  <li>Merged user primary groups with group relation results</li>
+  <li>Prevent invalid empty batch modifications</li>
+  <li>Make detailed error messages accessible in all exceptions</li>
+  <li>Added exceptions for different causes of modification failures, including the case in which an attribute value already exists, a constraint violation, and insufficient access rights</li>
+  <li>Fixed an issue in which relations may not be properly cast to the correct type</li>
+  <li>Fixed an issue that prevented setting appropriate values for some attributes like pwdlastset</li>
+</ul>
