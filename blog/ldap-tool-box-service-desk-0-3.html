@@ -1,0 +1,12 @@
+<p>
+  The <a href="https://github.com/ltb-project" target="_blank">LDAP Tool Box</a> project provides a set of LDAP-related applications, administrative tools, and other utilities. They have just released the <a href="https://github.com/ltb-project/service-desk/releases/tag/v0.3" target="_blank">0.3 release</a> of their <a href="https://service-desk.readthedocs.io/en/latest/" target="_blank">Service Desk</a> tool, which is a web application for administrators that supports viewing and managing accounts in an LDAP directory server. This release includes the following changes:
+</p>
+
+<ul>
+  <li>Added support for locking accounts by setting a specific value in the pwdAccountLockedTime attribute</li>
+  <li>Fixed an issue in which it did not properly handle the case in which the pwdAccountLockedTime attribute was set but pwdLockoutDuration was missing or zero</li>
+</ul>
+
+<p>
+  Note that because these operations are not standardized, they will only be available for certain types of directory servers.
+</p>
