@@ -1,0 +1,32 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-4.html" target="_blank">1.4.4.4</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-3-11.html" target="_blank">1.4.3.11</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-2-16.html" target="_blank">1.4.2.16</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed an issue that could cause a certificate private key to be written in PEM form to an incorrect location (version 1.4.4.4)</li>
+  <li>Fixed memory leaks in disk monitoring (all three versions)</li>
+  <li>Added OpenLDAP syncrepl compatibility (version 1.4.4.4)</li>
+  <li>Added support for the entryUUID attribute (version 1.4.4.4)</li>
+  <li>Added new “wtime” and “optime” access log fields and updated the logconv analysis tool to support them (all three versions)</li>
+  <li>Added an option to reject internal unindexed searches (versions 1.4.3.11 and 1.4.4.4)</li>
+  <li>Improved autotune defaults (version 1.4.4.4)</li>
+  <li>Fixed an issue that could prevent dsidm from deleting an organizational unit (all three versions)</li>
+  <li>Fixed an issue that could cause a UI crash when attempting to manage attribute uniqueness for an empty subtree (all three versions)</li>
+  <li>Added an error log message when processing a fully unindexed search (all three versions)</li>
+  <li>Added a warning log message when the configured thread number is significantly different from the auto-tuned value (all three versions)</li>
+  <li>Fixed an issue in which the reindex task could create an abandoned index file (all three versions)</li>
+  <li>Fixed an issue with the dsctl tool when working with instance names containing “slapd-” (all three versions)</li>
+  <li>Fixed an issue that could cause db2ldif to crash if an LDIF file can’t be accessed (versions 1.4.3.11 and 1.4.4.4)</li>
+  <li>Fixed an issue that prevented creating a naming context with the countryName attribute type (version 1.4.4.4)</li>
+  <li>Fixed issues with the healthcheck tool (version 1.4.4.4)</li>
+  <li>Fixed an issue with the sambaConfig object class OID (version 1.4.4.4)</li>
+  <li>Reduced lock contention when creating a connection mutex (version 1.4.4.4)</li>
+  <li>Fixed an issue in which an entry could be missing a DN (version 1.4.4.4)</li>
+  <li>Updated healthcheck to look for additional “notes” values in the access log (version 1.4.4.4)</li>
+  <li>Set a default minimum number of worker threads (version 1.4.4.4)</li>
+  <li>Fixed an issue that could allow a user to alter the pwdReset attribute (version 1.4.4.4)</li>
+  <li>Fixed an issue that could cause the cn=monitor entry to report an incorrect numSubordinates value (version 1.4.4.4)</li>
+  <li>Fixed an issue that could prevent dsctl and dsidm from reporting errors correctly when using a JSON output format (version 1.4.4.4)</li>
+  <li>Added the labeledURIObject object class to the server schema (version 1.4.4.4)</li>
+  <li>Enable samba schema by default (version 1.4.4.4)</li>
+</ul>
