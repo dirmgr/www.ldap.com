@@ -62,13 +62,13 @@
 
 <ul>
   <li>
-    The filter to use for the search criteria. This may be the string representation of any valid search filter as described earlier in this chapter. If a filter is provided, then the scope must also be present, and the filter should be separated from that scope by a question mark. If no filter is provided, then a filter of (objectClass=*) should be assumed.
+    The filter to use for the search criteria. This may be the string representation of any valid search filter as described earlier in this chapter. If a filter is provided, then the scope must also be present (or at least the placeholder for it; the scope itself can be the empty string to use the default of “base”), and the filter should be separated from that scope by a question mark. If no filter is provided, then a filter of (objectClass=*) should be assumed.
   </li>
 </ul>
 
 <ul>
   <li>
-    A comma-delimited list of extensions that may be used to provide additional information about the context for the LDAP URL. Each extension must contain at least an OID to identify the type of extension, may optionally be followed by an equal sign and a string representation of the value, and may optionally be preceded by an exclamation point to indicate that the extension is critical. There are no standard LDAP URL extensions defined, and LDAP URL extensions are rarely (if ever) used. However, if an LDAP URL does include one or more extensions, then the filter element must be present, and the list of extensions must be separated from that filter by a question mark.
+    A comma-delimited list of extensions that may be used to provide additional information about the context for the LDAP URL. Each extension must contain at least an OID to identify the type of extension, may optionally be followed by an equal sign and a string representation of the value, and may optionally be preceded by an exclamation point to indicate that the extension is critical. There are no standard LDAP URL extensions defined, and LDAP URL extensions are rarely (if ever) used. However, if an LDAP URL does include one or more extensions, then the filter element must be present (or at least the question mark placeholder for it; the filter itself can be the empty string to use the default of “(objectClass=*)”), and the list of extensions must be separated from that filter by a question mark.
   </li>
 </ul>
 
