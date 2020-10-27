@@ -1,0 +1,36 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-6.html" target="_blank">version 1.4.4.6</a>. Some of the changes in this release include:
+</p>
+
+<ul>
+  <li>
+    Fixed an issue in which certain search operations could trigger a denial of service.
+  </li>
+  <li>
+    Fixed an issue in which large imports could fail because of a task timeout.
+  </li>
+  <li>
+    Fixed an issue in which the chaining backend did not properly validate bind parameters.
+  </li>
+  <li>
+    Fixed a replication issue in which an internal structure could be incorrectly initialized.
+  </li>
+  <li>
+    Fixed a replication issue in syncrepl support that could cause the wrong cookie value to be used when a series of changes target the same entry.
+  </li>
+  <li>
+    Fixed an issue in which importing data into the changelog could incorrectly close all changelogs instead of just the one being imported.
+  </li>
+  <li>
+    Fixed a misleading access log message when a connection was closed because of an idle timeout.
+  </li>
+  <li>
+    Fixed an issue that could cause an incorrectly formatted message to be written to the server error log.
+  </li>
+  <li>
+    Fixed an issue that could ds-replcheck to crash when processing glue entries.
+  </li>
+  <li>
+    Fixed an issue in which disallowed repeated character sequences in a password could go undetected.
+  </li>
+</ul>
