@@ -1,0 +1,14 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-9.html" target="_blank">1.4.4.9</a> and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-3-17.html" target="_blank">1.4.3.17</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed a potential crash that could occur when chaining a search operation that includes a critical simple paged results request control (both versions)</li>
+  <li>Fixed a potential crash that could occur when deleting an entry with an escaped leading space (version 1.4.4.9)</li>
+  <li>Updated the server to use a monotonic clock for all timing events to avoid issues related to changes in the system time (both versions)</li>
+  <li>Updated the server to prevent read-only replicas from sending referrals to writable servers with a different data generation (both versions)</li>
+  <li>Fixed an issue that could cause problems managing object class definitions without the X-ORIGIN extension (both versions)</li>
+  <li>Fixed a replication issue that could cause internal searches to use a malformed filter (both versions)</li>
+  <li>Fixed a normalization issue for DNs with escaped spaces (both versions)</li>
+  <li>Fixed an issue that could cause online imports to be very slow after a previous failed import attempt  (version 1.4.4.9)</li>
+</ul>
