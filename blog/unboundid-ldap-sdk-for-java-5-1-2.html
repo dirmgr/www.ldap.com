@@ -1,0 +1,32 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/5.1.2" target="_blank">version 5.1.2</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Added a new parallel-update tool</li>
+  <li>Added automatic retry support to ldapmodify and ldapdelete</li>
+  <li>Added programmatic and command-line access to a registry of LDAP-related object identifiers</li>
+  <li>Added a new ldap-result-code tool</li>
+  <li>Updated the in-memory directory server to support mutual TLS authentication</li>
+  <li>Improved the way that self-signed certificates are generated for the in-memory-directory-server and ldap-debugger tools</li>
+  <li>Added better support for validating arguments that represent host names</li>
+  <li>Improved support for implementing client-side support for custom SASL mechanisms</li>
+  <li>Added automatic trust for TLS certificates requested via a loopback IP address</li>
+  <li>Improved the comments that the LDIF writer generates for human-readable representations of base64-encoded values</li>
+  <li>Added a new manage-certificates retrieve-server-certificate command</li>
+  <li>Fixed a timeout issue in the manage-certificates trust-server-certificate command</li>
+  <li>Added a new dns-only output format for ldapsearch</li>
+  <li>Added the ability to include arbitrary key-value pairs in OAUTHBEARER SASL bind requests</li>
+  <li>Fixed a command-line tool framework issue that prevented it from explicitly closing output files</li>
+  <li>Added a method for determining whether an IP address is in a private or reserved range</li>
+  <li>Improved support for changelog entries for delete operations to provide an alternative way to get deleted entry attributes</li>
+  <li>Updated support for passphrase encryption to make it possible to explicitly specify the type of cipher that should be used</li>
+  <li>Added an X.509 trust manager that will never trust any certificate chain (primarliy for testing purposes)</li>
+  <li>Updated the documentation to include the latest versions of draft-melnikov-scram-sha-512, draft-melnikov-scram-sha3-512, and draft-ietf-kitten-password-storage drafts in the set of LDAP-related specifications</li>
+  <li>Added client-side support for the new ds-pwp-modifiable-state-json operational attribute in the Ping Identity Directory Server</li>
+  <li>Added client-side support for the new “remove attribute type” administrative task in the Ping Identity Directory Server</li>
+  <li>Added client-side support for the new AES256 password storage scheme in the Ping Identity Directory Server</li>
+  <li>Added client-side filter support for the jsonObjectFilterExtensibleMatch matching rule</li>
+  <li>Updated the uniqueness request control to make it possible to indicate that the server should generate a temporary conflict prevention details entry before pre-commit processing, and that it should generate an administrative alert when post-commit conflicts are detected</li>
+  <li>Deprecated support for interactive transactions in the Ping Identity Directory Server</li>
+<ul>
