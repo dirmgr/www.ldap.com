@@ -1,0 +1,86 @@
+<p>
+  <a href="https://www.pingidentity.com/en/software/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 8.2.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2020/12/18/ping-identity-directory-server-8-2-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Added single sign-on support to the Administration Console</li>
+  <li>Added a new <tt>ds-pwp-modifiable-state-json</tt> operational attribute</li>
+  <li>Added support for password validation during bind</li>
+  <li>Added support for a recent login history</li>
+  <li>Added sample <tt>dsconfig</tt> batch files</li>
+  <li>Added JSON-formatted variants for the audit, HTTP operation, and synchronization log files</li>
+  <li>Added support for logging to standard output or standard error</li>
+  <li>Added support for rotating the <tt>logs/server.out</tt> log file</li>
+  <li>Improved support for logging to syslog servers</li>
+  <li>Added support for the OAUTHBEARER SASL mechanism</li>
+  <li>Added support for the <tt>($attr.<i>attrName</i>)</tt> macro ACI</li>
+  <li>Added a <tt>remove-attribute-type-from-schema</tt> tool</li>
+  <li>Added a <tt>validate-ldap-schema</tt> tool</li>
+  <li>Added a number of security-related improvements to <tt>setup</tt></li>
+  <li>Added a number of improvements to the <tt>manage-profile</tt> tool</li>
+  <li>Added a number of improvements to the <tt>parallel-update</tt> tool</li>
+  <li>Added various improvements to several other command-line tools, including <tt>ldappasswordmodify</tt>, <tt>ldapcompare</tt>, <tt>ldifsearch</tt>, <tt>ldifmodify</tt>, <tt>ldif-diff</tt>, <tt>ldap-diff</tt>, and <tt>collect-support-data</tt></li>
+  <li>Added various usability improvements to command-line tools</li>
+  <li>Added several improvements to the dictionary password validator</li>
+  <li>Added a new AES256 password storage scheme</li>
+  <li>Added an <tt>export-reversible-passwords</tt> tool</li>
+  <li>Create a 256-bit AES encryption settings definition in addition to the 128-bit AES definition</li>
+  <li>Added password information about password quality requirements to the <tt>ds-pwp-state-json</tt> virtual attribute</li>
+  <li>Added the ability to augment the default set of crypto manager cipher suites</li>
+  <li>Improvements in delaying bind responses</li>
+  <li>Require a minimum ephemeral Diffie-Hellman key size of 2048-bits</li>
+  <li>Switched to using <tt>/dev/urandom</tt> as a source of secure random data</li>
+  <li>Improved the way we generate self-signed certificates and certificate signing requests</li>
+  <li>Added support for using elliptic curve keys in JWTs</li>
+  <li>Added new administrative alert types for account status notification events, privilege assignment, and rejection of insecure requests</li>
+  <li>Added improvements to monitor data and the way it is requested by the status tool</li>
+  <li>Added identity mapper improvements, including filter support, an aggregate identity mapper, and an out-of-the-box mapper for administrative users</li>
+  <li>Improved uniqueness control conflict prevention and detection</li>
+  <li>Added support for re-sending an internal replication message if there is no response to a dsreplication initialize request</li>
+  <li>Added a <tt>--force</tt> argument to dsreplication initialize that can be used to force initialization even if the source server is in lockdown mode</li>
+  <li>Added options to customize the response code and body in availability servlets</li>
+  <li>Increased the number of RDN components that a DN may have from 50 to 100</li>
+  <li>Updated the SCIM servlet to leverage a VLV index (if available) to support paging through search result sets larger than the lookthrough limit</li>
+  <li>Added an <tt>--adminPasswordFile</tt> argument to the manage-topology add-server command</li>
+  <li>Added a password policy configuration property to indicate whether the server should return the password expiring or password expired based on whether the client also provided the password policy request control</li>
+  <li>Updated support for the CRAM-MD5 and DIGEST-MD5 SASL mechanisms so they are no longer considered secure</li>
+  <li>Improved Directory Proxy Server support for several SASL mechanisms</li>
+  <li>Improved Directory Proxy Server support for the LDAP join control</li>
+  <li>Updated <tt>manage-topology add-server</tt> to add support for configuring failover between Synchronization Server instances</li>
+  <li>Added a Synchronization Server configuration property for customizing the sync pipe queue size</li>
+  <li>Added a Synchronization Server configuration property for processing changes with REPLACE modifications rather than ADD and DELETE modifications</li>
+  <li>Fixed an issue that could prevent the installer from removing information about the instance from the topology registry</li>
+  <li>Fixed an issue that could cause replication to miss changes if a backend was reverted to an earlier state without reverting the replication database</li>
+  <li>Fixed an issue in which a replica could enter lockdown mode after initialization</li>
+  <li>Fixed an issue that could allow some non-LDAP clients to inappropriately issue requests without the server in lockdown mode</li>
+  <li>Fixed an issue in which restoring an incremental backup could cause dependencies to be restored out of order, leading to an incomplete intermediate database file</li>
+  <li>Fixed a backup retention issue in which the process of purging old backups could cause old backups to be removed out of order</li>
+  <li>Fixed an issue in which the server could leak a small amount of memory upon closing a JMX connection</li>
+  <li>Fixed an issue that could cause the server.status file to be corrupted on Windows systems after an unplanned reboot if the server is configured to run as a Windows service</li>
+  <li>Fixed an issue that could cause the server to return a password expired response control in a bind response when the user’s account is expired but the client provided incorrect credentials</li>
+  <li>Fixed an issue in which a search that relied on a virtual attribute provider for efficient processing could omit object classes from search result entries</li>
+  <li>Fixed an issue in which the server did not properly handle the matched values control that used an extensible match filter with both an attribute type and a matching rule (for example, in conjunction with the <tt>jsonObjectFilterExtensibleMatch</tt> matching rule)</li>
+  <li>Fixed an issue in which the server could incorrectly log an error message at startup if it was configured with one or more ACIs that grant or deny permissions based on the use of SASL mechanisms</li>
+  <li>Fixed an issue in which the remove-defunct-server tool to fail to remove certain replication attributes when the tool was run with a topology JSON file</li>
+  <li>Fixed an issue in which <tt>manage-profile replace-profile</tt> could fail to apply changes if the profile included <tt>dsconfig</tt> batch files without a “<tt>.dsconfig</tt>” extension</li>
+  <li>Fixed an issue in which the server could raise an internal error and terminate the connection if a client attempted to undelete a non-soft-deleted entry</li>
+  <li>Fixed an issue that could cause the REST API to fail to decode certain types of credentials when using basic authentication</li>
+  <li>Fixed an issue in which the <tt>encryption-settings</tt> tool could leave the server without a preferred definition after importing a set of definitions with the <tt>--set-preferred</tt> argument but none of the imported definitions is marked preferred</li>
+  <li>Fixed an issue in which the <tt>manage-profile generate-profile</tt> command could run out of memory when trying to generate a profile containing large files</li>
+  <li>Fixed an issue in which the <tt>manage-profile generate-profile</tt> command could display a spurious message when generating the profile in an existing directory</li>
+  <li>Fixed an issue that could interfere with cursoring through paged search results when using the REST API and the results included entries with long DNs</li>
+  <li>Fixed an issue that could cause an exception in SCIM 1.1 processing as a result of inappropriate DN escaping</li>
+  <li>Fixed an issue that could cause the <tt>isMemberOf</tt> and <tt>isDirectMemberOf</tt> virtual attributes to miss updates if the same group is updated concurrently by multiple clients</li>
+  <li>Fixed an issue that could cause the server to return an <tt>objectClassViolation</tt> result code instead of the more appropriate <tt>attributeOrValueExists</tt> result code when attempting to add an object class value to an entry that already has that object class</li>
+  <li>Fixed an issue that could cause loggers to consume more CPU processing time than necessary in an idle server</li>
+  <li>Fixed an issue in which the stats collector plugin could generate unnecessary I/O when it is used exclusively for sending metrics to a StatsD endpoint</li>
+  <li>Fixed an issue in which the periodic stats logger could include duplicate column headers</li>
+  <li>Fixed an issue that could cause the server to periodically log an error message if certain internal backends are disabled</li>
+  <li>Fixed a typo in the default template that the multi-part email account status notification handler uses to warn about an upcoming password expiration</li>
+  <li>Fixed an issue in which the <tt>dsconfig list</tt> command could omit certain requested properties</li>
+  <li>Fixed an issue in which the <tt>dsreplication</tt> tool could incorrectly suppress LDAP SDK debug messages even if debugging was requested</li>
+  <li>Fixed an issue that could cause the Directory Proxy Server to log information about an internal exception if an entry-balanced search encountered a timeout when processing one or more backend sets</li>
+  <li>Fixed an issue in which the Synchronization Server could get stuck when attempting to retry failed operations when it already has too many other operations queued up for processing</li>
+  <li>Fixed an issue in which Synchronization Server loggers were not properly closed during the server shutdown process</li>
+  <li>Fixed an issue in which the synchronization server could fail to synchronize certain delete operations from an Oracle Unified Directory because of variations in the format of the <tt>targetUniqueID</tt> attribute</li>
+</ul>
