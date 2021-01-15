@@ -1,0 +1,19 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced the release of version <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-3-18.html" target="_blank">1.4.3.18</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed a security issue that could cause unexpected information to be returned in an LDAP request</li>
+  <li>Fixed memory management issues that could cause crashes or potential security issues</li>
+  <li>Fixed a potential crash when dereferencing an entry that exists but is not returned by an internal search</li>
+  <li>Fixed a potential crash resulting from a division-by-zero in disk monitoring code</li>
+  <li>Fixed an out-of-bounds issue affecting the file descriptor table</li>
+  <li>Fixed an issue that may cause the changelog cache to upload updates from the wrong starting point</li>
+  <li>Fixed an issue with singleLevel searches below “cn=monitor”</li>
+  <li>Fixed a performance issue around the use of the TCP_NODELAY socket option</li>
+  <li>Added a warning for skipped entries during an online LDIF import</li>
+  <li>Added cockpit enabling to dsctl</li>
+  <li>Added support for encoding passwords with gost-yescrypt</li>
+  <li>Added the machine name as a subject alternative name when generating certificates</li>
+  <li>Fixed an issue that could prevent dsidm from removing an organizationalUnit entry</li>
+</ul>
