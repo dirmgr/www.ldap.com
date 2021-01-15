@@ -1,0 +1,35 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-0-2.html" target="_blank">2.0.2</a> and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-10.html" target="_blank">1.4.4.10</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed a security issue that could cause unexpected information to be returned in an LDAP request (both versions)</li>
+  <li>Fixed a number of memory management issues that could cause crashes or potential security issues (both versions)</li>
+  <li>Fixed a potential data corruption error in syncrepl processing (both versions)</li>
+  <li>Fixed a potential crash when dereferencing an entry that exists but is not returned by an internal search (both versions)</li>
+  <li>Fixed a potential crash resulting from a division-by-zero in disk monitoring code (both versions)</li>
+  <li>Fixed a potential crash when using the simple paged results control with chaining (version 2.0.2)</li>
+  <li>Fixed an out-of-bounds issue affecting the file descriptor table (both versions)</li>
+  <li>Fixed an issue that may prevent entryUUID from being replicated properly (both versions)</li>
+  <li>Fixed a replication issue that could cause an internal search to use an improperly escaped filter (version 2.0.2)</li>
+  <li>Fixed an issue that affects interaction with OpenLDAP involving the entryUUID attribute (both versions)</li>
+  <li>Fixed an issue that may cause the changelog cache to upload updates from the wrong starting point (both versions)</li>
+  <li>Updated the server to log internal searches that are unindexed (version 2.0.2)</li>
+  <li>Fixed an issue that could occur during migration from OpenLDAP (both versions)</li>
+  <li>Fixed an issue with singleLevel searches below “cn=monitor” (both versions)</li>
+  <li>Fixed a performance issue around the use of the TCP_NODELAY socket option (both versions)</li>
+  <li>Added support for OpenLDAP-compatible password encodings (both versions)</li>
+  <li>Added a warning for skipped entries during an online LDIF import (both versions)</li>
+  <li>Fixed an LDIF import performance issue after an earlier failed import (version 2.0.2)</li>
+  <li>Added cockpit enabling to dsctl (both versions)</li>
+  <li>Added DN rewriting support for LDAPI authentication (both versions)</li>
+  <li>Added support for encoding passwords with gost-yescrypt (both versions)</li>
+  <li>Added the machine name as a subject alternative name when generating certificates (both versions)</li>
+  <li>Fixed an issue that could cause the server to return referrals for servers with a different data generation (version 2.0.2)</li>
+  <li>Fixed a DN normalization issue for escaped spaces (version 2.0.2)</li>
+  <li>Fixed an ldifgen issue when using the --start-idx argument (version 2.0.2)</li>
+  <li>Fixed an issue that could prevent dsidm from removing an organizationalUnit entry (version 2.0.2)</li>
+  <li>Fixed systemd pin warnings (version 2.0.2)</li>
+  <li>Fixed a UI issue that prevented it from handling object class definitions without an X-ORIGIN extension (version 2.0.2)</li>
+  <li>Updated the client library to use the underlying system’s TLS policy (version 2.0.2)</li>
+</ul>
