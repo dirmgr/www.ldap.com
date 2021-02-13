@@ -1,0 +1,17 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-0-3.html" target="_blank">2.0.3</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-13.html" target="_blank">1.4.4.13</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-3-20.html" target="_blank">1.4.3.20</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed an issue that could disclose the existence of an entry when trying to bind as that user with no password (versions 2.0.3 and 1.4.4.13)</li>
+  <li>Fixed a number of memory management issues (version 2.0.3)</li>
+  <li>Fixed an issue that could cause the server to crash on 64-bit ARM systems (all three versions)</li>
+  <li>Fixed an issue that could prevent the server from starting if configured with a TLS certificate that does not use the expected nickname (all three versions)</li>
+  <li>Fix an issue that could cause the server to choose the wrong operation when replaying replicated changes (version 2.0.3)</li>
+  <li>Fixed an issue that could leave the database in a broken state after a failed re-indexing attempt (version 2.0.3)</li>
+  <li>Improved dsconf root DN access control validation (version 2.0.3)</li>
+  <li>Fix an issue affecting the server when running on big endian systems (version 2.0.3)</li>
+  <li>Improved support for migration from OpenLDAP (versions 2.0.3 and 1.4.4.13)</li>
+  <li>Log a message when a client attempts to perform too many concurrent operations (version 2.0.3)</li>
+  <li>Improve entry cache access performance (version 2.0.3)</li>
+</ul>
