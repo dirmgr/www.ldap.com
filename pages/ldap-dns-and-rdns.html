@@ -22,7 +22,7 @@
 </ul>
 
 <p>
-  Each RDN is comprised of name-value pairs. Every RDN must contain at least one pair (an attribute name followed by an equal sign and the value for that attribute), but you can include multiple name-value pairs in the same RDN by separating them with plus signs. For example, the RDN “cn=John Doe+telephoneNumber=+1 123-456-7890” has a “cn” value of “John Doe” and a “telephoneNumber” value of “+1 123-456-7890”. RDNs with multiple name-value pairs are called multivalued RDNs, and they are primarily used for cases in which it is not possible to guarantee that an RDN with a single component could be unique among entries at a given level of the hierarchy (e.g., there may be multiple users with a name of “John Doe” but they probably all have different telephone numbers).
+  Each RDN is comprised of name-value pairs. Every RDN must contain at least one pair (an attribute name followed by an equal sign and the value for that attribute), but you can include multiple name-value pairs in the same RDN by separating them with plus signs. For example, the RDN “cn=John Doe+mail=jdoe@example.com” has a “cn” value of “John Doe” and a “mail” value of “jdoe@example.com”. RDNs with multiple name-value pairs are called multivalued RDNs, and they are primarily used for cases in which it is not possible to guarantee that an RDN with a single component could be unique among entries at a given level of the hierarchy (e.g., there may be multiple users with a name of “John Doe” but they probably all have different email addresses).
 </p>
 
 <p>
