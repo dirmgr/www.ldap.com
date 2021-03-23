@@ -1,0 +1,13 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/5.1.4" target="_blank">version 5.1.4</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Fixed an issue with the fewest connections and round-robin server sets that could leave a background thread running if a server that had been becomes permanently unavailable.</li>
+  <li>Improved the TLS cipher suite selector’s compatibility with the IBM JDK and other JVMs that use an “SSL_” prefix for all cipher suites and not just legacy suites associated with the SSL protocol.</li>
+  <li>Improved the order in which the TLS cipher suite selector returns cipher suite names.</li>
+  <li>Added support for a FIPS 140-2-compliant mode using the Bouncy Castle FIPS provider.</li>
+  <li>Updated manage-certificates to support BCFKS key stores.</li>
+  <li>Updated ldifmodify to support ignoring certain kinds of errors, like deleting an entry multiple times or modifying or renaming an entry that does not exist int the LDIF file.</li>
+  <li>Added an option that can help improve performance when using the proprietary “get user resource limits” request control in directories with large numbers of dynamic groups.</li>
+<ul>
