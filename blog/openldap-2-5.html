@@ -1,0 +1,37 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has released version 2.5 of their LDAP directory server. The <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/BH3VDPG6IYYF5L5U6LZGHHKMJY5HFA3L/" target="_blank">release announcement</a> lists the following changes included in this version:
+</p>
+
+<ul>
+  <li>Added a load balancer daemon</li>
+  <li>Improved support for attributes with large numbers of values</li>
+  <li>Added support for LDAP transactions as described in RFC 5805</li>
+  <li>Added support for new replication protocols, including those used by Active Directory and DSEE</li>
+  <li>Added support for multi-factor authentication options, including HOTP and TOTP</li>
+  <li>Added support for an asynchronous metadirectory backend</li>
+  <li>Added support for a Wiredtiger database backend</li>
+  <li>Added support for deleting configuration objects without restarting the server</li>
+  <li>Added an overlay with support for certain certification authority functions</li>
+  <li>Added an overlay with home directory management support</li>
+  <li>Added an overlay with support for encoding passwords with the Argon2 function</li>
+  <li>Added support for the authorization identity request and response controls as described in RFC 3829</li>
+  <li>Added an overlay with support for storing enumerated values and fixed-size integers</li>
+  <li>Added an overlay with passing authentication requests through to another LDAP server</li>
+  <li>Added an overlay with passing authentication requests through to a radius server</li>
+  <li>Added an overlay with support for improved performance when using Apache Fortress</li>
+  <li>Added an overlay with support for generating usnCreated and usnChanged operational attributes</li>
+  <li>Added an overlay with support for sharing attribute values between several entries</li>
+  <li>Added an overlay with support for the verify credentials extended operation</li>
+  <li>Added additional password validation options</li>
+  <li>Improved support for draft-behera-ldap-password-policy-10</li>
+  <li>Added support for Netscape password expiring and password expired controls</li>
+  <li>Added support for a lazy commit control as used in Active Directory</li>
+  <li>Added support for a Netscape account usability control</li>
+  <li>Added support for dynamically generating an attribute with information about a user’s group membership</li>
+  <li>Improved the unique attribute overlay to avoid the potential for race conditions</li>
+  <li>Improved support for the cache database</li>
+  <li>Added a library for LDIF parsing</li>
+  <li>Made several updates to the LDAP client library, including support for TLS and GSSAPI channel binding, TLS public key pinning, and the TLS SNI extension</li>
+  <li>Added a slapmodify tool for making offline updates to the configuration</li>
+  <li>Made significant performance enhancements throughout the codebase</li>
+</ul>
