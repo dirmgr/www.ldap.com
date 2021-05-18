@@ -1,0 +1,15 @@
+<p>
+  The <a href="https://github.com/ltb-project" target="_blank">LDAP Tool Box</a> project provides a set of LDAP-related applications, administrative tools, and other utilities. They have just released the <a href="https://github.com/ltb-project/service-desk/releases/tag/v0.4" target="_blank">0.4 release</a> of their <a href="https://service-desk.readthedocs.io/en/latest/" target="_blank">Service Desk</a> tool, which is a web application for administrators that supports viewing and managing accounts in an LDAP directory server. This release includes the following changes:
+</p>
+
+<ul>
+  <li>Provided a Docker image for the service desk application</li>
+  <li>Added multitenancy support with the ability to load different configurations based on the host name provided by the client</li>
+  <li>Added dashboard pages to list locked accounts, idle accounts, accounts with expired passwords, and accounts with passwords that will soon expire</li>
+  <li>Updated the account information display to include the password expiration date when applicable</li>
+  <li>Fixed an issue on SELinux caused by the location of the cache files</li>
+</ul>
+
+<p>
+  Note that features for managing password policy state may only be available for certain types of directory servers.
+</p>
