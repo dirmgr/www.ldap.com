@@ -1,0 +1,26 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.0" target="_blank">version 6.0.0</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Deprecated support for TLSv1 and TLSv1.1</li>
+  <li>Deprecated support for TLS cipher suites that rely on the SHA-1 message digest or RSA key exchange</li>
+  <li>Fixed an issue that could cause the LDAP SDK to use the default set of JVM-enabled TLS cipher suites instead of a recommended set identified by the LDAP SDK</li>
+  <li>Updated the logic used when generating the string representations of DNs so that printable non-ASCII characters are no longer escaped by default</li>
+  <li>Updated the logic used when generating the LDIF representations of entries and change records so that values with ASCII control characters are now base64-encoded by default</li>
+  <li>Updated the LDIF reader to make it possible to disable support for reading change records with LDAP controls</li>
+  <li>Updated the PKCS #11 key manager to make it easier to interact with a PKCS #11 token without altering the JVM configuration</li>
+  <li>Updated the manage-certificates tool to support interacting with PKCS #11 tokens</li>
+  <li>Updated the manage-certificates tool to add a new copy-keystore subcommand</li>
+  <li>Updated the manage-certificates tool to add optional --output-file and --output-format arguments to the generate-self-signed-certificate subcommand</li>
+  <li>Updated the manage-certificates tool to allow interacting with BCFKS key stores even when not operating in FIPS 140-2-compliant mode</li>
+  <li>Updated the manage-certificates tool to display the key store type when using the list-certificates subcommand</li>
+  <li>Updated the in-memory-directory-server tool to add a --doNotGenerateOperationalAttributes argument</li>
+  <li>Added a new ThreadLocalSecureRandom class</li>
+  <li>Updated the documentation to include the latest revisions of the draft-coretta-x660-ldap, draft-ietf-kitten-password-storage, and draft-melnikov-scram-2fa drafts</li>
+  <li>Updated the use of the Bouncy Castle FIPS-compliant secure random number generator to reduce the potential for exhausting system entropy</li>
+  <li>Added the ability to customize the set of providers that will be allowed when operating in FIPS 140-2-compliant mode</li>
+  <li>Updated the command-line tool framework to check for FIPS 140-2-compliant mode as early as possible in the tool startup process</li>
+  <li>Updated the collect-support-data tool to allow using the --keyStoreFormat and --trustStoreFormat arguments even if the --useRemoteServer argument was not provided</li>
+  <li>Added client-side support for a new administrative task for safely removing an object class from the server schema</li>
+<ul>
