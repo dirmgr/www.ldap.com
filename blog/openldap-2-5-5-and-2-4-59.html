@@ -1,0 +1,23 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has released versions <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/OXQJHYPUY2XFSJW4AALDBVMGVQT4DTQO/" target="_blank">2.5.5</a> and <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/UREG3X43QNEQGAVSKLHKO752QVVNRQPP/" target="_blank">2.4.59</a> of their LDAP directory server. Some of the changes included in these versions include:
+</p>
+
+<ul>
+  <li>Fixed a potential double-free memory management issue (both versions)</li>
+  <li>Fixed a replication issue that could cause changes to be missed (both versions)</li>
+  <li>Fixed a cache locking issue that could cause the server to appear unresponsive (both versions)</li>
+  <li>Fixed issues with TLSv1.3 cipher suite handling (both versions)</li>
+  <li>Fixed an issue that could prevent removing a naming context entry (both versions)</li>
+  <li>Fixed a potential crash when using autogroup (version 2.4.59)</li>
+  <li>Fixed an issue in which slapadd could fail because of improper initialization (version 2.4.59)</li>
+  <li>Fixed a syncrepl issue when both adding and removing a value for a single-valued attribute (version 2.4.59)</li>
+  <li>Fixed a quarantine issue in the metadata backend (version 2.5.5)</li>
+  <li>Fixed an issue in which log messages could potentially be lost immediately after a very fast restart (version 2.5.5)</li>
+  <li>Fixed an issue with incorrect OIDs for the authorization identity request and response controls (version 2.5.5)</li>
+  <li>Fixed an that could prevent encoding passwords with Argon2 (version 2.5.5)</li>
+  <li>Fixed an issue with empty DNs in certain extensible match filters (version 2.5.5)</li>
+  <li>Added an LDAP load-balancing daemon (version 2.5.5)</li>
+  <li>Improved syncrepl refresh performance in certain cases (version 2.5.5)</li>
+  <li>Updated the access log to include the new DN for modify DN operations (version 2.5.5)</li>
+  <li>Updated the client library and metadata backend to support client-side timeouts (version 2.5.5)</li>
+</ul>
