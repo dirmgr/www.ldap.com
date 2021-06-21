@@ -1,0 +1,90 @@
+<p>
+  <a href="https://www.pingidentity.com/en/software/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 8.2.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2021/06/21/ping-identity-directory-server-8-3-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<p>
+  Summary of Deprecated Functionality
+</p>
+
+<ul>
+  <li>Deprecate support for TLSv1 and TLSv1.1</li>
+  <li>Deprecate support for TLS cipher suites using SHA-1</li>
+  <li>Deprecate support for TLS cipher suites using RSA key exchange</li>
+  <li>Deprecate support for incremental backups</li>
+</ul>
+
+<p>
+  Summary of New Features and Enhancements
+</p>
+
+<ul>
+  <li>Add support for a FIPS 140-2-compliant mode</li>
+  <li>Added support for passphrase providers</li>
+  <li>Improve auditability for SCIM2 requests</li>
+  <li>Add support for join virtual attribute types</li>
+  <li>Add support for Admin Console SSO with alternative OpenID Connect providers</li>
+  <li>Add Admin Console support for collect-support-data and manage-profile generate-profile</li>
+  <li>Add a “must change password” account status notification type</li>
+  <li>Include an appropriate diagnostic message when successfully authenticating with an account in a “must change password” state</li>
+  <li>Allow updating ds-pwp-modifiable-state-json with other attributes and in transactions</li>
+  <li>Fix an issue preventing ds-pwp-modifiable-state-json from being updated in a multi-update extended operation</li>
+  <li>Add support for an AWS Secrets Manager cipher stream provider</li>
+  <li>Add support for dynamically loading a PKCS #11 provider</li>
+  <li>Add manage-certificates support for PKCS #11 key stores</li>
+  <li>Add support for setting up the server with certificates provided in PEM files</li>
+  <li>Add support for including custom tags in StatsD metric messages</li>
+  <li>Allow providing a JVM options cache for improved setup performance</li>
+  <li>Make manage-profile replace-profile more efficient when applying changes that require administrative actions</li>
+  <li>Reduce unnecessary escaping for non-ASCII characters in DNs</li>
+  <li>Reduce memory requirements for many command-line tools</li>
+  <li>Improve logging for multi-update extended operations</li>
+  <li>Include the Bouncy Castle library by default</li>
+  <li>Improve Admin Console logging when running in an external container</li>
+  <li>Add a remove-object-class-from-schema tool</li>
+  <li>Improve LDIF import performance and reduce the number of intermediate index files</li>
+  <li>Improve delete and modify performance with very large composite indexes</li>
+  <li>Improve performance for searches targeting dynamic groups via isMemberOf</li>
+  <li>Improve bind performance through the Directory Proxy Server in environments with many dynamic groups</li>
+  <li>Improve performance for very large exploded indexes when the index entry limit has been exceeded</li>
+  <li>Allow the purge expired data plugin to use multiple threads</li>
+  <li>Improve dbtest output for several subcommands</li>
+  <li>Minimize the conflict prevention details entry created for the uniqueness request control</li>
+  <li>Add an oid-lookup command-line tool</li>
+  <li>Add global ACIs for the LDAP assertion and permissive modify request controls</li>
+  <li>Allow forwarding the assured replication request control through the Directory Proxy Server by default</li>
+  <li>Allow the operation purpose request control to be used for operations in a transaction</li>
+  <li>Add support for alternative output formats in the ldap-result-code tool</li>
+</ul>
+
+<p>
+  Summary of Bug Fixes
+</p>
+
+<ul>
+  <li>Fix an issue that could allow users in a “must change password” state to issue requests</li>
+  <li>Prevent warning messages for unrecognized JVM vendors</li>
+  <li>Fix an issue that could prevent ds-pwp-modifiable-state-json changes from being replicated right away</li>
+  <li>Improve the logic for maintaining the entry-balancing global index</li>
+  <li>Fix an issue that could prevent setting up the server on old JVMs without support for 256-bit AES</li>
+  <li>Fix an issue that could interfere with manage-profile replace-profile when using a StatsD monitoring endpoint</li>
+  <li>Avoid entering lockdown mode when incorrectly believing that there were missed replication changes</li>
+  <li>Improve replication for dependent changes that may be received out of order</li>
+  <li>Fix an issue with incorrectly reporting that certain filters were not indexed</li>
+  <li>Prevent dsreplication status from listing offline servers under incorrect domains</li>
+  <li>Allow configuring cipher stream providers in Directory Proxy Server, Synchronization Server, and Metrics Engine</li>
+  <li>Fix an issue preventing manage-profile replace-profile from updating mirrored configuration</li>
+  <li>Prevent offline config change warnings when using manage-profile replace-profile</li>
+  <li>Update manage-profile replace-profile to preserve setup logs</li>
+  <li>Improve validation and behavior when configuring an explicit set of TLS cipher suites</li>
+  <li>Improve manage-profile replace-profile detection of changes to files not included in the server profile</li>
+  <li>Fix an issue when trying to update a topology server group with a server that already exists in that group</li>
+  <li>Fix issues with import-ldif with --addMissingRDNAttributes</li>
+  <li>Fix an issue with dsjavaproperties with --initialize and --jvmTuningParameter</li>
+  <li>Fix an issue that could prevent Sync failed ops log publishers from being removed</li>
+  <li>Improve the result code when trying to add an entry through the Directory Proxy Server when no backend servers are available or when adding entries with missing parents</li>
+  <li>Fix a potentially incorrect warning about duplicate jar files detected during startup</li>
+  <li>Fix an issue that could prevent Server SDK plugins from seeing all content in an add operation</li>
+  <li>Avoid a potential reverse DNS warning message during setup</li>
+  <li>Fix an issue that could cause the server to provide an incorrect estimate for the number of entries matching a filter using a composite index</li>
+  <li>Improve prompts when using dsreplication in interactive mode</li>
+</ul>
