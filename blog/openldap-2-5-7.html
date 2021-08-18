@@ -1,0 +1,17 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/LDQZJZAXMQH3NZIUUDXJEMXTKJUTC2WW/" target="_blank">announced</a> the release of version 2.5.7 of their LDAP directory server. Changes in this release include:
+</p>
+
+<ul>
+  <li>Fixed an issue that could cause the server to become unresponsive after multiple changes to the configuration</li>
+  <li>Fixed an issue that could cause the server to crash when adding multiple values to an attribute that is defined without an equality matching rule</li>
+  <li>Fixed an issue that could prevent certain types of changes from being logged properly</li>
+  <li>Fixed an issue that could cause excessive logging for entries without a password changed time</li>
+  <li>Fixed an issue that could leave transactions open when using the back-sql backend</li>
+  <li>Fixed an issue that prevent password policy from working properly in conjunction with the back-sql backend</li>
+  <li>Fixed an issue that could cause the server to return duplicate password expiration controls</li>
+  <li>Fixed potential issues with tracking the state of client connections</li>
+  <li>Fixed an issue that could cause the server to incorrectly report that a configuration entry was missing a structural object class</li>
+  <li>Fixed an issue that could cause the server to incorrectly report the number of operations being processed</li>
+  <li>Added documentation improvements</li>
+</ul>
