@@ -1,0 +1,22 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-1-4-4-17.html" target="_blank">version 1.4.4.17</a>. Changes in this release appear to include:
+</p>
+
+<ul>
+  <li>Fixed an issue in which the server could crash or behave erratically when configured with access control rules based on IP addresses</li>
+  <li>Fixed an issue in which the server could accept any password when binding as a user with a malformed crypt password</li>
+  <li>Fixed an issue in which temporary password rules may not be enforced</li>
+  <li>Fixed an issue in which the nsuniqueid index could become corrupted during an index rebuild</li>
+  <li>Fixed an issue that could interfere with purging entries from the retro changelog</li>
+  <li>Fixed an issue in which the server could crash if dnaInterval is set to zero</li>
+  <li>Fixed an issue in which the server could crash if the referential integrity log is corrupted</li>
+  <li>Fixed an issue that could cause dsidm to crash if the account policy plugin is enabled but not configured</li>
+  <li>Fixed an issue in which re-encoding the password on bind could reset the password expiration time</li>
+  <li>Fixed an issue in which online import failed to warn about an attempt to import an entry without a parent</li>
+  <li>Fixed an issue in which the uniqueness plugin could check the wrong subtree when moving an entry</li>
+  <li>Fixed an issue that could cause changeNumber to be unindexed in the retro changelog</li>
+  <li>Improved certutil error handling</li>
+  <li>Improved SASL authentication logging</li>
+  <li>Added CLI and UI support for nsslapd-state</li>
+  <li>Added the ability to regenerate invalid entryUUID values on import</li>
+</ul>
