@@ -1,0 +1,16 @@
+<p>
+  The <a href="https://github.com/ltb-project" target="_blank">LDAP Tool Box</a> project provides a set of LDAP-related applications, administrative tools, and other utilities. They have just released <a href="https://github.com/ltb-project/slapd-cli/releases/tag/v2.8" target="_blank">version 2.8</a> of their <a href="https://github.com/ltb-project/slapd-cli" target="_blank">slapd-cli</a> tools (formerly called openldap-initscript), which provide a set of command-line tools for OpenLDAP. This release includes the following changes:
+</p>
+
+<ul>
+  <li>Fixed a potential privilege escalation vulnerability that could be exploited by manipulating the PID file</li>
+  <li>Fixed a potential privilege escalation vulnerability that could result from recursive file ownership changes</li>
+  <li>Fixed a checksync tool issue with multiple suffixes</li>
+  <li>Fixed an issue when the OpenLDAP service used a name other than "slapd"</li>
+  <li>Migrated away from deprecated memberOf configuration</li>
+  <li>Migrated away from init.d references in favor of systemd</li>
+  <li>Added support for command-line autocomplete</li>
+  <li>Updated the status output to include the OpenLDAP version</li>
+  <li>Provide an option to use a default configuration and sample data</li>
+  <li>Updated documentation</li>
+</ul>
