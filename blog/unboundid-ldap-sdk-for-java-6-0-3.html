@@ -1,0 +1,18 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.3" target="_blank">version 6.0.3</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Fixed a round-robin server set issue that could cause uneven balancing if servers became unavailable</li>
+  <li>Fixed a rare race condition if a connection was closed while waiting for a response to an asynchronous operation</li>
+  <li>Fixed an in-memory directory server issue with a matched DN in bind response messages</li>
+  <li>Improved SSL/TLS debugging for SSLUtil operations</li>
+  <li>Added a mechanism for encoding entries, search references, and LDAP results to JSON objects</li>
+  <li>Added a method to infer the key store type for JKS, PKCS #12 and BCFKS key store files</li>
+  <li>Added convenience methods for generating random data</li>
+  <li>Updated the documentation for LDAP-related specifications</li>
+  <li>Fixed a manage-account issue when receiving a response with an unknown operation type</li>
+  <li>Added client-side support for new extended operations for certificate management</li>
+  <li>Added authentication failure reason values for pass-through authentication</li>
+  <li>Updated the task manager to make it easier to use with connection pools and Server SDK internal connections</li>
+<ul>
