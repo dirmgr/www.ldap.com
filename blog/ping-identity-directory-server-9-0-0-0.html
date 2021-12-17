@@ -1,0 +1,81 @@
+<p>
+  <a href="https://www.pingidentity.com/en/software/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 9.0.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2021/12/17/ping-identity-directory-server-9-0-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<p>
+  All server products:
+</p>
+
+<ul>
+  <li>Confirmed that none of the Directory Server, Directory Proxy Server, Synchronization Server, Metrics Engine, Admin Console, or LDAP SDK for Java use log4j or are affected by its vulnerability.</li>
+  <li>Added cipher stream providers for PKCS #11 tokens, Azure Key Vault, and CyberArk Conjur.</li>
+  <li>Added passphrase providers for Azure Key Vault and CyberArk Conjur.</li>
+  <li>Added password storage schemes for authenticating with passwords stored in external services, including AWS Secrets Manager, Azure Key Vault, CyberArk Conjur, and HashiCorp Vault.</li>
+  <li>Added extended operations for managing server certificates.</li>
+  <li>Added the ability to redact the values of sensitive configuration properties when constructing the dsconfig representation for a configuration change.</li>
+  <li>Included the original requester DN and client IP address in log messages for mirrored configuration changes.</li>
+  <li>Added TLS configuration properties for outbound connections.</li>
+  <li>Updated the Admin Console to support using PKCS #12 and BCFKS trust stores.</li>
+  <li>Updated the file servlet to support authenticating with OAuth 2.0 access tokens and OpenID Connect ID tokens.</li>
+  <li>Fixed an issue that could cause degraded performance and higher CPU utilization for some clients using TLSv1.3.</li>
+  <li>Fixed an issue that prevented the manage-profile replace-profile tool from working properly for servers running in FIPS 140-2-compliant mode.</li>
+  <li>Updated export-ldif to always base64-encode attribute values containing any ASCII control characters.</li>
+  <li>Fixed an issue in which some tools that operate on the server’s configuration did not use the correct matching rule for attribute types configured to use case-sensitive matching.</li>
+  <li>Updated the Directory REST API to add support for attribute options.</li>
+  <li>Added the ability to recognize JVM builds from Eclipse Foundation, Eclipse Adoptium, and BellSoft.</li>
+  <li>Removed “-XX:RefDiscoveryPolicy=1” from the default set of options used to launch the JVM.</li>
+</ul>
+
+<p>
+  Directory Server changes:
+</p>
+
+<ul>
+  <li>Added support for pluggable pass-through authentication.</li>
+  <li>Fixed an issue that could interfere with the use of legacy reversibly encrypted passwords if an instance was removed from the topology.</li>
+  <li>Fixed an issue that prevented decoding proxied authorization v2 request controls with an authorization identity of a specific length.</li>
+  <li>Fixed an issue that could cause sporadic failures when attempting to back up a backend with data encryption enabled.</li>
+  <li>Added a replica-partial-backlog attribute to the replication summary monitor entry.</li>
+  <li>Fixed an issue in which the server could use incorrect resource limit values for users with custom limits who authenticated via pass-through authentication.</li>
+  <li>Fixed an issue in which the server did not properly update certain password policy state information for simple bind attempts targeting users without a password.</li>
+  <li>Fixed an issue in which the server may not handle other controls properly when processing an operation that includes the join request control.</li>
+  <li>Fixed an issue in which a newly initialized server could go into lockdown mode with a warning about missing changes if it was restarted immediately after initialization completed.</li>
+  <li>Fixed an issue that could prevent changes applied to non-RDN attributes in the course of processing a modify DN operation from being replicated.</li>
+  <li>Fixed an issue that could prevent composed attribute values from being properly updated for operations that are part of a muti-update extended operation.</li>
+  <li>Improved performance for modify operations that need to update a composite index to add an entry ID to the middle of a very large ID set.</li>
+  <li>Added limits for the maximum number of attributes in an add request and the maximum number of modifications in a modify request.</li>
+  <li>Updated the dsreplication initialize-all command to support initializing multiple replicas in parallel.</li>
+  <li>Fixed an issue in which an entry added with a createTimestamp attribute could lose the original formatting for that attribute when replicated to other servers.</li>
+  <li>Fixed an issue that could lead to long startup times in large topologies with data encryption enabled.</li>
+  <li>Updated the ldap-diff tool to add several new features.</li>
+  <li>Updated the migrate-ldap-schema tool to add several new features.</li>
+</ul>
+
+<p>
+  Directory Proxy Server changes:
+</p>
+
+<ul>
+  <li>Fixed an issue that could cause certain internal operations initiated in the Directory Proxy Server to fail when forwarded to a backend Directory Server.</li>
+  <li>Improved the logic used to select the best error result to return to the client for operations broadcast to all backend sets.</li>
+  <li>Updated the entry counter, hash DN, and round-robin placement algorithms to support excluding specific backend sets.</li>
+</ul>
+
+<p>
+  Synchronization Server changes:
+</p>
+
+<ul>
+  <li>Added the ability to synchronize certain password policy state information from Active Directory to the Ping Identity Directory Server.</li>
+  <li>Fixed an issue that could prevent synchronizing changes to entries that have multiple attributes with the same base attribute type but different sets of attribute options.</li>
+  <li>Added the ability to apply rate limiting when synchronizing changes to PingOne.</li>
+  <li>Fixed an issue in which the max-rate-per-second property was not properly applied when running the resync tool.</li>
+</ul>
+
+<p>
+  Metrics Engine changes:
+</p>
+
+<ul>
+  <li>Fixed an issue that could prevent dashboard icons from being properly displayed.</li>
+</ul>
