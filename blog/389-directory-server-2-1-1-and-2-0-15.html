@@ -1,0 +1,30 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-1-1.html" target="_blank">version 2.1.1</a> and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-0-15.html" target="_blank">2.0.15</a>. Changes in these releases appear to include:
+</p>
+
+<ul>
+  <li>Fixed a security issue in which a user with an expired password would still be allowed to authenticate (both versions)</li>
+  <li>Fixed a potential crash due to a double-free in virtual attribute processing in a persistent search (both versions)</li>
+  <li>Fixed an issue in which a database update could fail if the filesystem page size was greater than 8KB (both versions)</li>
+  <li>Fixed a potential race condition in disk monitoring (both versions)</li>
+  <li>Fixed an issue that could arise when trying to import a certificate chain (both versions)</li>
+  <li>Fixed an issue in memberOf excluded subtrees handling for modify DN operations (both versions)</li>
+  <li>Fixed an issue in which the memberOf plugin did not work properly with multiple include scopes (both versions)</li>
+  <li>Fixed an issue in which a container may fail to start with a bare uid or gid (both versions)</li>
+  <li>Fixed an issue in which the server could return an incomplete RUV (both versions)</li>
+  <li>Fixed a schema parsing issue for schema elements with names starting with “x-” (both versions)</li>
+  <li>Fixed an issue that could crash the UI in some attribute uniqueness configurations (both versions)</li>
+  <li>Fixed a dsconf issue that prevented specifying a backend by name rather than base DN (both versions)</li>
+  <li>Fixed an issue with dsctl dbgen (both versions)</li>
+  <li>Fixed a UI issue that prevented manually configuring the entry cache (both versions)</li>
+  <li>Fixed a UI issue that prevented testing a SASL mapping regular expression (both versions)</li>
+  <li>Fixed UID issues with the LDAP editor (version 2.0.15)</li>
+  <li>Added support for recursively deleting subentries (version 2.1.1)</li>
+  <li>Added the ability to abort an automatic member rebuild task (both versions)</li>
+  <li>Added the ability to set TCP FIN timeout and keepalive time values (both versions)</li>
+  <li>Added the ability flatten the tree when synchronizing with Active Directory (version 2.1.1)</li>
+  <li>Added CLI support for managing entryUUID generation (version 2.0.15)</li>
+  <li>Added entry and group types to the LDAP editor (both versions)</li>
+  <li>Added CoS and role functionality to the UI (both versions)</li>
+  <li>Added temporary password rules functionality to the UI (version 2.0.15)</li>
+</ul>
