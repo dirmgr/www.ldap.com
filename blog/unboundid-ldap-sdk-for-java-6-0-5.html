@@ -1,0 +1,17 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.5" target="_blank">version 6.0.5</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Fixed an issue that could cause a StartTLS failure to use a less useful error message than intended</li>
+  <li>Fixed an issue that could cause ldifsearch to display a malformed message</li>
+  <li>Improved support for validating and comparing telephone numbers with varying levels of strictness</li>
+  <li>Fixed a bug in which ldapcompare did not properly close an output file</li>
+  <li>Fixed an issue with the properties file created with the --generatePropertiesFile argument in some command-line tools</li>
+  <li>Added support for encoding and decoding controls to an from JSON objects</li>
+  <li>Added support for JSON-formatted request and response controls for use with the Ping Identity Directory Server</li>
+  <li>Updated ldapsearch and ldapmodify to support JSON-formatted request and response controls</li>
+  <li>Fixed an issue with assured replication request controls created by the parallel-update tool</li>
+  <li>Updated the topology registry trust manager to support trusting issuer certificates</li>
+  <li>Updated the topology registry trust manager to add an option to ignore the certificate validity window</li>
+<ul>
