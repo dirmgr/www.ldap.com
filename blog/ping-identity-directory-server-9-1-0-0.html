@@ -1,0 +1,54 @@
+<p>
+  <a href="https://www.pingidentity.com/en/software/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 9.1.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2022/06/21/ping-identity-directory-server-9-1-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Known issue: when reverting an update to the 9.1 release, updated Bouncy Castle cryptographic library files may remain in place.</li>
+  <li>Added support for controls to the Directory REST API.</li>
+  <li>Updated replace-certificate and the topology registry to streamline the process for replacing a listener certificate when the current and new certificates are signed by the same issuer.</li>
+  <li>Made it easier to replace a listener certificate after it has expired.</li>
+  <li>Added support for sanitizing access log messages as they are logged.</li>
+  <li>Added support for generifying message strings in access and error log messages.</li>
+  <li>Updated Synchronization Server support for PingOne to include multi-valued attributes and JSON-formatted attributes.</li>
+  <li>Improved the assured replication result used in the event that a replication conflict is detected.</li>
+  <li>Improved the sanitize-log tool and updated it to better align with sanitized logging support.</li>
+  <li>Updated sanitize-access-log to support JSON-formatted log files.</li>
+  <li>Added support for JSON-formatted controls in LDAP requests and responses.</li>
+  <li>Added a docker-pre-start-config tool that can help reduce startup time when running in a Docker container.</li>
+  <li>Added a --skipValidation argument to manage-profile replace-profile.</li>
+  <li>Added an --excludeSetupArguments argument to manage-profile generate-profile.</li>
+  <li>Increased the maximum value of the on-replay-failure-wait-for-dependent-ops-timeout replication property from one minute to five minutes.</li>
+  <li>Improved the Directory REST API support for PUT operations that alter a DN in conjunction with changes to other attributes in the entry.</li>
+  <li>Updated the active operations monitor to use millisecond precision for timestamps and to make operation strings more parseable.</li>
+  <li>Added the collect-support-data version to the output of status --fullVersion.</li>
+  <li>Updated several dependencies to improve functionality, address defects, and improve security.</li>
+  <li>Fixed an issue that could cause some replication protocol messages to be dropped.</li>
+  <li>Fixed an issue that could cause the server to report missing changes and go into lockdown mode if it is restarted immediately after running dsreplication initialize.</li>
+  <li>Fixed an issue that could prevent certain password policy functionality from being invoked for add operations in which the password policy is assigned by virtual attribute.</li>
+  <li>Fixed an issue that could cause privileges assigned by virtual attribute to be overlooked in some cases.</li>
+  <li>Updated the server to create the esTokenizer.ping file if it does not exist but is needed.</li>
+  <li>Fixed an issue that could have incorrectly applied minimum and maximum password age constraints to users without a password.</li>
+  <li>Updated the JSON-formatted access logger to include the requester IP address field in disconnect, security negotiation, and client certificate log messages when appropriate.</li>
+  <li>Fixed an issue that prevented the certificate monitor from recognizing replaced certificates.</li>
+  <li>Fixed issues that could prevent using the Amazon Secrets Manager, CyberArk Conjur, or HashiCorp Vault passphrase providers to obtain key and trust store PINs.</li>
+  <li>Fixed an issue that could cause the server to log negative operation processing times for certain operations.</li>
+  <li>Updated the server to prevent add and modify operations targeting ds-pwp-modifiable-state-json when the associated plugin is not enabled.</li>
+  <li>Updated the server to prevent a user from updating the ds-pwp-modifiable-state-json attribute for their own entry.</li>
+  <li>Updated the server to prevent a user from updating the ds-pwp-modifiable-state-json attribute in the same modification that also reset a user’s password.</li>
+  <li>Fixed an issue in which dsreplication failed to properly normalize base DN values.</li>
+  <li>Fixed an issue that could prevent the Directory REST API from retrieving entries with generalized time values in an unexpected format.</li>
+  <li>Fixed an issue that could cause manage-profile replace-profile to fail with an error about merging configuration.</li>
+  <li>Updated manage-profile setup and manage-profile replace-profile to prevent including a pre-populated encryption settings database in the pre-setup files.</li>
+  <li>Updated manage-topology add-server to be more consistent when adding additional Syncrhonization Servers to a failover topology.</li>
+  <li>Fixed an issue in which the server could ignore certain indexes that it believed to be redundant when evaluating search criteria.</li>
+  <li>Improved the SCIM error code for cases in which an update violated a unique attribute constraint.</li>
+  <li>Fixed an issue that could cause the server to incorrectly reject requests with non-critical controls that the requester did not have permission to use rather than ignoring those controls.</li>
+  <li>Fixed an issue that could allow the password policy state extended operation to create duplicate authentication failure time or grace login use time values.</li>
+  <li>Fixed an issue that could affect backward compatibility when using migrate-ldap-schema with the legacy --useSSL or --useStartTLS arguments.</li>
+  <li>Fixed an issue that could prevent the server from generating alerts to indicate that an outstanding alarm condition had been resolved.</li>
+  <li>Fixed an issue that could cause the server to reprt an internal error when attempting to obtain database statistics for a read-only backend.</li>
+  <li>Fixed an export-reversible-passwords issue that could cause it to time out while waiting for a response from the server.</li>
+  <li>Updated export-reversible-passwords to abort processing if the tool invoking it was terminated.</li>
+  <li>Fixed an issue that prevented encode-password from working if the AES256 scheme was enabled.</li>
+  <li>Disabled the index cursor entry limit by default.</li>
+</ul>
