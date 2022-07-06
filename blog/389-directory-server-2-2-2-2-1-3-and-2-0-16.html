@@ -1,0 +1,32 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-2-2.html" target="_blank">2.2.2</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-1-3.html" target="_blank">2.1.3</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-0-16.html" target="_blank">2.0.16</a>. From the release announcements, it looks like some of the changes in these versions are:
+</p>
+
+<ul>
+  <li>Fixed an issue in which a malformed request could crash the server (version 2.0.16)</li>
+  <li>Fixed a memory leak in error handling code (versions 2.1.3 and 2.0.16)</li>
+  <li>Fixed an issue in which replication could be broken until a server restart after changing the replication manager password (version 2.0.16)</li>
+  <li>Fixed an issue in which search filters may not be properly normalized during processing (all three versions)</li>
+  <li>Fixed an issue in which the server could incorrectly return LDAP subentries when they had not been requested (version 2.0.16)</li>
+  <li>Fixed an issue that could prevent entries with subentries from being removed (version 2.0.16)</li>
+  <li>Fixed an SNMP-related issue that could prevent the server from starting (version 2.0.16)</li>
+  <li>Fixed an issue with migrating data containing password policy information from OpenLDAP (versions 2.1.3 and 2.0.16)</li>
+  <li>Fixed an issue that could cause problems with migrating from OpenLDAP if the memberOf overlay is enabled (version 2.0.16)</li>
+  <li>Fixed a monitoring-related issue when migrating from OpenLDAP (all three versions)</li>
+  <li>Fixed an issue in which dsconf backend export could fail in servers with multiple backends (all three versions)</li>
+  <li>Fixed an issue that could cause the server to report errors if the number of entries matching a VLV search changed in the middle of the search (version 2.0.16)</li>
+  <li>Updated the server to automatically enable changelog trimming when setting up replication (version 2.0.16)</li>
+  <li>Simplified the process for creating and managing an instance as a non-root user (version 2.0.16)</li>
+  <li>Improved search filter optimization (version 2.0.16)</li>
+  <li>Updated dscreate to add options for configuring replication (version 2.0.16)</li>
+  <li>Improved performance with large numbers of connections (version 2.2.2)</li>
+  <li>Fixed an address sanitization error (version 2.2.2)</li>
+  <li>Improved logging for errors encountered while attempting to decode replication messages (all three versions)</li>
+  <li>Improved logging for errors encountered while attempting to synchronize data with Active Directory (all three versions)</li>
+  <li>Included the cockpit web application in the release (version 2.0.16)</li>
+  <li>Improved autocomplete support for command-line tools (version 2.0.16)</li>
+  <li>Updated the UI to add improved support for account lockout (version 2.0.16)</li>
+  <li>Added an option to preserve backward compatibility with an older version of the server when using nested backends (version 2.0.16)</li>
+  <li>Added shorter alternative names for dsidm subcommands (all three versions)</li>
+  <li>Fixed a malformed dsconf error message (all three versions)</li>
+</ul>
