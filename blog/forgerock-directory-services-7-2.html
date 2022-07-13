@@ -1,0 +1,60 @@
+<p>
+  <a href="https://www.forgerock.com/platform/directory-services" target="_blank">ForgeRock Directory Services</a> version 7.2 has been released. According to the <a href="https://backstage.forgerock.com/docs/ds/7.2/release-notes/preface.html" target="_blank">release notes</a>, changes in this release include:
+</p>
+
+<ul>
+  <li>Updated setup so that it now requires a --deploymentId argument</li>
+  <li>Added support for big indexes, which are optimized for very large result sets</li>
+  <li>Added support for Argon2 password encoding</li>
+  <li>Added support for backing up to AWS S3 using temporary credentials</li>
+  <li>Reduced startup time with large numbers of groups</li>
+  <li>Added support for Java 17</li>
+  <li>Added support for template-based virtual attributes</li>
+  <li>Added support for DN pattern matching</li>
+  <li>Fixed an issue that could prevent the server from shutting down</li>
+  <li>Fixed an issue that could prevent the server from starting in a non-US locale</li>
+  <li>Fixed a potential deadlock in changelog purging</li>
+  <li>Fixed an issue that could prevent changelog files from being closed</li>
+  <li>Removed the lookthrough-limit configuration property</li>
+  <li>Replaced the cursor-entry-limit property with a max-candidate-set-size property</li>
+  <li>Added support for the HAProxy proxy protocol</li>
+  <li>Updated the server to log SSL exceptions as errors rather than warnings</li>
+  <li>Added an administrative alert when a backup completes</li>
+  <li>Improved search optimization for unresolved conflicts</li>
+  <li>Improved search optimization for initial substrings</li>
+  <li>Improved keepalive support for proxy connections</li>
+  <li>Added a tool to generate a bash completion script for included commands</li>
+  <li>Added improved monitoring of index usage</li>
+  <li>Added support for histogram metrics in monitoring</li>
+  <li>Updated monitoring to consider replication threads/li>
+  <li>Exposed monitoring output over HTTP even if some backends are offline</li>
+  <li>Added an entrySize field in access log messages</li>
+  <li>Updated the server to warn if it detects that an external service is attempting to unexpectedly manage rotation and retention</li>
+  <li>Improved efficiency of validating PKCS5S2-encoded passwords</li>
+  <li>Improved efficiency of generating ETag values</li>
+  <li>Improved efficiency of rebuild-index when rebuilding specific indexes</li>
+  <li>Improved efficiency of rebuild-index when rebuilding degraded indexes but there are no such indexes</li>
+  <li>Added a dskeymgr show-deployment-id command</li>
+  <li>Updated the dsrepl status --showReplicas command to include an entry count</li>
+  <li>Updated the supportextract command to collect additional system information</li>
+  <li>Updated the supportextract command to attempt to exclude environment variables that may represent passwords</li>
+  <li>Updated the REST to LDAP gateway to add an estimate of the total paged results for indexed searches</li>
+  <li>Updated the REST to LDAP gateway to add support for simplifying search filters</li>
+  <li>Updated the REST to LDAP gateway to make it possible to request the number of matches without actually retrieving the corresponding entries</li>
+  <li>Updated the REST to LDAP gateway to improve use of JSON data types when converting from LDAP attribute values</li>
+  <li>Updated the REST to LDAP gateway to use a replace modification when updating the value of a single-valued attribute</li>
+  <li>Improved monitoring support for the REST to LDAP gateway</li>
+  <li>Improved debugsearchindex output</li>
+  <li>Improved schema compatibility with the RFC 2307bis draft</li>
+  <li>Improved consistency of config file archives</li>
+  <li>Fixed an issue in which upgrade did not properly migrate JE configuration properties</li>
+  <li>Fixed a potential out-of-memory error when attempting a subtree delete</li>
+  <li>Fixed an issue in which the LDIF backend could silently reject entries that fail schema validation</li>
+  <li>Fixed an issue that could interfere with exporting a backend when an expected database does not exist</li>
+  <li>Fixed an issue that could case the process of listing or restoring a cloud backup to be slow</li>
+  <li>Fixed an issue that could cause dsconfig to exit when setting the bootstrap-replication-server property</li>
+  <li>Fixed a setup issue that may arise when providing a trust store password file</li>
+  <li>Fixed an issue that could prevent creating VLV indexes with a baseObject scope</li>
+  <li>Fixed a makeldif issue when attempting to use a DateTime tag with colons</li>
+  <li>Fixed an issue in which some dsbackup global arguments were not valid for some subcommands</li>
+</ul>
