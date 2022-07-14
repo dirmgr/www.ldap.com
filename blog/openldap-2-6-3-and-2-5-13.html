@@ -1,0 +1,19 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has announced the release of versions <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/FQJM2JSSSOMLQH7XC7Q5IZJYOGCTV2LK/" target="_blank">2.6.3</a> and <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/3PLJDVP7QWTRFHC2GPQTGBLEQFCBUZZ2/" target="_blank">2.5.13</a> of their LDAP directory server. Changes included in these releases include:
+</p>
+
+<ul>
+  <li>Fixed numerous memory leaks and other memory management issues (both versions)</li>
+  <li>Fixed an issue that could crash the server when performing a replication refresh (version 2.6.3)</li>
+  <li>Fixed an issue that could crash the server with both rwm and ppolicy enabled (both versions)</li>
+  <li>Fixed an issue that could interfere with replication if an instance went offline for an extended period of time (both versions)</li>
+  <li>Fixed an issue in which killing a process accessing the a could interfere with other processes accessing the same database (both versions)</li>
+  <li>Fixed an issue that prevented the server from working properly on some types of BSD systems (both versions)</li>
+  <li>Fixed a backward-compatibility issue with the automatic group overlay (both versions)</li>
+  <li>Fixed an issue in which lastbind updates were not properly chained on read-only consumers (version 2.6.3)</li>
+  <li>Fixed an issue in which the rwm overlay did not properly handle DNs with special characters (version 2.6.3)</li>
+  <li>Fixed an issue in which notice of disconnection unsolicited notifications were not properly encoded (version 2.6.3)</li>
+  <li>Added support for case-insensitive matching of Boolean values (version 2.6.3)</li>
+  <li>Added support for allowing empty directory strings (both versions)</li>
+  <li>Updated the 2.2 release of the ppm module (version 2.6.3)</li>
+</ul>
