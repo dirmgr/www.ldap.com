@@ -1,0 +1,23 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.6" target="_blank">version 6.0.6</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Fixed an issue with re-establishing a connection in asynchronous mode after closing it with outstanding requests.</li>
+  <li>Fixed an issue that could affect getting an SSLContext in FIPS 140-2-compliant mode.</li>
+  <li>Added a system property that can enable certificate hostname verification by default.</li>
+  <li>Added a --verifyCertificateHostname argument to LDAP command-line tools.</li>
+  <li>Improved documentation for establishing secure connections according to best practices.</li>
+  <li>Fixed an issue in JNDI compatibility support for controls and extended request/response values.</li>
+  <li>Added the ability to create a search request with the base DN as a DN object rather than a String.</li>
+  <li>Fixed an issue with command-line tools that encountered an Error during processing.</li>
+  <li>Fixed an issue with the IA5 argument value validator that could allow non-ASCII characters in values.</li>
+  <li>Fixed an issue with the DNS hostname argument value validator that could prevent it from properly validating all components of a hostname.</li>
+  <li>Added an option to the identify-references-to-missing-entries tool to generate an LDIF with modifications needed to remove any identified references.</li>
+  <li>Improved subject alternative DNS name selection in SelfSignedCertificateGenerator.</li>
+  <li>Updated manage-certificates generate-self-signed-certificate to rename --replace-existing-certificate to --use-existing-key-pair.</li>
+  <li>Included a native-image/resource-config.json file in the jar file manifest for use by GraalVM.</li>
+  <li>Updated summarize-access-log to report several more items.</li>
+  <li>Updated the audit data security administrative task to support retaining previous reports by count or age.</li>
+  <li>Fixed issues that prevented setting the criticality of the administrative operation and join request controls.</li>
+<ul>
