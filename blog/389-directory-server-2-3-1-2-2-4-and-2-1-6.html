@@ -1,0 +1,34 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-3-1.html" target="_blank">2.3.1</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-2-4.html" target="_blank">2.2.4</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-1-6.html" target="_blank">2.1.6</a>. From the release announcements, it appears that the most significant changes include:
+</p>
+
+<ul>
+  <li>Fixed a potential vulnerability in the UI (all three versions)</li>
+  <li>Fixed potential memory management issues (all three versions)</li>
+  <li>Made database compaction more robust (all three versions)</li>
+  <li>Fixed an issue with an inconsistency with tombstone entries between LMDB and Berkeley DB (version 2.3.1)</li>
+  <li>Increased the default number of file descriptors to avoid problems resulting from exhaustion (version 2.3.1)</li>
+  <li>Fixed an issue that prevented enabling replication with a mixed-case suffix (all three versions)</li>
+  <li>Fixed a performance issue with the memberof attribute (all three versions)</li>
+  <li>Fixed issues with migration from OpenLDAP (all three versions)</li>
+  <li>Fixed an issue in which changelog trimming was not performed at the expected interval (all three versions)</li>
+  <li>Fixed various issues with the access log analysis script (all three versions)</li>
+  <li>Fixed an issue that could cause the server to crash during shutdown (versions 2.3.1 and 2.2.4)</li>
+  <li>Fixed an issue that could cause the entryuuid fixup task to fail in a replicated environment (all three versions)</li>
+  <li>Fixed a performance issue due to lock contention under mixed load (all three versions)</li>
+  <li>Fixed a performance issue when using pam_passthrough (all three versions)</li>
+  <li>Fixed an issue in which some releases didn not include the cockpit web application (version 2.3.1)</li>
+  <li>Fixed an issue that could prevent the UI from working properly if you change the root DN (all three versions)</li>
+  <li>Fixed a performance issue with smart referral entries (all three versions)</li>
+  <li>Fixed an issue with dscreate when using a custom dir_path with SELinux enabled (all three verisons)</li>
+  <li>Added a default ACI that could help avoid problems with searches targeting group membership (version 2.3.1)</li>
+  <li>Updated the server to only allow a single memberof fixup task to run at a time (all three versions)</li>
+  <li>Updated healthcheck to ensure that all group attributes referenced by memberof are indexed (all three versions)</li>
+  <li>Improved import performance with LMDB (version 2.3.1)</li>
+  <li>Added default indexes for uidnumber, gidnumber, and memberuid (versions 2.3.1 and 2.1.6)</li>
+  <li>Improved access logging for operation statistics (versions 2.3.1 and 2.2.4)</li>
+  <li>Added the ability to always include a specified set of attributes in the audit log (all three versions)</li>
+  <li>Improved debug logging support for password policy processing (all three versions)</li>
+  <li>Updated the CLI to add support for adding CA certificate bundles (all three versions)</li>
+  <li>Improved UI support for binary attributes like jpegPhoto (all three versions)</li>
+</ul>
