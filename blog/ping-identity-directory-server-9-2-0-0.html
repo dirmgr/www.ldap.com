@@ -1,0 +1,40 @@
+<p>
+  <a href="https://www.pingidentity.com/en/software/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 9.2.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2022/12/14/ping-identity-directory-server-9-2-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Removed support for incremental backups</li>
+  <li>Updated the Groovy language version from 2.x to 3.x</li>
+  <li>Added support for Java 17</li>
+  <li>Added support for accessing external services through an HTTP proxy server</li>
+  <li>Added a Prometheus monitoring servlet extension</li>
+  <li>Added support for authenticating to Amazon AWS using an IRSA role</li>
+  <li>Added support for generating digital signatures with encryption settings definitions</li>
+  <li>Updated replace-certificate when running in interactive mode so that it can re-prompt for a certificate file if the initial file existed but did not contain valid certificate data</li>
+  <li>Improved support for data security auditors</li>
+  <li>Added new secure, connectioncriteria, and requestcriteria access control keywords</li>
+  <li>Added support for defining resource limits for unauthenticated clients</li>
+  <li>Added Argon2i, Argon2d, and Argon2id password storage schemes to supplement the existing Argon2 scheme</li>
+  <li>Changed the default value of the replication-purge-obsolete-replicas global configuration property from false to true</li>
+  <li>Updated migrate-ldap-schema to support migrating attribute type definitions from Active Directory in spite of their non-standards-compliant format</li>
+  <li>Improved the usage text for the dsreplication enable command</li>
+  <li>Exposed the maximum-attributes-per-add-request and maximum-modifications-per-modify-request properties in the global configuration</li>
+  <li>Added support for synchronizing to SCIMv2 destinations</li>
+  <li>Added a sync-pipe-view tool that can display information about the set of sync pipes configured in the server</li>
+  <li>Added sync pipe monitor attributes related to account password policy state when synchronizing to a Ping Identity Directory Server</li>
+  <li>Fixed an issue that could cause replication protocol messages to be dropped, potentially resulting in paused replication</li>
+  <li>Fixed an issue in which a timeout could prevent adding servers to a large topology</li>
+  <li>Fixed an issue in which an unexpected error could cause a replication server to stop accepting new connections</li>
+  <li>Fixed an issue that prevented resource limits from being set properly for the topology administrator</li>
+  <li>Fixed an issue in which the dsreplication tool incorrectly handled DNs in a case-sensitive manner</li>
+  <li>Fixed an issue that could cause dsreplication enable to fail if there were any topology administrators without passwords</li>
+  <li>Fixed an issue that could cause a configured idle timeout to interfere with replica initialization</li>
+  <li>Fixed an issue that could prevent the server from generating an administrative alert when clearing an alarm that triggered an alert when it was originally raised</li>
+  <li>Fixed an issue that could cause degraded performance to a PingOne sync destination</li>
+  <li>Fixed an issue that could prevent users from changing their own passwords with the password modify extended operation if their account was in a “must change password” state and the request passed through the Directory Proxy Server</li>
+  <li>Fixed an issue in which dsconfig would always attempt to use simple authentication when applying changes to servers in a group, regardless of the type of authentication used when launching dsconfig</li>
+  <li>Fixed an issue that could cause certain kinds of Directory REST API requests to fail if they included the uniqueness request control</li>
+  <li>Fixed an issue in which an unclean shutdown could cause the server to create exploded index databases</li>
+  <li>Disabled the index cursor entry limit by default, which could cause certain types of indexed searches to be considered unindexed</li>
+  <li>Fixed an issue that could adversely affect performance in servers with a large number of virtual static groups</li>
+</ul>
