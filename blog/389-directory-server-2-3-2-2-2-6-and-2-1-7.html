@@ -1,0 +1,22 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-3-2.html" target="_blank">2.3.2</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-2-6.html" target="_blank">2.2.6</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-1-7.html" target="_blank">2.1.7</a>. From the release announcements, it appears that the most significant changes include:
+</p>
+
+<ul>
+  <li>Fixed a potential crash that could occur as a result of an invalid replication configuration (all three versions)</li>
+  <li>Fixed a potential crash that could occur in dsconf monitor (version 2.3.2)</li>
+  <li>Fixed a potential crash that could occur when importing data into an LMDB backend (version 2.3.2)</li>
+  <li>Fixed an issue that could prevent the server from starting as a non-root user after changing the default password storage scheme (version 2.3.2)</li>
+  <li>Added an option to create a private key and certificate signing request from dsconf or Cockpit (all three versions)</li>
+  <li>Updated dsidm to make it possible to perform a bulk update of entries identified by search criteria (all three versions)</li>
+  <li>Improved the performance of the automember plugin when the memberof plugin is also enabled (version 2.3.2)</li>
+  <li>Updated the server to make it possible to have multiple non-overlapping MemberOf fixup tasks running concurrently (versions 2.3.2 and 2.1.7)</li>
+  <li>Fixed an issue in which dsidm could incorrectly prompt for the current password when performing an administrative reset (versions 2.3.2 and 2.1.7)</li>
+  <li>Added support for saslauthd when using SASL authentication (all three versions)</li>
+  <li>Fixed issues with PAM pass-through authentication (versions 2.3.2 and 2.1.7)</li>
+  <li>Fixed an issue that could allow indexes to be created fir virtual attributes (version 2.3.2)</li>
+  <li>Added an argument to confirm deleting a backend (version 2.3.2)</li>
+  <li>Fixed various issues in the UI and CLI (all three versions)</li>
+  <li>Fixed an issue in which dscreate could incorrectly require superuser privileges (version 2.3.2)</li>
+  <li>Increased the default TTL for administrative tasks from 1 hour to 12 hours (versions 2.3.2 and 2.1.7)</li>
+</ul>
