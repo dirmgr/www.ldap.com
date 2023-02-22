@@ -1,0 +1,12 @@
+<p>
+  <a href="https://github.com/ldapjs/node-ldapjs" target="_blank">LDAPjs</a> is a JavaScript library that provides LDAP protocol support for the Node.js environment. The project has just released <a href="https://github.com/ldapjs/node-ldapjs/releases/tag/v3.0.0" target="_blank">version 3.0.0</a>, which appears to include the following changes:
+</p>
+
+<ul>
+  <li>Updated the library to break out common modules (attribute, change, controls, dn, messages, and protocol) so that they can be separately installed.</li>
+  <li>Forked the and improved the filter and asn1 modules.</li>
+  <li>Updated all DN parsing to be strict. Lenient parsing is no longer available.</li>
+  <li>Updated modify processing to require change objects. Plain objects can no longer be used as change descriptors.</li>
+  <li>Updated the server so that it defaults to a listen address of 127.0.0.1 rather than 0.0.0.0 if no host parameter is specified.
+  <li>Although originally planned, support for the virtual list view control was not included in this release, but it appears to be expected for a future release.</li>
+</ul>
