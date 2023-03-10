@@ -1,0 +1,14 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.8" target="_blank">version 6.0.8</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Added a DN.getDNRelativeToBaseDN method</li>
+  <li>Added LDAPConnectionPool.getServerSet and LDAPThreadLocalConnectionPool.getServerSet methods</li>
+  <li>Updated the Filter class to add more convenient methods for constructing search filters from their components</li>
+  <li>Added support for encrypted PKCS #8 private keys</li>
+  <li>Increased the default PBKDF2 iteration count for PassphraseEncryptedOutputStream</li>
+  <li>Added the ability to create a PassphraseEncryptedOutputStream with a PassphraseEncryptedStreamHeader to reuse an already-computed secret key</li>
+  <li>Added an ObjectTrio utility class</li>
+  <li>Updated the documentation to include RFC 9371 and the latest revisions of draft-howard-gssapi-aead, draft-ietf-kitten-scram-2fa, draft-melnikov-scram-bis, and draft-reitzenstein-kitten-opaque</li>
+<ul>
