@@ -1,0 +1,32 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-4-0.html" target="_blank">2.4.0</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-3-3.html" target="_blank">2.3.3</a>, <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-2-7.html" target="_blank">2.2.7</a>, and <a href="https://directory.fedoraproject.org/docs/389ds/releases/release-2-1-8.html" target="_blank">2.1.8</a>. From the release announcements, it appears that the most significant changes include (note that not all changes apply to all versions):
+</p>
+
+<ul>
+  <li>Fixed issues in which clear-text or encoded passwords could have been exposed to unprivileged users</li>
+  <li>Fixed a couple of potential crashes</li>
+  <li>Fixed a couple of potential memory leaks and other memory management issues</li>
+  <li>Fixed a potential hang that could occur when rebuilding RUV information in the replication changelog</li>
+  <li>Improved search performance when referral handling is needed</li>
+  <li>Improved server behavior when a large number of connections are established</li>
+  <li>Added an option to close client connections after a failed authentication attempt</li>
+  <li>Fixed an a CLI issue when attempting to configure referral behavior</li>
+  <li>Fixed an issue in which search statistics omitted some types of lookups</li>
+  <li>Fixed an issue in which schema replication overwrote the X-ORIGIN extension</li>
+  <li>Updated dsconf to make it possible to specify a timeout when running tasks</li>
+  <li>Updated the logconv tool to support a new logging format</li>
+  <li>Updated the ldifgen tool to use a common default directory for LDIF files</li>
+  <li>Updated lib389 to perform better validation when importing certificates</li>
+  <li>Fixed an issue in which the server used case-sensitive matching for Boolean values</li>
+  <li>Fixed an issue in which user interfaces relied on a hard-coded set of password storage schemes</li>
+  <li>Fixed an issue when running dscreate as a non-superuser account</li>
+  <li>Fixed an issue in which dscreate ds-root did not properly normalize paths</li>
+  <li>Fixed an issue that allowed attribute types to be defined with conflicting matching rules</li>
+  <li>Improved search optimization logic</li>
+  <li>Improved db2ldif error handling</li>
+  <li>Improved UI support for importing and exporting certificates</li>
+  <li>Updated dsrc support to make it possible to specify alternative locations for user and group entries</li>
+  <li>Improved migration from OpenLDAP</li>
+  <li>Updated the CLI to support subject alternative names in CSRs</li>
+  <li>Deprecated support for the nsslapd-ldapimaprootdn attribute</li>
+</ul>
