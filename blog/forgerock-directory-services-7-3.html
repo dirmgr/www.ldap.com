@@ -1,0 +1,51 @@
+<p>
+  <a href="https://www.forgerock.com/platform/directory-services" target="_blank">ForgeRock Directory Services</a> version 7.3 has been released. According to the <a href="https://backstage.forgerock.com/docs/ds/latest/release-notes/preface.html" target="_blank">release notes</a>, changes in this release include:
+</p>
+
+<ul>
+  <li>Improved the efficiency of online replica initialization</li>
+  <li>Improved the logic for detecting when a replica has fallen too far behind in replication</li>
+  <li>Reduced the amount of memory required for group and entry caching</li>
+  <li>Improved the efficiency of encoding and decoding entries containing attributes with large numbers of values</li>
+  <li>Added support for monitoring the cost of maintaining an index</li>
+  <li>Added a matching rule that can be used to monitor progress when migrating passwords to a new scheme</li>
+  <li>Added a warning message when defining an unnecessary presence index for an attribute that has an equality index</li>
+  <li>Added a variety of monitoring metrics</li>
+  <li>Added support for logging error messages in JSON format</li>
+  <li>Improved the efficiency of returning userCertificate values</li>
+  <li>Updated the mail attribute type definition to support non-ASCII characters</li>
+  <li>Updated the modrate tool to support reading entries before updating them, and to improve support for multivalued attributes</li>
+  <li>Moved replication messages to the server error log</li>
+  <li>Moved entry cache metrics from “cn=entry cache,cn=monitor” to “cn=entry caches,cn=monitor”</li>
+  <li>Addressed an issue that could cause an upgrade to require a full rebuild</li>
+  <li>Fixed an error when processing a search involving BigIndex</li>
+  <li>Reduced the frequency of change number indexing state logging</li>
+  <li>Ignored the max-allowed-client-connections limit in the admin connector</li>
+  <li>Fixed an issue when backing up to an S3 bucket in a new region</li>
+  <li>Eliminated redundant columns in dsconfig list-replication-domains output</li>
+  <li>Fixed an issue in which the replication server could forward changes that had already been applied</li>
+  <li>Fixed an issue in which a backup could report an incorrect number of database files</li>
+  <li>Added support for serializing information about controls in replication messages</li>
+  <li>Fixed an issue that could cause isMemberOf read attempts to block after creating, deleting, or renaming static groups</li>
+  <li>Fixed an issue that could cause all worker threads to become blocked by abandon operations</li>
+  <li>Fixed an issue in processing an abandon operation during server shutdown</li>
+  <li>Fixed an issue that could prevent the server from starting when configured with a subordinate base DN</li>
+  <li>Removed the dsrepl --script-friendly argument</li>
+  <li>Updated the LoadBalancer availability check to handle bad user bind states</li>
+  <li>Fixed an issue in which missing replication server heartbeats were not detected</li>
+  <li>Fixed an issue in which the server could fail to check the state of a new replica added to the topology</li>
+  <li>Updated the server to revert permissions for the 99-user.ldif schema file on startup</li>
+  <li>Fixed an issue in which certain important replication debugging messages were suppressed</li>
+  <li>Fixed an issue in which dsrepl status did not take bad data status into account</li>
+  <li>Fixed a potential deadlock between overlapping modify DN operations</li>
+  <li>Fixed an issue in which dsrepl status could show deleted replication domains</li>
+  <li>Improved logging for replication connect errors</li>
+  <li>Fixed an issue in which the server could ignore critical VLV controls when processing an unindexed search</li>
+  <li>Fixed an issue in which connections to the proxy server incorrectly timed out after 10 seconds</li>
+  <li>Fixed an issue that could occur when running searchrate concurrently with modrate</li>
+  <li>Fixed an issue with the server incorrectly terminating connections as a result of a missing heartbeat</li>
+  <li>Fixed an issue win which supportextract could incorrectly exclude certain key stores</li>
+  <li>Fixed an issue in which the LDAP changelog was not properly updated during a replica initialization</li>
+  <li>Fixed an issue in which rotation and retention policies were not correctly applied for certain logging</li>
+  <li>Fixed an issue in which the replication server could accept connections when its database is unavailable</li>
+</ul>
