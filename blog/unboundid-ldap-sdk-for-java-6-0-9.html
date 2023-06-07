@@ -1,0 +1,16 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.9" target="_blank">version 6.0.9</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>Made it possible to customize the result codes that the LDAP SDK uses to determine whether a connection may no longer be usable</li>
+  <li>Added support for establishing LDAP and LDAPS connections through HTTP, SOCKSv4, and SOCKSv5 proxy servers</li>
+  <li>Updated ldap-diff to make it configurable whether to use byte-for-byte or schema-aware comparisons</li>
+  <li>Fixed an issue in which the channel binding type may not be preserved when duplicating a GSSAPI bind request</li>
+  <li>Added a method for getting the standard name for LDAP result codes</li>
+  <li>Added a mechanism for caching the derived encryption keys used for passphrase-encrypted input and output streams</li>
+  <li>Improved the logic used to determine whether a given character is likely displayable</li>
+  <li>Added a number of convenience methods for Unicode and UTF-8 strings</li>
+  <li>Updated the collect-support-data task to make it possible to set the start and end times for included log messages</li>
+  <li>Included the latest revisions of draft-melnikov-sasl2 and draft-melnikov-scram-sha-512</li>
+<ul>
