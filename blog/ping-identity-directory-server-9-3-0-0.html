@@ -1,0 +1,59 @@
+<p>
+  <a href="https://www.pingidentity.com/en/platform/capabilities/directory/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 9.3.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2023/06/30/ping-identity-directory-server-9-3-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Added support for data encryption restrictions</li>
+  <li>Added the ability to freeze the encryption settings database</li>
+  <li>Added the ability to set up the server with a pre-existing encryption settings database</li>
+  <li>Added support for monitoring the availability of the encryption settings database</li>
+  <li>Added other data encryption improvements</li>
+  <li>Added an aggregate pass-through authentication handler</li>
+  <li>Added a PingOne pass-through authentication handler</li>
+  <li>Improved dsreplication performance in topologies with a large number of servers and/or high network latency between some of the servers</li>
+  <li>Added more options for allowing pre-encoded passwords</li>
+  <li>Added the ability to use the proxied authorization v1 or v2 request control in password modify extended requests</li>
+  <li>Updated the Directory REST API to provide support for the password modify, get password quality requirements, and suggest password extended operation types</li>
+  <li>Added a disallowed characters password validator</li>
+  <li>Added a UTF-8 password validator</li>
+  <li>Added the ability to include ds-pwp-modifiable-state-json in add operations</li>
+  <li>Added the ability to automatically apply changes to TLS protocol and cipher suite configuration</li>
+  <li>Added new account-authenticated and account-deleted account status notification types</li>
+  <li>Added configuration properties for managing the configuration archive</li>
+  <li>Added a new replication-missing-changes-risk alert type</li>
+  <li>Added a new replication-not-purging-obsolete-replicas alert type</li>
+  <li>Added a new check-replication-domains tool that can list known replication domains identify any that may be obsolete</li>
+  <li>Added a --showPartialBacklog argument to dsreplication status</li>
+  <li>Added the ability to synchronize Boolean-valued attributes to the PingOne sync destination</li>
+  <li>Updated replace-certificate to support obtaining new certificate information from PEM files</li>
+  <li>Added support for encrypted PKCS #8 private keys</li>
+  <li>Added caching support to the PKCS #11 key manager provider</li>
+  <li>Added the ability to specify the start and end times for the range of log messages to include in collect-support-data archives when invoking the tool as an administrative task</li>
+  <li>Fixed an issue when modifying ds-pwp-modifiable-state-json with other attributes</li>
+  <li>Fixed an issue that could prevent the server from properly building indexes with very long names</li>
+  <li>Fixed an issue that could cause the server to omit matching entries when configuring compact-common-parent-dn values</li>
+  <li>Fixed an issue in which failover may not work properly after updating a Synchronization Server instance with manage-profile replace-profile</li>
+  <li>Fixed an issue with replace modifications for attributes containing variants with options</li>
+  <li>Improved support for passwords containing characters with multiple encodings</li>
+  <li>Fixed an issue that could prevent obsolete replicas from being automatically purged in certain circumstances</li>
+  <li>Fixed an issue that could prevent the servers in a replication topology from being able to select the authoritative server for maintaining information in the topology registry</li>
+  <li>Increased timeouts used by the dsreplication tool to reduce the chance that they would be incorrectly encountered when interacting with a large replication topology</li>
+  <li>Fixed an issue that caused the Directory REST API to always include the permissive modify request control when updating entries</li>
+  <li>Improved access control behavior for the password policy state extended operation</li>
+  <li>Fixed an issue in which subtree searches based at the server’s root DSE could omit entries from backends with base DNs subordinate to those of other backends</li>
+  <li>Fixed an issue that could prevent a user from using grace logins to change their own password in a modify request that contained the proxied authorization request control</li>
+  <li>Fixed an issue with substring filters containing logically empty substrings</li>
+  <li>Improved error handling when using automatic authentication with client certificates</li>
+  <li>Improved Directory Proxy Server error handling when using the rebind authorization method</li>
+  <li>Fixed an issue that prevented including permit-export-reversible-passwords privilege in the default set of root privileges</li>
+  <li>Fixed an issue that could cause manage-profile setup to complain about being unable to find certain utilities used by the collect-support-data tool</li>
+  <li>Fixed an error that could occur if an archived configuration file was removed in the middle of an attempt to back up the config backend</li>
+  <li>Fixed an issue that prevented the Directory Proxy Server from logging search result entry messages for entries passed through from a backend server</li>
+  <li>Fixed an issue when synchronizing account state from Active Directory when using modifies-as-creates</li>
+  <li>Suppressed servlet information in HTTP error messages by default</li>
+  <li>Restricted the RSA key size for inter-server certificates to a maximum of 3072 bits</li>
+  <li>Fixed an issue with base DN case sensitivity when enabling replication with a static topology</li>
+  <li>Changed the result code used when rejecting an attempt to change a password that is within the minimum age from 49 (invalidCredentials) to 53 (unwillingToPerform)</li>
+  <li>Fixed an issue that could cause the server to return multiple password validation details response controls in the response to a password modify extended request</li>
+  <li>Fixed an issue that could prevent the server from returning a generated password for a password modify extended operation processed with the no-operation request control</li>
+</ul>
