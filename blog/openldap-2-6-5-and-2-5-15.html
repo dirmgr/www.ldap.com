@@ -1,0 +1,20 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has announced the release of versions <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/JBYENM5BABO76SQNCWMKGPDB5OKC52UK/">2.6.5</a> and <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/ZQC6MWMJMETDFWV3UHDKESBFPHHTNO5S/" target="_blank">2.5.15</a> of their LDAP directory server. Changes included in these releases include:
+</p>
+
+<ul>
+  <li>Fixed potential crash in minimum password age handling (both versions)</li>
+  <li>Fixed potential crash and race condition issues with online indexing (version 2.6.5)</li>
+  <li>Fixed potential crash if a monitor search fails or is abandoned (version 2.6.5)</li>
+  <li>Fixed potential crash in the variant overlay with a regular expression (both versions)</li>
+  <li>Fixed a memory management error in pcache handling of a malformed schema element (both versions)</li>
+  <li>Fixed a syncprov race condition that could cause incorrect connection handling if a connection is lost while attempting to send search results (both versions)</li>
+  <li>Fixed an issue that could break push-based replication (both versions)</li>
+  <li>Fixed an issue in which an abandoned configuration change could cause inconsistent behavior (both versions)</li>
+  <li>Fixed an issue with extended operation handling for overlays (both versions)</li>
+  <li>Fixed an issue with the pcache overlay when converting the configuration (both versions)</li>
+  <li>Improved performance of dynamic group member list evaluation (both versions)</li>
+  <li>Fixed an issue in the way that TLSv1.3 cipher suites are handled in the client library (both versions)</li>
+  <li>Fixed an issue in the way that TCP_KEEPALIVE was handled in the client library (both versions)</li>
+  <li>Fixed an issue in the way that asynchronous connect attempts were handled in the client library (both versions)</li>
+</ul>
