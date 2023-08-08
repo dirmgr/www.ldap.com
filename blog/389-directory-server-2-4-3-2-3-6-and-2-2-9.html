@@ -1,0 +1,26 @@
+<p>
+  The <a href="https://directory.fedoraproject.org/index.html" target="_blank">389 Directory Server</a> project has announced new releases of versions <a href="https://www.port389.org/docs/389ds/releases/release-2-4-3.html" target="_blank">2.4.3</a>, <a href="https://www.port389.org/docs/389ds/releases/release-2-3-6.html" target="_blank">2.3.6</a>, and <a href="https://www.port389.org/docs/389ds/releases/release-2-2-9.html" target="_blank">2.2.9</a>. From the release announcements, it appears that the most significant changes include (note that not all changes apply to all versions):
+</p>
+
+<ul>
+  <li>Fixed a variety of memory leaks</li>
+  <li>Fixed an issue that could prevent the server from starting after a system reboot</li>
+  <li>Fixed an issue could cause high CPU utilization on an idle server</li>
+  <li>Fixed a crash that could occur when trying to start the server with a backend that doesn't have a suffix</li>
+  <li>Fixed a crash that could occur when disabling replication</li>
+  <li>Fixed an issue in which paged searches could adversely affect performance for other operations</li>
+  <li>Fixed an issue That could cause the cleanallruv task to crash</li>
+  <li>Fixed a dsconf issue when trying to interact with the monitor data for an LMDB backend</li>
+  <li>Fixed a dbscan issue when encryption is enabled</li>
+  <li>Fixed an issue with bash autocomplete definitions</li>
+  <li>Improved security of library code that supports extracting tar files</li>
+  <li>Added support for a last login time history</li>
+  <li>Updated the set of allowed password storage schemes for FIPS-compliant mode</li>
+  <li>Fixed an LDIF export issue when no export path was specified</li>
+  <li>Fixed an issue in handling the result of pre-extended operation plugins</li>
+  <li>Improved search performance for filters involving nsrole</li>
+  <li>Improved error messages that could be generated if replication is not fully configured</li>
+  <li>Fixed a UI issue that prevented selecting the suffix for an export</li>
+  <li>Updated the UI to add support for configuring HAProxy trusted client addresses</li>
+  <li>Fixed an issue that could affect searching for certain elements in the UI</li>
+</ul>
