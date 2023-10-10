@@ -1,0 +1,30 @@
+<p>
+  <a href="https://www.forgerock.com/platform/directory-services" target="_blank">ForgeRock Directory Services</a> version 7.4 has been released. According to the <a href="https://backstage.forgerock.com/docs/ds/latest/release-notes/preface.html" target="_blank">release notes</a>, changes in this release include:
+</p>
+
+<ul>
+  <li>Added support for an HDAP protocol, for accessing LDAP data over HTTP</li>
+  <li>Updated access log messages to include time spent in the work queue, and for filtering messages based on queue time</li>
+  <li>Changed the values of some access log fields from null to true</li>
+  <li>Added support for including details about modified attributes in access log messages</li>
+  <li>Added support for logging details about TLS negotiation</li>
+  <li>Updated access log messages to include user-friendly names for request controls and details about their values</li>
+  <li>Simplified debug logging with predefined logging categories</li>
+  <li>Added monitor attributes about changelog purging</li>
+  <li>Updated the attribute value password validator to add support for checking substrings</li>
+  <li>Added support for renaming collective attributes</li>
+  <li>Added attribute syntax checking support for certificate lists, certificate pairs, and postal address syntaxes</li>
+  <li>Updated replication to log a warning on some kinds of fractional replication configuration issues</li>
+  <li>Improved performance for evaluating OR filters with multiple components targeting the same attribute type</li>
+  <li>Updated GSSAPI authentication support to allow multiple service principals</li>
+  <li>Simplified configuring PKCS #11 key managers</li>
+  <li>Updated Debian and Red Hat packages to use systemd instead of init files for starting the server on boot</li>
+  <li>Updated dsconfig help and the configuration reference to better identify deprecated and legacy configuration options</li>
+  <li>Updated command-line tools supporting PKCS #11 to allow specifying alternative provider details</li>
+  <li>Updated the backendstat subcommands for listing indexes in order by name</li>
+  <li>Fixed an issue in which the unindexed-search privilege may not be enforced for sorted and paged searches</li>
+  <li>Reduced memory usage for the Argon2 password storage scheme</li>
+  <li>Fixed a performance issue when searching for attributes not defined in the schema</li>
+  <li>Updated the server to return an unavailable result instead of unwillingToPerform if it becomes disconnected from replication servers</li>
+  <li>Fixed an issue in which virtual attribute providers could ignore critical controls during search processing</li>
+</ul>
