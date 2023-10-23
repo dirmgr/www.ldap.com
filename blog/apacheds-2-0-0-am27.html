@@ -1,0 +1,23 @@
+<p>
+  The <a href="https://directory.apache.org/" target="_blank">Apache Directory Project</a> has released <a href="https://lists.apache.org/thread/h81lkn45qlnzq00t32ddm9g8dw02pcrc" target="_blank">Apache DS 2.0.0.AM27</a>, which is a preview of their upcoming 2.0.0 release. Changes in this release appear to include:
+
+<ul>
+  <li>Upgraded the server's log4j library version to one that includes fixes for critical vulnerabilities</li>
+  <li>Fixed encryption support that relied on a hard-coded initialization vector</li>
+  <li>Fixed issues in which the server did not attempt to validate certificates</li>
+  <li>Fixed an issue that could prevent the server from starting on Windows</li>
+  <li>Fixed an issue that could prevent the server from running on the IBM JVM</li>
+  <li>Fixed an issue in which the server could leak threads</li>
+  <li>Fixed an issue with encryption support in the DIGEST-MD5 SASL mechanism</li>
+  <li>Fixed an issue in which a modify DN operation could be used to overwrite an existing entry</li>
+  <li>Fixed an issue with the way that password modify extended responses were encoding</li>
+  <li>Fixed case-sensitivity issues when processing LDIF records</li>
+  <li>Fixed an issue in which an AND filter containing (objectClass=top) would not return any results</li>
+  <li>Improved performance for certain types of searches with large result sets</li>
+  <li>Fixed issues with the server when using Java versions newer than Java 8</li>
+  <li>Fixed an issue with the order in which interceptors were being processed</li>
+  <li>Fixed an issue that could cause the server to encounter an internal error when attempting to process a search with an unsupported type of matching</li>
+  <li>Fixed an issue that could cause the server to encounter an internal error when an unsupported control was requested</li>
+  <li>Added support for the subtree delete request control</li>
+  <li>Removed support for acting as a Kerberos server</li>
+</ul>
