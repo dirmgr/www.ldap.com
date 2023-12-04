@@ -1,0 +1,14 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/6.0.11" target="_blank">version 6.0.11</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>This is the last version of the LDAP SDK that will support Java 7; future releases will only support Java 8 and higher</li>
+  <li>Updated ldapsearch and ldapmodify to provide better validation for the --proxyAs argument</li>
+  <li>Updated the Filter class to allow empty strings as an alternative to null values when creating substring filters that don’t contain all component types</li>
+  <li>Improved the logic used to pare entries to a specified set of attributes to better handle attribute descriptions with illegal characters</li>
+  <li>Updated TimestampArgument to support timestamps in the ISO 8601 format described in RFC 3339</li>
+  <li>Added a JSONBuffer.appendField method</li>
+  <li>Added enums for dealing with data sizes using either binary (1024-based) or decimal (1000-based) multipliers</li>
+  <li>Added client-side support for post-LDIF-export task processors in the Ping Identity Directory Server</li>
+</ul>
