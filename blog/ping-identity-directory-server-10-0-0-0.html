@@ -1,0 +1,65 @@
+<p>
+  <a href="https://www.pingidentity.com/en/platform/capabilities/directory/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 10.0.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2023/12/15/ping-identity-directory-server-10-0-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Removed support for Java 8; only Java versions 11 and 17 are now supported</li>
+  <li>Removed the Metrics Engine product in favor of integration with standard monitoring software</li>
+  <li>Added support for inverted static groups</li>
+  <li>Added support for post-LDIF-export task processors, including one that can copy an exported LDIF file to an Amazon S3 bucket</li>
+  <li>Added a log file rotation listener that can upload newly rotated log files to an Amazon S3 bucket</li>
+  <li>Added an amazon-s3-client command-line tool</li>
+  <li>Added authentication support to the Directory REST API</li>
+  <li>Added support for a generate access token request control</li>
+  <li>Added support for configuring a single database cache that may be shared across all local DB backends</li>
+  <li>Added an option to automatically re-encode passwords on bind if the associated storage scheme configuration is changed</li>
+  <li>Added an option to use a separate request handler per client connection</li>
+  <li>Updated the encrypt-file tool to add --re-encrypt and --find-encrypted-files arguments</li>
+  <li>Added a new missing-change-policy configuration property that can be used to customize the way the server behaves in the event of missing replication changes</li>
+  <li>Significantly improved the performance of backup, restore, and online replica initialization</li>
+  <li>Significantly improved static group update performance</li>
+  <li>Improved performance for validating server state immediately after completing an update</li>
+  <li>Added a split-ldif tool for use in migrating to an entry-balanced deployment</li>
+  <li>Updated the bcrypt password storage scheme to support the 2b variant</li>
+  <li>Updated the HTTP connection handler to add an option to perform SNI hostname validation during TLS negotiation</li>
+  <li>Updated the backup tool to warn about attempting to compress a backup of an encrypted backend</li>
+  <li>Updated the dsreplication tool to maintain a separate log per subcommand, and to keep a better record of failed attempts</li>
+  <li>Removed the dsreplication remove-defunct-server subcommand in favor of the remove-defunct-server tool</li>
+  <li>Removed the dsreplication cleanup-defunct-server subcommand in favor of the remove-defunct-server --performLocalCleanup command</li>
+  <li>Updated dsreplication initialize-with-static-topology to add an --allowServerInstanceDelete argument</li>
+  <li>Updated dsreplication initialize-with-static-topology to add an --allowDomainIDReuse argument</li>
+  <li>Updated the check-replication-domains tool to no longer require the --serverRoot argument</li>
+  <li>Added an option to configure whether information about all remote servers are included in replication server monitor messages</li>
+  <li>Added support for an access log fields request control</li>
+  <li>Improved the way that the configuration API treats patch operations containing empty arrays</li>
+  <li>Added the ability to configure connect and response timeouts for interaction with various HTTP services</li>
+  <li>Improved Synchronization Server performance when setting the startpoint to the end of an Active Directory changelog</li>
+  <li>Reduced the amount of memory used by the export-ldif and backup tools by default</li>
+  <li>Improved the Directory REST API support for stripping encoded passwords from responses</li>
+  <li>Improved the way the replica generation ID is computed</li>
+  <li>Fixed an issue that could occur when initializing aggregate pass-through authentication handlers</li>
+  <li>Fixed an issue that could cause invalid block type errors when interacting with compressed files</li>
+  <li>Fixed an issue that could prevent the changelog password encryption plugin from working properly for password modify extended operations</li>
+  <li>Fixed an issue that could prevent the server from updating a user’s password history for requests including the password update behavior request control</li>
+  <li>Fixed an issue that could cause two copies of a user’s current password to be added to the password history</li>
+  <li>Fixed an issue that could incorrectly allow a user to set an empty password (which could not be used for authentication)</li>
+  <li>Fixed an issue that could cause the dictionary password validator to incorrectly accept certain kinds of passwords in which a long enough substring represented a dictionary word</li>
+  <li>Fixed an issue with the handling for replace modifications for attributes with options</li>
+  <li>Fixed an issue that prevented the server from recording a bind failure if it was the first attempt after a temporary lockout had expired</li>
+  <li>Fixed an issue with the output of the manage-profile generate-profile tool when run against an updated server</li>
+  <li>Fixed an issue in which dsreplication initialize could suggest using --force in scenarios where it would not be useful</li>
+  <li>Fixed an issue in which dsreplication enable-with-static-topology could incorrectly report an error about failing to connect to a remote instance</li>
+  <li>Fixed an issue in which dsreplication enable-with-static-topology in which base DN case sensitivity was not handled properly</li>
+  <li>Fixed an issue in which remove-defunct-server could fail if the AES256 password storage scheme was enabled</li>
+  <li>Fixed a replication error could occur if missing changes were found for an obsolete replica that only existed in some servers</li>
+  <li>Fixed an issue in which the server did not check the time limit during expensive index processing for a search operation</li>
+  <li>Fixed an issue that could cause the server to incorrectly include client certificate messages in the expensive operations log</li>
+  <li>Fixed an internal error that could arise if an administrative alert was generated at a specific point in the shutdown process</li>
+  <li>Fixed an issue with synchronizing Boolean attributes to PingOne</li>
+  <li>Fixed an issue with the way the Synchronization Server handled the Active Directory unicodePwd attribute when no DN map was configured for the sync class</li>
+  <li>Fixed an issue with create-sync-pipe-config when using generic JDBC sync destinations</li>
+  <li>Fixed an issue when using manage-topology add-server to add a Synchronization Server to a topology that already contained at least two such instances</li>
+  <li>Fixed an issue with alternative authorization DN logging for multi-update extended operations</li>
+  <li>Fixed an issue in which dsjavaproperties --initialize could generate duplicate arguments</li>
+  <li>Fixed an issue in which a spurious error message could be logged when accessing the status page in the Administration Console</li>
+</ul>
