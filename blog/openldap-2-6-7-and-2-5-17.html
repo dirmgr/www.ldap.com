@@ -1,0 +1,18 @@
+<p>
+  The <a href="https://www.openldap.org/" target="_blank">OpenLDAP</a> project has announced the release of versions <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/C2H5SYOO2LQ3Q7DFX73UAUTTQQZXTNHP/" target="_blank">2.6.7</a> and <a href="https://lists.openldap.org/hyperkitty/list/openldap-announce@openldap.org/thread/XRQE4CVQDLTG4EYPKVEU2L76DYGIFR2Q/" target="_blank">2.5.17</a> of their LDAP directory server. Changes included in these releases appear to include:
+</p>
+
+<ul>
+  <li>Fixed a potential crash that could occur with connections closed with a notice-of-disconnection response (both versions)</li>
+  <li>Fixed a potential crash that could occur with certain dynlist configurations (both versions)</li>
+  <li>Fixed an issue in which the server would shut down upon encountering an access control rule with a malformed regular expression (both versions)</li>
+  <li>Fixed an issue in which the server could incorrectly disclose an entry’s existence in the matched DN element of a response (both versions)</li>
+  <li>Fixed a replication issue involving non-sequential timestamps (both versions)</li>
+  <li>Fixed multiple client-side issues that may occur when using TLS (both versions)</li>
+  <li>Added an option to disable including the member list in dynlist groups (both versions)</li>
+  <li>Fixed a back-asyncmeta issue when trying to use an empty suffixmassage value (both versions)</li>
+  <li>Fixed an issue that prevented lloadd from working on systems without a resolv.conf file (both versions)</li>
+  <li>Fixed an issue with the formatting for log messages with very long filters (both versions)</li>
+  <li>Fixed a replication issue when using both the glue and rwm overlays (version 2.6.7)</li>
+  <li>Fixed an issue in which lloadd did not properly read its configuration (version 2.6.7)</li>
+</ul>
