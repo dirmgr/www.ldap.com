@@ -1,0 +1,17 @@
+<p>
+  <a href="https://github.com/pingidentity/ldapsdk" target="_blank">UnboundID LDAP SDK for Java</a> is a Java-based API for interacting with LDAP directory servers and performing other LDAP-related processing. The project has just released <a href="https://github.com/pingidentity/ldapsdk/releases/tag/7.0.0" target="_blank">version 7.0.0</a>, which includes the following changes:
+</p>
+
+<ul>
+  <li>The LDAP SDK now requires Java 8 or later; Java 7 is no longer supported</li>
+  <li>Improved connection pool behavior when a health check determines that a connection is valid on checkout</li>
+  <li>Added a new compare-ldap-schemas tool</li>
+  <li>Improved performance and reduced disk space and memory requirements when performing repeated binds using the GSSAPI SASL mechanism</li>
+  <li>Added experimental client-side support for the relax rules request control</li>
+  <li>Added client-side support for a number of controls used in ForgeRock OpenDJ</li>
+  <li>Added connection pool health checks specific to the Ping Identity Directory Server</li>
+  <li>Added convenience methods for generating cryptographic digests of strings, byte arrays, or files</li>
+  <li>Added methods for normalizing JSON values and JSON object filters</li>
+  <li>Added a constant with the name of a system property that can be used to enable MD5 support when using the latest version of the Bouncy Castle FIPS-compliant cryptographic provider</li>
+  <li>Updated the documentation to include new and updated versions of several Internet Drafts</li>
+</ul>
