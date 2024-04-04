@@ -1,0 +1,32 @@
+<p>
+  <a href="https://backstage.forgerock.com/docs/platform/7.5/platform-guide/directory-services.html" target="_blank">ForgeRock Directory Services</a> version 7.4 has been released. According to the <a href="https://backstage.forgerock.com/docs/ds/latest/release-notes/preface.html" target="_blank">release notes</a>, changes in this release include:
+</p>
+
+<ul>
+  <li>Added a new dsrepl disaster-recovery mechanism for safer disaster recovery procedures</li>
+  <li>Removed the existing dsrepl start-disaster-recovery and dsrepl end-disaster-recovery commands</li>
+  <li>Updated HDAP support to provide the ability to authenticate with a bearer tokens</li>
+  <li>Updated the server so that it can immediately start maintaining new indexes for previously unused attributes</li>
+  <li>Improved the efficiency of using equality indexes for presence searches</li>
+  <li>Expanded the ability to use VLV indexes for some kinds of search requests</li>
+  <li>Updated access log messages to better reflect when a search is unindexed</li>
+  <li>Added processing time metrics for persistent searches</li>
+  <li>Updated the server to improve resource limit evaluation for requests using proxied authorization</li>
+  <li>Added support for Java 17 and Java 21</li>
+  <li>Removed support for Java 11</li>
+  <li>Added support for Amazon Linux 2023</li>
+  <li>Added a dsrepl decode-csn command</li>
+  <li>Included the hostname in the supportextract archive file</li>
+  <li>Introduced changes to prevent direct upgraes from 7.4 instances using data encryption with AES/GCM</li>
+  <li>Fixed an internal error resulting from certain kinds of unknown requests</li>
+  <li>Fixed a potential schema violation resulting from an etag in the schema configuration entry</li>
+  <li>Fixed an issue in which a TOO_LATE replication status would not mark a server as unhealthy</li>
+  <li>Fixed an issue with the ds-mon-receive-delay metric</li>
+  <li>Fixed an issue with dsrepl initialize when a custom schema file only includes sync state entries</li>
+  <li>Fixed an issue in which authenticating using the REST API did not properly honor the force-change-on-add configuration</li>
+  <li>Removed support for SNMP monitoring</li>
+  <li>Removed the already-deprecated /admin and /api endpoints from newly created server instances</li>
+  <li>Made a number of changes to the server's plugin API, some of which may affect existing plugins</li>
+  <li>Deprecated the legacy Prometheus metrics format in favor of a new format</li>
+  <li>Deprecated a number of existing Prometheus metrics in favor of new metrics with improved names</li>
+</ul>
