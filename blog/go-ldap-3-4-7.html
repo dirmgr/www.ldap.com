@@ -1,0 +1,14 @@
+<p>
+  The <a href="https://github.com/go-ldap" target="_blank">go-ldap</a> project has released <a href="https://github.com/go-ldap/ldap/releases/tag/v3.4.6" target="_blank">version 3.4.6</a> of its <a href="https://github.com/go-ldap/ldap" target="_blank">LDAP API for Go</a>. Some of the changes in this release include:
+</p>
+
+<ul>
+  <li>Fixed potential panics in GetLDAPError</li>
+  <li>Fixed a potential thread deadlock</li>
+  <li>Fixed a potential race condition on a request timeout</li>
+  <li>Added the ability to perform asynchronous searches</li>
+  <li>Added support for acting as a syncrepl consumer</li>
+  <li>Updated ldap.Error to better support Go's errors.Is and errors.As functions</li>
+  <li>Improved support for the Active Directory DirSync control when performing asynchronous searches</li>
+  <li>Substantially reduced the maximum BER packet size to reduce the potential for consuming very large amounts of memory</li>
+</ul>
