@@ -1,0 +1,20 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released <a href="https://lists.fedoraproject.org/archives/list/389-announce@lists.fedoraproject.org/thread/AFAMAXWZY7P55ZNZ4WN5U62MKM5SIR34/" target="_blank">version 3.0.2</a>. Some of the changes in this release appear to include:
+</p>
+
+<ul>
+  <li>Fixed a potential crash from an issue in the referential integrity plugin</li>
+  <li>Fixed an issue that could allow the server to accept new connections when shutting down</li>
+  <li>Fixed an issue that could prevent creating entries with long RDN values</li>
+  <li>Fixed an issue in which the server may yield incorrect results for a VLV search when using an LMDB backend</li>
+  <li>Fixed an issue that could prevent pre-encoded passwords from being added to a user’s password history</li>
+  <li>Fixed an issue that could prevent using dscreate in interactive mode with an LMDB backend</li>
+  <li>Fixed an issue in the encoding of timestamps in certain locales</li>
+  <li>Fixed an issue in the error message used for a paged results search that was interrupted by the search time limit</li>
+  <li>Fixed an issue in which an incorrect certificate lifetime could be displayed</li>
+  <li>Log messages to make it possible to identify bind operations involving multi-factor authentication</li>
+  <li>Added support for buffering writes to the server audit log for better performance</li>
+  <li>Updated the Healthcheck tool to include configuration-related checks for the LMDB database</li>
+  <li>Improved HAProxy support when the HAProxy server is on the same machine as the 389 Directory Server instance</li>
+  <li>Improved dsidm error handling when trying to create an entry whose parent doesn’t exist</li>
+</ul>
