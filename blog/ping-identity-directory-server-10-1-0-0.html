@@ -1,0 +1,57 @@
+<p>
+  <a href="https://www.pingidentity.com/en/platform/capabilities/directory/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 10.1.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2024/06/28/ping-identity-directory-server-10-1-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Added the ability to include presence components in composite index filter patterns</li>
+  <li>Added the ability to include approximate-match components in composite index filter patterns</li>
+  <li>Added the ability to include static equality components in composite index filter patterns</li>
+  <li>Added the ability to stream search results directly from a composite index</li>
+  <li>Added support for caching the candidate set for searches using the simple paged results control</li>
+  <li>Improved Directory Proxy Server’s handling of requests with the simple paged results control</li>
+  <li>Updated the access control handler to provide enhanced support for controlling which attributes may be included in add requests</li>
+  <li>Added support for a verify password extended operation</li>
+  <li>Added support for collation matching rules for improved extensible matching support for non-English values</li>
+  <li>Added a new compare-ldap-schemas tool</li>
+  <li>Reduced the performance impact of exploded index cleanup</li>
+  <li>Improved warnings about high index entry limits for attribute indexes</li>
+  <li>Improved overall write performance and reduced the number of outliers for write operations with higher response times</li>
+  <li>Improved performance when applying changes via replication</li>
+  <li>Improved performance when retrieving the database environment monitor entry</li>
+  <li>Improved the efficiency of replicating server schema information between servers</li>
+  <li>Reduced the default size of messages used in the course of monitoring replication</li>
+  <li>Reduced the amount of memory that the server needs to cache information about dynamic groups</li>
+  <li>Enabled the expensive operations logger by default so that information about any operations taking longer than 1 second to complete will be written to logs/expensive-ops</li>
+  <li>Added the ability to include extended information about the associated connection in access log messages about requested operations</li>
+  <li>Added the ability to exclude specific certain kinds of messages from the server error log, based on message category, severity, message ID, and message content</li>
+  <li>Added the ability to define Prometheus metrics for Boolean monitor attributes by using a value of 1 for true and 0 for false</li>
+  <li>Improved the logic used to determine whether a given replica should be considered obsolete</li>
+  <li>Added an --ignoreDuplicateAttributeValues argument to the import-ldif command, which will allow it to successfully import entries that have duplicate values for the same attribute (with only one copy of each attribute value)</li>
+  <li>Updated the interactive setup process so that when asking about whether to prime the contents of the backend into the cache during server startup, the default response has been changed from enabling priming to disabling priming</li>
+  <li>Updated the server so that it will now only retain the last 100 copies of former configurations by default</li>
+  <li>Added a new repair-topology-listener-certificates tool that can be used to recover from issues related to improperly updating certificates that the server uses for TLS communication</li>
+  <li>Improved the efficiency of the Directory Proxy Server’s replication backlog health check</li>
+  <li>Updated the export-reversible-passwords tool to make it possible to include only entries below a specified set of base DNs, or to exclude entries from a specified set of base DNs</li>
+  <li>Added a subtree-modify-dn-size-limit property to the backend configuration that can be used to limit the size of subtree move and rename operations, and these operations are now limited by default to subtrees with no more than 100 entries</li>
+  <li>Added the ability to specify the key wrapping transformation that the PKCS #11 cipher stream provider should use to protect the contents of the encryption settings database</li>
+  <li>Updated the Synchronization Server to support synchronizing USER.LOCKED and USER.UNLOCKED events from the PingOne service</li>
+  <li>Added the ability to obscure sensitive producer property values when using the Kafka sync destination</li>
+  <li>Fixed an issue that could cause inconsistency in entryUUID values across replicas in servers configured with a custom password validator created with the Server SDK</li>
+  <li>Fixed an issue that could allow insufficiently authorized clients to use the get password policy state issues request control through the Directory Proxy Server</li>
+  <li>Fixed an issue in which manage-profile replace-profile could apply configuration changes in an incorrect order</li>
+  <li>Fixed an issue that could cause dsreplication status to fail after disabling replication</li>
+  <li>Fixed an issue that could cause dsreplication enable to report an error when run in interactive mode</li>
+  <li>Fixed an issue that could cause the server to store multiple duplicate copies of the values of some attributes in which the associated attribute type has one or more subordinate types</li>
+  <li>Fixed an issue that could prevent the server from adding real attribute values to a replicated entry that already had virtual values for the same attribute</li>
+  <li>Fixed an issue that could prevent the server from adding or modifying entries that matched the criteria for an untrusted composite index if debug logging was enabled</li>
+  <li>Fixed an issue that prevented the server from properly using a virtual list view index to process an applicable search using an extensible matching filter</li>
+  <li>Fixed an issue in which the server could have incorrectly reported that the underlying JVM did not provide support for strong encryption (e.g., 256-bit AES)</li>
+  <li>Fixed an issue that could result in increased memory pressure, and potential out-of-memory errors, when running in FIPS-compliant mode as a result of a quirk in the Bouncy Castle implementation for the AES cipher</li>
+  <li>Fixed an issue that could cause the server to add duplicate entries to the configuration when setting up the server in FIPS 140-2-compliant mode</li>
+  <li>Fixed a rare issue in which the server could report an error on startup when one or more replicas were not online</li>
+  <li>Fixed an issue in which the Synchronization Server would not properly encode certain UTF-8 characters when constructing a URI for interacting with a source or destination server</li>
+  <li>Fixed an issue in which the Synchronization Server could incorrectly omit certain attributes when synchronizing from the PingOne service when the modified-attributes-only mode</li>
+  <li>Fixed an issue in which the Synchronization Server could incorrectly omit certain escape characters in search filters sent to the PingOne service</li>
+  <li>Fixed an issue in which the Active Directory Password Synchronization Agent did not properly handle the case in which multiple users in a forest had the same sAMAccountName</li>
+  <li>Cleaned up an error message that may be used when attempting to generate a Delegated Admin report with an invalid SCIM filter</li>
+ </ul>
