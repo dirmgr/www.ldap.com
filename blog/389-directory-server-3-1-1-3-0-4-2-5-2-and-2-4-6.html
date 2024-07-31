@@ -1,0 +1,42 @@
+<p>
+  The <a href="http://directory.fedoraproject.org/" target="_blank">389 Directory Server</a> project has released versions <a href="https://www.port389.org/docs/389ds/releases/release-3-1-1.html" target="_blank">3.1.1</a>, <a href="https://www.port389.org/docs/389ds/releases/release-3-0-4.html" target="_blank">3.0.4</a>, <a href="https://www.port389.org/docs/389ds/releases/release-2-5-2.html" target="_blank">2.5.2</a>, and <a href="https://www.port389.org/docs/389ds/releases/release-2-4-6.html" target="_blank">2.4.6</a>. Some of the changes in these releases appear to include:
+</p>
+
+<ul>
+  <li>Fixed an issue that could allow an unauthenticated client to crash the server with a specially crafted search request (CVE-2024-6237, all versions)</li>
+  <li>Fixed an issue that could allow an authenticated  user to crash the server while attempting to perform a malformed password update (CVE-2024-2199, all versions)</li>
+  <li>Fixed an issue that could allow a client to cause a denial of service with a specially crafted search request (CVE-2024-3657, all versions)</li>
+  <li>Fixed an issue that could cause a denial of service while attempting to authenticate as a user with a malformed encoded password (CVE-2024-5953, all versions)</li>
+  <li>Fixed an issue that could cause the server to crash while attempting to access referential integrity configuration (version 2.4.6)</li>
+  <li>Fixed an issue that could prevent online backups from succeeding (version 3.1.1)</li>
+  <li>Fixed an issue that could cause the server to crash while attempting to parse data in the referential integrity log file (version 3.1.1)</li>
+  <li>Fixed an issue in which the audit log could include only partial records for large changes (all versions)</li>
+  <li>Fixed an issue that could cause an incomplete import when using the LMDB database (versions 3.1.1, 3.0.4, and 2.5.2)</li>
+  <li>Fixed an issue that could prevent the password history from being properly updated when a new password is provided in pre-encoded form (version 2.4.6)</li>
+  <li>Fixed an issue that could result in an incorrect changelog when reindexing with an LMDB backend (version 2.5.2)</li>
+  <li>Fixed an issue that could break replication after restoring a backup (version 2.4.6)</li>
+  <li>Fixed an issue that could cause the server to return incorrect results to a VLV search when using an LMDB backend (version 2.5.2)</li>
+  <li>Fixed an issue that could prevent adding entries with long RNDs when using an LMDB backend (version 2.5.2)</li>
+  <li>Fixed an issue that could cause a web console error when enabling replication for a sub-suffix (all versions)</li>
+  <li>Fixed an issue in which singleLevel would not return entries in subordinate backends (all versions)</li>
+  <li>Fixed an issue that could prevent the server from responding to a bind attempt in which the target entry is not reachable (version 2.5.2)</li>
+  <li>Fixed an issue that could prevent the nsslapd-numlisteners setting from being honored (all versions)</li>
+  <li>Fixed an issue that could prevent the nsslapd-maxdescriptors setting from being honored (version 2.4.6)</li>
+  <li>Fixed an issue that could prevent the server from properly mapping client certificates to user entries (versions 3.1.1 and 3.0.4)</li>
+  <li>Fixed an issue that could prevent dscreate ds-root from working properly when using a relative path (version 2.4.6)</li>
+  <li>Fixed an issue that could prevent dscreate from operating in interactive mode when using an LMDB backend (version 2.4.6)</li>
+  <li>Fixed various issues with the logconv.pl script (version 2.4.6)</li>
+  <li>Fixed an error message that could appear at startup if the server is configured with subordinate backends (all versions)</li>
+  <li>Fixed an issue in which an SNMP agent could fail to start as a result of incorrect permissions (versions 3.1.1, 3.0.4, and 2.5.2)</li>
+  <li>Fixed an issue in which dsconfig schema does not show the inChain matching rule (versions 2.5.2 and 2.4.6)</li>
+  <li>Fixed an issue in which the server could incorrectly format UTC offsets in log messages (version 2.4.6)</li>
+  <li>Fixed an issue that could cause a certificate lifetime to be displayed as NaN (version 2.4.6)</li>
+  <li>Improved performance when evaluating a filter against an attribute with many values (all versions)</li>
+  <li>Added support for JSON-formatted audit logging (version 3.1.1)</li>
+  <li>Added support for a password storage scheme using the yescrypt KDF (version 3.1.1)</li>
+  <li>Added support for LMDB-related health checks (version 2.5.2)</li>
+  <li>Added support for buffered logging (version 2.4.6)</li>
+  <li>Updated bind log messages to better indicate when MFA has been used (version 2.4.6)</li>
+  <li>Updated the DNA plugin to support customizing the remote bind method and protocol (all versions)</li>
+  <li>Updated the server to allow systemd to control the server user rather than using setuid (version 3.1.1)</li>
+</ul>
