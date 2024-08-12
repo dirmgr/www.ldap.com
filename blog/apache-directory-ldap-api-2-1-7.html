@@ -1,0 +1,13 @@
+<p>
+  The <a href="https://directory.apache.org/" target="_blank">Apache Directory Project</a> has <a href="https://lists.apache.org/thread/tgd4gfrhrcp408t004bmp2oh29yf3hj0" target="_blank">announced</a> the release of version 2.1.7 of their <a href="https://directory.apache.org/api/" target="_blank">Apache Directory LDAP API</a>. Changes in this version appear to include:
+</p>
+
+<ul>
+  <li>Fixed an ASN.1 parsing issue that could cause the API to attempt to consume very large amounts of memory</li>
+  <li>Fixed an issue in which attempting to parse a malformed LDAP URL could cause an infinite loop</li>
+  <li>Fixed a potential resource leak in DSML support</li>
+  <li>Fixed an unhandled exception when attempting to parse malformed ASN.1 elements</li>
+  <li>Fixed an unhandled exception when attempting to parse malformed LDAP URLs</li>
+  <li>Updated connection pool behavior so that when closing a connection retrieved from a pool, that connection is released back to the pool</li>
+  <li>Added support for the name with entryUUID request control</li>
+</ul>
