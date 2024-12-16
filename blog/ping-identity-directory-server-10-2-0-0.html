@@ -1,0 +1,56 @@
+<p>
+  <a href="https://www.pingidentity.com/en/platform/capabilities/directory/pingdirectory.html" target="_blank">Ping Identity Directory Server</a> version 10.1.0.0 has just been released. I wrote about this release in detail on my <a href="https://nawilson.com/2024/12/16/ping-identity-directory-server-10-2-0-0/" target="_blank">personal blog</a>, but here’s a summary of the changes:
+</p>
+
+<ul>
+  <li>Java 11 support has been deprecated and will be removed in a future release.</li>
+  <li>In an upcoming release, Java EE package names will transition from using javax to using jakarta, which may affect some third-party extensions.</li>
+  <li>Support for SCIM version 1.1 has been deprecated.</li>
+  <li>Support for SNMP has been deprecated, both for accessing limited monitor data and for generating traps from administrative alerts.</li>
+  <li>Added the ability to run the server on a Java 21 JVM.</li>
+  <li>Added support for running in a FIPS 140-3-compliant manner.</li>
+  <li>Added a cache for improving authentication performance when using expensive password storage schemes.</li>
+  <li>Added a new entry counter plugin.</li>
+  <li>Updated the Directory REST API to support making access control decisions based on OAuth scopes.</li>
+  <li>Dramatically improved bind performance in environments with a very large number of dynamic groups.</li>
+  <li>Updated the Synchronization Server to support synchronizing changes to a Ping Identity Directory Server for updating both a user’s password and their password policy state at the same time.</li>
+  <li>Added the ability to specify a proxy server when defining HTTP external servers in the configuration.</li>
+  <li>Added support for pausing database cleaning activity when creating a backup, which may increase the speed and reduce the size of the backup.</li>
+  <li>Added a new db-on-disk-to-db-cache-size-ratio attribute to database environment monitor entries. Also, added a gauge to raise an alarm if the on-disk database size becomes many times larger than the in-memory cache size, which could lead to performance degradation.</li>
+  <li> Added support for caching the contents of key and trust stores for improved performance during TLS negotiation.</li>
+  <li>Updated the check-replication-domains tool to better distinguish between deleted and obsolete replicas.</li>
+  <li>Updated the dsjavaproperties tool to allow using the new --gcType argument to change type type of garbage collector used for the server.</li>
+  <li>Added the ability to use generational ZGC garbage collection when running on Java 21.</li>
+  <li>Updated collect-support-data to use the most recent monitor history file if monitor information is not obtained from LDAP.</li>
+  <li>Updated the Synchronization Server to use the get changelog batch extended operation as the default mechanism for discovering changes in the Ping Identity Directory Server.</li>
+  <li>Fixed an issue in which a Directory REST API error response could potentially allow an unauthorized user to determine whether a specified entry existed in the server.</li>
+  <li>Fixed an issue that could cause replication changes to be lost between locations when a remote gateway was in the process of starting or shutting down.</li>
+  <li>Fixed an issue that could cause the default topology admin user to be subject to the default password policy when upgrading the server via manage-profile replace-profile.</li>
+  <li>Fixed a potential memory leak that could occur in the Synchronization Server in certain failover states when  using a Kafka destination.</li>
+  <li>Fixed an issue that could result in inconsistency in the metadata for a composite index record. This could cause the server to send errors in response to certain requests, and has the potential to prevent bringing the affected backend online.</li>
+  <li>Fixed an issue that could cause upgrade attempts to fail in servers in which the default userRoot backend had been removed.</li>
+  <li>Fixed an issue that prevented the server from starting when configured to use a third-party key manager provider created using the Server SDK.</li>
+  <li>Fixed an issue in which the Synchronization Server did not always properly encode spaces in HTTP URLs used when communicating with PingOne.</li>
+  <li>Fixed an issue in which an untrusted VLV index could interfere with the server’s ability to process certain kinds of searches.</li>
+  <li>Fixed an issue in which the server did not always properly use the configured substring-index-entry-limit value when maintaining substring attribute indexes.</li>
+  <li>Fixed an issue in which dsjavaproperties did not always properly handle changes to the path to the desired Java runtime.</li>
+  <li>Fixed an issue in which the Directory REST API may not use a configured alternative authorization identity when attempting to access data outside the requester’s backend set in an entry-balanced topology.</li>
+  <li>Updated the server’s default configuration to prevent going into lockdown mode as a result of missed replication changes from obsolete replicas or as a result of null CSNs.</li>
+  <li>Fixed an issue in which the HTTP connection handler’s response-header property was not properly used for certain kinds of error responses.</li>
+  <li>Fixed an issue in which the Directory REST API could incorrectly use less-than-or-equal-to matching when comparing JSON fields in cases where strict less-than matching had been requested.</li>
+  <li>Fixed an issue in which config-diff could report an error when attempting to compare configuration objects with the same name but different types.</li>
+  <li>Fixed an issue in which the Synchronization Server may not properly exclude entries in cases where a configured include-filter targeted a virtual attribute in a NOT component.</li>
+  <li>Fixed a potential null pointer exception that could be raised in the Synchronization Server in certain cases in which an operation failed with no additional information about the cause of that failure.</li>
+  <li>Fixed an issue that could prevent dsreplication enable from reporting a useful error message when it was unable to establish a connection to one of the server instances.</li>
+  <li>Fixed an issue in which isMemberOf values were not automatically updated for groups contained in a subtree that was moved or renamed by a modify DN operation.</li>
+  <li>Fixed an issue that allowed the Directory Proxy Server to be configured with attribute mapping proxy transformations for attribute types that were not defined in the schema.</li>
+  <li>Fixed an issue in which the server could report an incorrect value for the ds-backend-entry-count attribute in the replicationChanges backend monitor entry if a sequence number counter rolled over after reaching its maximum value.</li>
+  <li>Fixed an issue that caused the server to incorrectly indicate that a restart was needed for a change to the LDAP connection handler’s ssl-certificate-nickname property to take effect.</li>
+  <li>Fixed an issue that would cause dsconfig or the admin console to suggest a malformed default value when creating a new dictionary-based password validator.</li>
+  <li>Reduced the number of error messages generated if the server lost connection to a Prometheus server.</li>
+  <li>Updated the server to begin suppressing repeated error log messages of the same type after 200 such messages had been logged, rather than the previous default of 2000.</li>
+  <li>Fixed an issue in which the server could log information about suppressing duplicate alert messages for alert types that had been disabled.</li>
+  <li>Fixed an issue in which the Synchronization Server could incorrectly report errors for all sync pipes when they were only relevant to a single pipe.</li>
+  <li>Fixed an issue in which the server could log an irrelevant error message if it was in the process of receiving mirrored topology data when the server began shutting down.</li>
+  <li>Fixed an issue with an error message that was generated if an HTTP connection handler could not use a configured key manager provider.</li>
+ </ul>
